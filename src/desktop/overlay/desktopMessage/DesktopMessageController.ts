@@ -1,0 +1,83 @@
+import { Emitter } from "@hamsterbase/foundation/event"
+import { IDisposable } from "@hamsterbase/foundation/lifecycle"
+import { IWorkbenchOverlayService, OverlayInitOptions } from "@/services/overlay/WorkbenchOverlayService"
+import { IInstantiationService } from "@hamsterbase/foundation/instantiation"
+import { OverlayEnum } from "@/services/overlay/overlayEnum"
+
+export type MessageType = "success" | "error" | "info"
+
+export interface MessageOptions {
+  message: string
+  description?: string
+  type: MessageType
+  duration?: number
+  undo?: () => void
+  onClose?: () => void
+}
+
+export class DesktopMessageController implements IDisposable {
+  static create(options: MessageOptions, instantiationService: IInstantiationService) {
+    const workbenchOverlayService = instantiationService.invokeFunction((accessor) => {
+      return accessor.get(IWorkbenchOverlayService)
+    })
+    return workbenchOverlayService.createOverlay("message", OverlayEnum.message, (initOptions) => {
+      return instantiationService.createInstance(DesktopMessageController, initOptions, options)
+    })
+  }
+
+  get zIndex() {
+    return this.option.index
+  }
+
+  private _onStatusChange = new Emitter<void>()
+  public readonly onStatusChange = this._onStatusChange.event
+
+  private _timeout?: NodeJS.Timeout
+
+  constructor(
+    private option: OverlayInitOptions,
+    private messageOptions: MessageOptions,
+    @IWorkbenchOverlayService private workbenchOverlayService: IWorkbenchOverlayService,
+  ) {
+    const duration = this.messageOptions.duration ?? 3000
+    if (duration > 0) {
+      this._timeout = setTimeout(() => {
+        this.dispose()
+      }, duration)
+    }
+  }
+
+  get message() {
+    return this.messageOptions.message
+  }
+
+  get description() {
+    return this.messageOptions.description
+  }
+
+  get showUndo() {
+    return !!this.messageOptions.undo
+  }
+
+  undo() {
+    this.messageOptions.undo?.()
+  }
+
+  get type() {
+    return this.messageOptions.type
+  }
+
+  handleClose() {
+    if (this.messageOptions.onClose) {
+      this.messageOptions.onClose()
+    }
+    this.dispose()
+  }
+
+  dispose() {
+    if (this._timeout) {
+      clearTimeout(this._timeout)
+    }
+    this.workbenchOverlayService.removeOverlay(this.option.instanceId)
+  }
+}

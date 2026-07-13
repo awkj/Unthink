@@ -1,0 +1,203 @@
+import { getTodayTimestampInUtc } from "@/core/common/getTodayTimestampInUtc"
+import { projectTitleInputKey } from "@/ui/components/edit/inputKeys.ts"
+import { AreaIcon, FlagIcon, MenuIcon, ScheduledIcon } from "@/ui/components/icons"
+import { getProjectHeadingAndTasks } from "@/core/state/getProjectHeadingAndTasks"
+import { getProject } from "@/core/state/getProject"
+import { EntityHeader } from "@/desktop/components/common/EntityHeader"
+import { ProjectIcon } from "@/desktop/components/todo/ProjectIcon"
+import { useDatepicker } from "@/desktop/overlay/datePicker/useDatepicker"
+import { desktopStyles } from "@/desktop/theme/main.ts"
+import { useService } from "@/ui/hooks/use-service"
+import { useTaskDisplaySettings } from "@/ui/hooks/useTaskDisplaySettings"
+import { useWatchEvent } from "@/ui/hooks/use-watch-event"
+import { localize } from "@/nls"
+import { ITodoService } from "@/services/todo/todoService"
+import { TestIds } from "@/testIds"
+import type { TreeID } from "loro-crdt"
+import React from "react"
+import { useParams } from "react-router"
+import { AttachmentSection } from "../../attachment/AttachmentSection"
+import { TagsField } from "../../TagsField"
+import { NotesField } from "../components/NotesField"
+import { TaskDateField } from "../components/TaskDateField"
+import { TaskLocationField } from "../components/TaskLocationField"
+import { useDesktopProjectMenu } from "./useDesktopProjectMenu"
+
+const useProjectId = (): TreeID | null => {
+  const todoService = useService(ITodoService)
+  const { projectUid } = useParams<{ projectUid?: string }>()
+
+  if (!projectUid) {
+    return null
+  }
+
+  const projectId = todoService.modelState.taskObjectUidMap.get(projectUid)?.id
+  return projectId || null
+}
+
+interface IProjectDetailPanelContentProps {
+  projectId: TreeID
+  project: NonNullable<ReturnType<typeof getProject>>
+}
+
+const ProjectDetailPanelContent: React.FC<IProjectDetailPanelContentProps> = ({ projectId, project }) => {
+  const todoService = useService(ITodoService)
+  const showDatePicker = useDatepicker()
+  const { showCompletedTasks, showFutureTasks, completedAfter } = useTaskDisplaySettings(`project-${projectId}`)
+  const { flattenedItemsResult } = getProjectHeadingAndTasks({
+    modelData: todoService.modelState,
+    projectId,
+    option: {
+      showCompletedTasks,
+      showFutureTasks,
+      completedAfter,
+      currentDate: getTodayTimestampInUtc(),
+      recentChangedTaskSet: new Set<TreeID>(todoService.keepAliveElements as TreeID[]),
+    },
+    disableCreateTask: true,
+  })
+  const visibleTasks = flattenedItemsResult.flattenedItems.filter((item) => item.type === "item")
+  const completedTaskCount = visibleTasks.filter((item) => item.content.status === "completed").length
+  const taskProgress = visibleTasks.length === 0 ? 0 : (completedTaskCount / visibleTasks.length) * 100
+
+  const handleTitleSave = (title: string) => {
+    todoService.updateProject(projectId, { title })
+  }
+
+  const handleNotesSave = (notes: string) => {
+    todoService.updateProject(projectId, { notes })
+  }
+
+  const { openDesktopProjectMenu } = useDesktopProjectMenu(projectId)
+
+  const showDatePickerAtPosition = (
+    currentDate: number | undefined,
+    onDateSelect: (date: number | undefined | null) => void,
+    e: React.MouseEvent<HTMLElement>,
+  ) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const position = {
+      x: rect.left,
+      y: rect.top,
+    }
+    showDatePicker(currentDate, onDateSelect, position)
+  }
+
+  const handleStartDateClick = (e: React.MouseEvent<HTMLElement>) => {
+    showDatePickerAtPosition(
+      project.startDate,
+      (date) => {
+        if (date !== undefined) {
+          todoService.updateProject(projectId, { startDate: date })
+        }
+      },
+      e,
+    )
+  }
+
+  const handleDueDateClick = (e: React.MouseEvent<HTMLElement>) => {
+    showDatePickerAtPosition(
+      project.dueDate,
+      (date) => {
+        if (date !== undefined) {
+          todoService.updateProject(projectId, { dueDate: date })
+        }
+      },
+      e,
+    )
+  }
+
+  const handleMenuClick = (_e: React.MouseEvent<HTMLButtonElement>) => {
+    const rect = _e.currentTarget.getBoundingClientRect()
+    openDesktopProjectMenu(rect.right, rect.bottom)
+  }
+
+  const headerActions = [
+    {
+      icon: <MenuIcon />,
+      handleClick: handleMenuClick,
+      title: localize("common.more", "More"),
+      testId: TestIds.ProjectDetailPanel.MenuButton,
+    },
+  ]
+
+  return (
+    <div className={desktopStyles.DetailViewContainer}>
+      <EntityHeader
+        editable
+        variant="detail"
+        inputKey={projectTitleInputKey(projectId)}
+        renderIcon={() => <ProjectIcon progress={project.progress} status={project.status} size="md" />}
+        title={project.title}
+        placeholder={localize("project.untitled", "New Project")}
+        onSave={handleTitleSave}
+        extraActions={headerActions}
+      />
+
+      <div className={desktopStyles.DetailViewContent}>
+        <div className={desktopStyles.DetailViewContentInner}>
+          <NotesField
+            value={project.notes || ""}
+            onSave={handleNotesSave}
+            className={desktopStyles.DetailViewNotesTextarea}
+          />
+          <div className={desktopStyles.DetailViewDivider} />
+          <TaskLocationField itemId={projectId} label={localize("project.area", "Area")} emptyIcon={<AreaIcon />} />
+          <TaskDateField
+            label={localize("project.start_date", "Start Date")}
+            icon={<ScheduledIcon />}
+            date={project.startDate}
+            onDateClick={handleStartDateClick}
+            placeholder={localize("project.start_date_placeholder", "Select start date")}
+          />
+
+          <TaskDateField
+            label={localize("project.due_date", "Due Date")}
+            icon={<FlagIcon />}
+            date={project.dueDate}
+            onDateClick={handleDueDateClick}
+            placeholder={localize("project.due_date_placeholder", "Select due date")}
+            isDue={true}
+          />
+          <TagsField itemId={projectId} />
+          <div className={desktopStyles.DetailViewSubtaskHeader}>
+            <span className={desktopStyles.DetailViewSubtaskHeaderTitle}>
+              {localize("project.task_progress", "Task Progress")}
+            </span>
+            <span
+              className={desktopStyles.DetailViewSubtaskHeaderCount}
+            >{`${completedTaskCount} / ${visibleTasks.length}`}</span>
+          </div>
+          <div className={desktopStyles.DetailViewSubtaskProgressBar}>
+            <div className={desktopStyles.DetailViewSubtaskProgressFill} style={{ width: `${taskProgress}%` }} />
+          </div>
+          <p className={desktopStyles.DetailViewHint}>
+            {localize("project.task_progress_hint", "Select a task from the middle column to view its details")}
+          </p>
+          <AttachmentSection parentUid={project.uid} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export const ProjectDetailPanel: React.FC = () => {
+  const todoService = useService(ITodoService)
+  const projectId = useProjectId()
+
+  useWatchEvent(todoService.onStateChange)
+
+  if (!projectId) {
+    return null
+  }
+
+  const project = (() => {
+    try {
+      return getProject(todoService.modelState, projectId)
+    } catch {
+      return null
+    }
+  })()
+
+  return project ? <ProjectDetailPanelContent projectId={projectId} project={project} /> : null
+}

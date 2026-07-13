@@ -1,0 +1,152 @@
+import { EditableInputSpan } from "@/ui/components/edit/EditableInputSpan"
+import { projectHeadingTitleInputKey } from "@/ui/components/edit/inputKeys"
+import { DragHandleIcon } from "@/ui/components/icons"
+import { ITaskList } from "@/ui/components/taskList/type.ts"
+import { ProjectHeadingInfo } from "@/core/state/type.ts"
+import { desktopStyles } from "@/desktop/theme/main"
+import { useService } from "@/ui/hooks/use-service"
+import { useSync } from "@/ui/hooks/use-sync"
+import { useWatchEvent } from "@/ui/hooks/use-watch-event"
+import { useContextKeyValue } from "@/ui/hooks/useContextKeyValue"
+import { useRegisterEvent } from "@/ui/hooks/useRegisterEvent.ts"
+import { ITodoService } from "@/services/todo/todoService"
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import classNames from "classnames"
+import React, { useRef } from "react"
+import { InputFocusedContext } from "@hamsterbase/foundation/contextkey"
+import { localize } from "@/nls"
+
+export interface DesktopHeadingListItemProps {
+  projectHeadingInfo: ProjectHeadingInfo
+  className?: string
+  taskList?: ITaskList
+}
+
+export const DesktopHeadingListItem: React.FC<DesktopHeadingListItemProps> = ({
+  projectHeadingInfo,
+  className,
+  taskList,
+}) => {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: projectHeadingInfo.id,
+  })
+  const todoService = useService(ITodoService)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const dragListeners = {
+    ...listeners,
+    onMouseDown: (e: React.MouseEvent) => {
+      // Prevent drag when interacting with input elements or their containers
+      const target = e.target as HTMLElement
+      if (target.closest("input") || target.closest("[data-no-drag]")) {
+        return
+      }
+      listeners?.onMouseDown?.(e)
+    },
+  }
+
+  useWatchEvent(taskList?.onListStateChange)
+
+  const isSelected = taskList?.selectedIds.includes(projectHeadingInfo.id) ?? false
+  const isFocused = taskList?.isFocused ?? false
+
+  const isInputFocused = useContextKeyValue(InputFocusedContext)
+  const handleStartEdit = (value: string, cursor: number) => {
+    if (!taskList) {
+      return
+    }
+    if (taskList.cursorId === projectHeadingInfo.id) {
+      taskList.updateInputValue(value)
+      if (taskList.cursorOffset !== null) {
+        if (isInputFocused) {
+          taskList.updateCursor(cursor)
+          return
+        }
+      }
+    }
+    taskList.select(projectHeadingInfo.id, {
+      offset: cursor,
+      multipleMode: false,
+      fireEditEvent: true,
+    })
+  }
+
+  const sync = useSync()
+  useRegisterEvent(taskList?.onFocusItem, (e) => {
+    const inputElement = inputRef.current
+    if (e.id !== projectHeadingInfo.id) {
+      return
+    }
+    sync()
+    if (!inputElement) {
+      const inputElement = inputRef.current as HTMLInputElement | null
+      inputElement?.focus({ preventScroll: true })
+      inputElement?.setSelectionRange(e.offset, e.offset)
+      return
+    }
+    inputElement.focus({ preventScroll: true })
+    inputElement.setSelectionRange(e.offset, e.offset)
+  })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  }
+
+  const handleClickCapture = (e: React.MouseEvent) => {
+    if (taskList) {
+      const projectHeadingId = projectHeadingInfo.id
+      taskList.select(projectHeadingId, {
+        offset: null,
+        multipleMode: e.metaKey,
+      })
+    }
+  }
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...dragListeners}
+      className={classNames(desktopStyles.DesktopHeadingListItemContainer, {
+        [desktopStyles.DesktopHeadingListItemContainerDragging]: isDragging,
+        [desktopStyles.DesktopHeadingListItemArchived]: projectHeadingInfo.isArchived,
+      })}
+    >
+      <div
+        className={classNames(
+          desktopStyles.DesktopHeadingListItemContent,
+          {
+            [desktopStyles.DesktopHeadingListItemContentFocused]: isFocused && isSelected,
+            [desktopStyles.DesktopHeadingListItemContentSelected]: !isFocused && isSelected,
+            [desktopStyles.DesktopHeadingListItemContentHidden]: isDragging,
+          },
+          className,
+        )}
+        onClickCapture={handleClickCapture}
+      >
+        <span className={desktopStyles.DesktopHeadingListItemDragHandle}>
+          <DragHandleIcon className={desktopStyles.DesktopHeadingListItemDragHandleIcon} />
+        </span>
+        <EditableInputSpan
+          ref={inputRef}
+          inputKey={projectHeadingTitleInputKey(projectHeadingInfo.id)}
+          defaultValue={projectHeadingInfo.title}
+          onChange={(e) => {
+            taskList?.updateInputValue(e.target.value)
+          }}
+          isFocused={isSelected}
+          onStartEdit={handleStartEdit}
+          onSave={(title: string) => {
+            todoService.updateProjectHeading(projectHeadingInfo.id, { title })
+          }}
+          className={desktopStyles.DesktopHeadingListItemInput}
+          placeholder={localize("project_heading.placeholder", "New Heading")}
+        />
+      </div>
+    </div>
+  )
+}

@@ -1,0 +1,119 @@
+import { checkPlatform } from "@/ui/browser/checkPlatform"
+import { initializeTheme, watchThemeChange } from "@/ui/browser/initializeTheme"
+import { initKeyboardListeners } from "@/ui/browser/initKeyboardListeners"
+import "@/services/command/commands/desktop"
+import "@/desktop/overlay/commandPalette/commands"
+import { GlobalContext } from "@/ui/components/GlobalContext/GlobalContext"
+import { StandaloneCommandService } from "@/services/command/standaloneCommandService"
+import { LocalStorageConfigStore } from "@/services/config/localStorageConfigStore"
+import { IConfigService, WorkbenchConfig } from "@/services/config/configService"
+import { IndexdbDatabaseService } from "@/services/database/indexdbDatabaseService"
+import { IDatabaseService, LocalDatabaseMeta } from "@/services/database/database"
+import { TauriFsDatabaseService } from "@/services/database/tauriFsDatabaseService"
+import { EditService, IEditService } from "@/services/edit/editService"
+import { IWorkbenchInstanceService, WorkbenchInstanceService } from "@/services/instance/instanceService"
+import { StandaloneKeybindingService } from "@/services/keybinding/standaloneKeybindingService"
+import { IListService, ListService } from "@/services/list/listService"
+import { IMenuService } from "@/services/menu/menuService"
+import { NoopMenuService } from "@/services/menu/noopMenuService"
+import { INavigationService, NavigationService } from "@/services/navigationService/navigationService"
+import { IWorkbenchOverlayService, WorkbenchOverlayService } from "@/services/overlay/WorkbenchOverlayService"
+import { IReminderService } from "@/services/reminders/reminderService"
+import { DesktopReminderService } from "@/services/reminders/desktopReminderService"
+import { IDockBadgeService } from "@/services/dockBadge/dockBadgeService"
+import { TauriDockBadgeService } from "@/services/dockBadge/tauriDockBadgeService"
+import { ISelfhostedSyncService } from "@/services/selfhostedSync/selfhostedSyncService"
+import { WorkbenchSelfhostedSyncService } from "@/services/selfhostedSync/workbenchSelfhostedSyncService"
+import { IAIService } from "@/services/ai/aiService"
+import { WorkbenchAIService } from "@/services/ai/workbenchAIService"
+import { IAttachmentUploadService } from "@/services/attachment/attachmentUploadService"
+import { WorkbenchAttachmentUploadService } from "@/services/attachment/workbenchAttachmentUploadService"
+import { ISwitchService, SwitchService } from "@/services/switchService/switchService"
+import "@/services/todo/desktopCommands"
+import { WorkbenchTodoService } from "@/services/todo/workbenchTodoService"
+import { ITodoService } from "@/services/todo/todoService"
+import { WorkbenchWebLoggerService } from "@/services/weblogger/workbenchWebLoggerService"
+import { IWebLoggerService } from "@/services/weblogger/webloggerService"
+import { StrictMode } from "react"
+import { createRoot } from "react-dom/client"
+import { BrowserRouter, HashRouter } from "react-router"
+import { ICommandService } from "@hamsterbase/foundation/commands"
+import { ContextKeyService } from "@hamsterbase/foundation/contextkey"
+import { IContextKeyService } from "@hamsterbase/foundation/contextkey"
+import { InstantiationService, ServiceCollection, SyncDescriptor } from "@hamsterbase/foundation/instantiation"
+import { IKeybindingService } from "@hamsterbase/foundation/keybinding"
+import { App } from "./app"
+
+export async function startDesktop() {
+  await Promise.all([import("allotment/dist/style.css"), import("./styles/main.css")])
+
+  initializeTheme()
+  watchThemeChange()
+  initKeyboardListeners()
+  const { isTauri } = checkPlatform()
+
+  const serviceCollection = new ServiceCollection()
+  serviceCollection.set(IWorkbenchOverlayService, new SyncDescriptor(WorkbenchOverlayService))
+  serviceCollection.set(ITodoService, new SyncDescriptor(WorkbenchTodoService))
+  serviceCollection.set(IConfigService, new SyncDescriptor(WorkbenchConfig, [new LocalStorageConfigStore()]))
+  serviceCollection.set(INavigationService, new SyncDescriptor(NavigationService))
+  serviceCollection.set(IDatabaseService, new SyncDescriptor(isTauri ? TauriFsDatabaseService : IndexdbDatabaseService))
+  serviceCollection.set(ISwitchService, new SyncDescriptor(SwitchService))
+  serviceCollection.set(IContextKeyService, new SyncDescriptor(ContextKeyService))
+  serviceCollection.set(ICommandService, new SyncDescriptor(StandaloneCommandService))
+  serviceCollection.set(IKeybindingService, new SyncDescriptor(StandaloneKeybindingService, [document.body]))
+  serviceCollection.set(IListService, new SyncDescriptor(ListService))
+  serviceCollection.set(IEditService, new SyncDescriptor(EditService))
+  serviceCollection.set(IWorkbenchInstanceService, new SyncDescriptor(WorkbenchInstanceService))
+  serviceCollection.set(IWebLoggerService, new SyncDescriptor(WorkbenchWebLoggerService))
+  serviceCollection.set(IReminderService, new SyncDescriptor(DesktopReminderService))
+  serviceCollection.set(ISelfhostedSyncService, new SyncDescriptor(WorkbenchSelfhostedSyncService))
+  serviceCollection.set(IMenuService, new SyncDescriptor(NoopMenuService))
+  serviceCollection.set(IDockBadgeService, new SyncDescriptor(TauriDockBadgeService))
+  serviceCollection.set(IAIService, new SyncDescriptor(WorkbenchAIService))
+  serviceCollection.set(IAttachmentUploadService, new SyncDescriptor(WorkbenchAttachmentUploadService))
+  const instantiationService = new InstantiationService(serviceCollection, true)
+
+  await instantiationService.invokeFunction(async (dss) => {
+    await dss.get(ISwitchService).init()
+  })
+  await instantiationService.invokeFunction(async (dss) => {
+    await dss.get(IConfigService).init()
+  })
+  await instantiationService.invokeFunction(async (dss) => {
+    const databaseService = dss.get(IDatabaseService)
+    const todoService = dss.get(ITodoService)
+    await databaseService.ensureDatabase(LocalDatabaseMeta)
+    await todoService.initStorage(await databaseService.getDatabaseStorage("local"), true)
+  })
+  await instantiationService.invokeFunction(async (dss) => {
+    await dss.get(ISelfhostedSyncService).init()
+  })
+  await instantiationService.invokeFunction(async (dss) => {
+    await dss.get(IReminderService).start()
+  })
+  await instantiationService.invokeFunction(async (dss) => {
+    await dss.get(IDockBadgeService).start()
+  })
+
+  instantiationService.invokeFunction(async (dss) => {
+    const keybindings = dss.get(IKeybindingService).getKeybindings()
+    console.log(`Found ${keybindings.length} keybindings`)
+  })
+
+  const globalContext = {
+    instantiationService,
+  }
+
+  const Router = isTauri ? HashRouter : BrowserRouter
+
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <GlobalContext.Provider value={globalContext}>
+        <Router>
+          <App></App>
+        </Router>
+      </GlobalContext.Provider>
+    </StrictMode>,
+  )
+}

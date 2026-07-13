@@ -1,0 +1,6 @@
+{
+  "build": {
+    "beforeDevCommand": "pnpm dev:android",
+    "devUrl": "http://localhost:4001"
+  }
+}

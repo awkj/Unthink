@@ -1,0 +1,20 @@
+packages:
+  - .
+
+allowBuilds:
+  '@swc/core': true
+  esbuild: true
+  simple-git-hooks: true
+
+ignoredBuiltDependencies:
+  - '@swc/core'
+  - '@tailwindcss/oxide'
+  - sharp
+  - simple-git-hooks
+
+minimumReleaseAgeExclude:
+  - nanoid@6.0.0
+  - postcss@8.5.17
+
+onlyBuiltDependencies:
+  - esbuild

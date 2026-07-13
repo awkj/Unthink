@@ -1,0 +1,99 @@
+import { Emitter, Event } from "@hamsterbase/foundation/event"
+import { createDecorator } from "@hamsterbase/foundation/instantiation"
+import { IDisposable } from "@hamsterbase/foundation/lifecycle"
+
+export interface NavigateOptions {
+  path: string
+  replace?: boolean
+}
+
+export interface INavigationService {
+  readonly _serviceBrand: undefined
+
+  /**
+   * Event that fires when navigation is requested
+   */
+  readonly onNavigate: Event<NavigateOptions>
+
+  /**
+   * Navigate to a specific path
+   * @param options Navigation options containing path and optional replace flag
+   */
+  navigate(options: NavigateOptions): void
+
+  listenBackButton(callback: () => void): IDisposable
+
+  /**
+   * Navigate backward in history
+   */
+  goBack(): void
+
+  /**
+   * Navigate forward in history
+   */
+  goForward(): void
+
+  /**
+   * Event that fires when back navigation is requested
+   */
+  readonly onGoBack: Event<void>
+
+  /**
+   * Event that fires when forward navigation is requested
+   */
+  readonly onGoForward: Event<void>
+}
+
+export class NavigationService implements INavigationService {
+  public readonly _serviceBrand: undefined
+
+  private readonly _onNavigate = new Emitter<NavigateOptions>()
+  private readonly _onGoBack = new Emitter<void>()
+  private readonly _onGoForward = new Emitter<void>()
+
+  private backButtonListener: Array<() => void> = []
+
+  constructor() {
+    window.addEventListener("popstate", () => {
+      const lastListener = this.backButtonListener[this.backButtonListener.length - 1]
+      if (lastListener) {
+        lastListener()
+      }
+    })
+  }
+
+  get onNavigate(): Event<NavigateOptions> {
+    return this._onNavigate.event
+  }
+
+  get onGoBack(): Event<void> {
+    return this._onGoBack.event
+  }
+
+  get onGoForward(): Event<void> {
+    return this._onGoForward.event
+  }
+
+  navigate(options: NavigateOptions): void {
+    this._onNavigate.fire(options)
+  }
+
+  goBack(): void {
+    this._onGoBack.fire()
+  }
+
+  goForward(): void {
+    this._onGoForward.fire()
+  }
+
+  listenBackButton(callback: () => void): IDisposable {
+    this.backButtonListener.push(callback)
+    return {
+      dispose: () => {
+        this.backButtonListener = this.backButtonListener.filter((item) => item !== callback)
+      },
+    }
+  }
+}
+
+export const INavigationService = createDecorator<INavigationService>("navigationService")
