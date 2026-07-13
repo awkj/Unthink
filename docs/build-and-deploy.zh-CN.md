@@ -126,31 +126,25 @@ Docker 部署包含：
 在仓库根目录创建 `.env`：
 
 ```dotenv
+# 应用认证
 AUTH_TOKEN=请替换为足够长的随机字符串
+
+# PostgreSQL 凭据
 POSTGRES_PASSWORD=请替换为数据库密码
+
+# RustFS 管理员凭据
 RUSTFS_ACCESS_KEY=请替换为附件存储访问密钥
 RUSTFS_SECRET_KEY=请替换为足够长的附件存储密钥
+
+# RustFS 应用账号凭据
 RUSTFS_SERVER_ACCESS_KEY=请替换为服务端专用访问密钥
 RUSTFS_SERVER_SECRET_KEY=请替换为另一条足够长的服务端专用密钥
 ```
 
 `AUTH_TOKEN` 是唯一用户的身份凭证。所有 Web、Android、macOS 客户端必须使用相同 Token。
+镜像、端口、库名、桶名、区域和监听地址统一在 `compose.yaml` 中维护；`.env` 只保存部署时必须提供的凭据。Docker Compose 原生读取 `.env`，因此这里不改用 TOML，避免额外的转换脚本和两套配置来源。
 
-可选变量：
-
-```dotenv
-POSTGRES_DB=tasks
-POSTGRES_USER=tasks
-POSTGRES_BIND=127.0.0.1
-POSTGRES_PORT=5432
-SERVER_BIND=0.0.0.0
-SERVER_PORT=8400
-CORS_ORIGIN=*
-RUSTFS_BUCKET=tasks-attachments
-RUSTFS_REGION=us-east-1
-RUSTFS_CONSOLE_BIND=127.0.0.1
-RUSTFS_CONSOLE_PORT=9001
-```
+RustFS 使用官方 Docker 文档推荐的 `rustfs/rustfs:latest` 镜像通道，不在 `.env` 中重复配置镜像版本。
 
 ### 2. 构建并启动
 

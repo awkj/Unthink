@@ -1,23 +1,25 @@
 name: server
 
 services:
+  # 数据库：只监听宿主机回环地址，便于本地调试。
   postgres:
     image: postgres:18-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-tasks}
-      POSTGRES_USER: ${POSTGRES_USER:-tasks}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: tasks
+      POSTGRES_USER: tasks
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
     ports:
-      - "${POSTGRES_BIND:-127.0.0.1}:${POSTGRES_PORT:-5432}:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tasks} -d ${POSTGRES_DB:-tasks}"]
+      test: ["CMD-SHELL", "pg_isready -U tasks -d tasks"]
       interval: 5s
       timeout: 3s
       retries: 10
 
+  # 应用：对外提供 Web 页面、同步 API 和附件代理接口。
   tasks:
     build:
       context: .
@@ -25,21 +27,22 @@ services:
     restart: unless-stopped
     environment:
       AUTH_TOKEN: ${AUTH_TOKEN:?AUTH_TOKEN must be set}
-      DATABASE_URL: postgres://${POSTGRES_USER:-tasks}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-tasks}?sslmode=disable
-      CORS_ORIGIN: ${CORS_ORIGIN:-*}
+      DATABASE_URL: postgres://tasks:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}@postgres:5432/tasks?sslmode=disable
+      CORS_ORIGIN: "*"
       ATTACHMENTS_ENDPOINT: http://rustfs:9000
-      ATTACHMENTS_BUCKET: ${RUSTFS_BUCKET:-tasks-attachments}
-      ATTACHMENTS_REGION: ${RUSTFS_REGION:-us-east-1}
+      ATTACHMENTS_BUCKET: tasks-attachments
+      ATTACHMENTS_REGION: us-east-1
       ATTACHMENTS_ACCESS_KEY: ${RUSTFS_SERVER_ACCESS_KEY:?RUSTFS_SERVER_ACCESS_KEY must be set}
       ATTACHMENTS_SECRET_KEY: ${RUSTFS_SERVER_SECRET_KEY:?RUSTFS_SERVER_SECRET_KEY must be set}
     ports:
-      - "${SERVER_BIND:-0.0.0.0}:${SERVER_PORT:-8400}:8400"
+      - "0.0.0.0:8400:8400"
     depends_on:
       postgres:
         condition: service_healthy
       rustfs-init:
         condition: service_completed_successfully
 
+  # RustFS 数据卷由容器内 UID 10001 读写，启动前先修正权限。
   rustfs-permissions:
     image: alpine:3.22
     user: root
@@ -48,8 +51,9 @@ services:
     volumes:
       - rustfs-data:/data
 
+  # 对象存储：latest 是官方 Docker 文档提供的默认发布通道。
   rustfs:
-    image: ${RUSTFS_IMAGE:-rustfs/rustfs:1.0.0-beta.2}
+    image: rustfs/rustfs:latest
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -60,9 +64,9 @@ services:
       RUSTFS_CONSOLE_ENABLE: "true"
       RUSTFS_ACCESS_KEY: ${RUSTFS_ACCESS_KEY:?RUSTFS_ACCESS_KEY must be set}
       RUSTFS_SECRET_KEY: ${RUSTFS_SECRET_KEY:?RUSTFS_SECRET_KEY must be set}
-      RUSTFS_CONSOLE_CORS_ALLOWED_ORIGINS: ${RUSTFS_CONSOLE_CORS_ALLOWED_ORIGINS:-*}
+      RUSTFS_CONSOLE_CORS_ALLOWED_ORIGINS: "*"
     ports:
-      - "${RUSTFS_CONSOLE_BIND:-127.0.0.1}:${RUSTFS_CONSOLE_PORT:-9001}:9001"
+      - "127.0.0.1:9001:9001"
     volumes:
       - rustfs-data:/data
     depends_on:
@@ -75,6 +79,7 @@ services:
       retries: 12
       start_period: 20s
 
+  # 初始化：创建附件桶，并给 Tasks 服务分配最小权限账号。
   rustfs-init:
     image: minio/mc:latest
     restart: "no"
@@ -84,7 +89,7 @@ services:
       RUSTFS_SECRET_KEY: ${RUSTFS_SECRET_KEY:?RUSTFS_SECRET_KEY must be set}
       RUSTFS_SERVER_ACCESS_KEY: ${RUSTFS_SERVER_ACCESS_KEY:?RUSTFS_SERVER_ACCESS_KEY must be set}
       RUSTFS_SERVER_SECRET_KEY: ${RUSTFS_SERVER_SECRET_KEY:?RUSTFS_SERVER_SECRET_KEY must be set}
-      RUSTFS_BUCKET: ${RUSTFS_BUCKET:-tasks-attachments}
+      RUSTFS_BUCKET: tasks-attachments
     volumes:
       - ./server/rustfs/init.sh:/config/init.sh:ro
     depends_on:
