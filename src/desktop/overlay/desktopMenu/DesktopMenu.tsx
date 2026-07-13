@@ -21,30 +21,37 @@ interface IDesktopMenuContentProps {
 
 const DesktopMenuContent: React.FC<IDesktopMenuContentProps> = ({ controller }) => {
   const menuRef = useRef<HTMLDivElement>(null)
-  const menuItemHeight = calculateElementHeight(desktopStyles.DesktopMenuItemBase)
-  const defaultMenuWidth = calculateElementWidth(desktopStyles.DesktopMenuContainer)
+  const hasDescriptions = controller.hasDescriptions
+  const menuItemHeight = calculateElementHeight(
+    hasDescriptions ? desktopStyles.DesktopMenuItemRichBase : desktopStyles.DesktopMenuItemBase,
+  )
+  const defaultMenuWidth = calculateElementWidth(
+    hasDescriptions ? desktopStyles.DesktopMenuRichContainer : desktopStyles.DesktopMenuContainer,
+  )
   const dividerHeight = calculateElementHeight(desktopStyles.DesktopMenuDivider)
   const menuPadding = 4
   const menuBorder = 2
   const menuWidth = controller.menuWidth ?? defaultMenuWidth
   const submenuWidth = controller.submenuWidth ?? defaultMenuWidth
+  const menuHeight =
+    controller.menuConfig.length * menuItemHeight +
+    controller.menuConfig.filter((item) => item.dividerAbove).length * dividerHeight +
+    menuPadding * 2 +
+    menuBorder
   const menuStyle = controller.getMenuStyle({
     menuItemHeight,
     menuWidth,
+    menuHeight,
   })
   const submenuStyle =
     controller.activeIndex !== null && controller.activeMenu?.submenu && controller.isSubmenuOpen
       ? controller.getSubmenuStyle({
           menuItemHeight,
           menuWidth,
+          menuHeight,
           submenuWidth,
         })
       : null
-  const menuHeight =
-    controller.menuConfig.length * menuItemHeight +
-    controller.menuConfig.filter((item) => item.dividerAbove).length * dividerHeight +
-    menuPadding * 2 +
-    menuBorder
   const submenuItemCount = controller.activeMenu?.submenu
     ? controller.activeMenu.submenu.reduce((acc, group) => acc + group.length, 0)
     : 0
@@ -122,12 +129,12 @@ const DesktopMenuContent: React.FC<IDesktopMenuContentProps> = ({ controller }) 
       <div style={popupStyle} data-test-id={TestIds.DesktopMenu.Popup}>
         <div
           ref={menuRef}
-          className={desktopStyles.DesktopMenuContainer}
+          className={hasDescriptions ? desktopStyles.DesktopMenuRichContainer : desktopStyles.DesktopMenuContainer}
           style={popupMenuStyle}
           tabIndex={0}
           data-test-id={TestIds.DesktopMenu.Container}
         >
-          <div className={desktopStyles.DesktopMenuContent}>
+          <div className={hasDescriptions ? desktopStyles.DesktopMenuRichContent : desktopStyles.DesktopMenuContent}>
             {controller.menuConfig.map((item, index) => (
               <React.Fragment key={index}>
                 {item.dividerAbove && <div className={desktopStyles.DesktopMenuDivider} />}

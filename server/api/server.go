@@ -13,6 +13,8 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
+	"time"
 
 	"github.com/hamsterbase/tasks/server/database"
 )
@@ -25,6 +27,55 @@ type Server struct {
 	corsOrigin      string
 	staticDir       string
 	attachmentStore AttachmentObjectStore
+	revisions       *revisionHub
+}
+
+type revisionEvent struct {
+	clientID string
+	revision int64
+}
+
+type revisionHub struct {
+	mu          sync.Mutex
+	subscribers map[string]map[chan revisionEvent]struct{}
+}
+
+func newRevisionHub() *revisionHub {
+	return &revisionHub{subscribers: make(map[string]map[chan revisionEvent]struct{})}
+}
+
+func (h *revisionHub) subscribe(space string) (<-chan revisionEvent, func()) {
+	updates := make(chan revisionEvent, 1)
+	h.mu.Lock()
+	if h.subscribers[space] == nil {
+		h.subscribers[space] = make(map[chan revisionEvent]struct{})
+	}
+	h.subscribers[space][updates] = struct{}{}
+	h.mu.Unlock()
+
+	return updates, func() {
+		h.mu.Lock()
+		defer h.mu.Unlock()
+		delete(h.subscribers[space], updates)
+		if len(h.subscribers[space]) == 0 {
+			delete(h.subscribers, space)
+		}
+		close(updates)
+	}
+}
+
+func (h *revisionHub) publish(space string, event revisionEvent) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	for subscriber := range h.subscribers[space] {
+		select {
+		case subscriber <- event:
+		default:
+			// Only the latest revision matters because clients pull all changes after their cursor.
+			<-subscriber
+			subscriber <- event
+		}
+	}
 }
 
 type AttachmentObjectStore interface {
@@ -50,7 +101,10 @@ func New(
 	authToken, corsOrigin, staticDir string,
 	attachmentStore ...AttachmentObjectStore,
 ) http.Handler {
-	server := &Server{store: store, authToken: authToken, corsOrigin: corsOrigin, staticDir: staticDir}
+	server := &Server{
+		store: store, authToken: authToken, corsOrigin: corsOrigin, staticDir: staticDir,
+		revisions: newRevisionHub(),
+	}
 	if len(attachmentStore) > 0 {
 		server.attachmentStore = attachmentStore[0]
 	}
@@ -59,10 +113,11 @@ func New(
 	mux.Handle("GET /api/v1/attachments/config", server.authorize(http.HandlerFunc(server.attachmentConfig)))
 	mux.Handle("PUT /api/v1/attachments/objects/{key...}", server.authorize(http.HandlerFunc(server.putAttachment)))
 	mux.Handle("GET /api/v1/attachments/objects/{key...}", server.authorize(http.HandlerFunc(server.getAttachment)))
-	mux.Handle("GET /api/v1/spaces/{space}/status", server.authorize(http.HandlerFunc(server.status)))
-	mux.Handle("GET /api/v1/spaces/{space}/changes", server.authorize(http.HandlerFunc(server.changes)))
-	mux.Handle("POST /api/v1/spaces/{space}/changes", server.authorize(http.HandlerFunc(server.appendChange)))
-	mux.Handle("PUT /api/v1/spaces/{space}/snapshot", server.authorize(http.HandlerFunc(server.putSnapshot)))
+	mux.Handle("GET /api/v1/spaces/{space}/status", server.authorize(server.canonicalizeSpace(http.HandlerFunc(server.status))))
+	mux.Handle("GET /api/v1/spaces/{space}/changes", server.authorize(server.canonicalizeSpace(http.HandlerFunc(server.changes))))
+	mux.Handle("GET /api/v1/spaces/{space}/events", server.authorize(server.canonicalizeSpace(http.HandlerFunc(server.events))))
+	mux.Handle("POST /api/v1/spaces/{space}/changes", server.authorize(server.canonicalizeSpace(http.HandlerFunc(server.appendChange))))
+	mux.Handle("PUT /api/v1/spaces/{space}/snapshot", server.authorize(server.canonicalizeSpace(http.HandlerFunc(server.putSnapshot))))
 	if staticDir != "" {
 		mux.Handle("/", server.spaHandler())
 	}
@@ -157,6 +212,18 @@ func (s *Server) authorize(next http.Handler) http.Handler {
 	})
 }
 
+func (s *Server) canonicalizeSpace(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		space := strings.ToLower(strings.TrimSpace(r.PathValue("space")))
+		if space == "" {
+			writeError(w, http.StatusBadRequest, "space must not be empty")
+			return
+		}
+		r.SetPathValue("space", space)
+		next.ServeHTTP(w, r)
+	})
+}
+
 func (s *Server) health(w http.ResponseWriter, r *http.Request) {
 	if err := s.store.Ping(r.Context()); err != nil {
 		writeError(w, http.StatusServiceUnavailable, "database unavailable")
@@ -198,7 +265,59 @@ func (s *Server) appendChange(w http.ResponseWriter, r *http.Request) {
 		writeInternalError(w, err)
 		return
 	}
+	if !duplicate {
+		s.revisions.publish(r.PathValue("space"), revisionEvent{
+			clientID: request.ClientID,
+			revision: revision,
+		})
+	}
 	writeJSON(w, http.StatusOK, map[string]any{"revision": revision, "duplicate": duplicate})
+}
+
+func (s *Server) events(w http.ResponseWriter, r *http.Request) {
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		writeError(w, http.StatusInternalServerError, "streaming is not supported")
+		return
+	}
+	updates, unsubscribe := s.revisions.subscribe(r.PathValue("space"))
+	defer unsubscribe()
+
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache, no-transform")
+	w.Header().Set("Connection", "keep-alive")
+	w.Header().Set("X-Accel-Buffering", "no")
+	if _, err := io.WriteString(w, ": connected\n\n"); err != nil {
+		return
+	}
+	flusher.Flush()
+
+	heartbeat := time.NewTicker(25 * time.Second)
+	defer heartbeat.Stop()
+	clientID := r.URL.Query().Get("clientId")
+
+	for {
+		select {
+		case <-r.Context().Done():
+			return
+		case event, ok := <-updates:
+			if !ok {
+				return
+			}
+			if event.clientID == clientID {
+				continue
+			}
+			if _, err := fmt.Fprintf(w, "id: %d\nevent: revision\ndata: %d\n\n", event.revision, event.revision); err != nil {
+				return
+			}
+			flusher.Flush()
+		case <-heartbeat.C:
+			if _, err := io.WriteString(w, ": heartbeat\n\n"); err != nil {
+				return
+			}
+			flusher.Flush()
+		}
+	}
 }
 
 func (s *Server) changes(w http.ResponseWriter, r *http.Request) {

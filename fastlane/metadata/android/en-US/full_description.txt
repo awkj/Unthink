@@ -1,5 +1,5 @@
-<h1>UnThink</h1>
-<p>UnThink is a powerful, privacy-focused task management application that puts you in control of your
+<h1>Unthink</h1>
+<p>Unthink is a powerful, privacy-focused task management application that puts you in control of your
     data. Built with a local-first approach, it ensures your tasks are always accessible, even without an internet
     connection.</p>
 
@@ -32,5 +32,5 @@
     </ul>
 </div>
 
-<p class="closing">Experience task management that puts you first - with UnThink, your data stays with
+<p class="closing">Experience task management that puts you first - with Unthink, your data stays with
     you, and you're always in control.</p>

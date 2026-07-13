@@ -140,13 +140,13 @@ export const SelfHostedSyncSettings: React.FC = () => {
                   <span className={desktopStyles.SettingsItemDescription}>
                     {localize(
                       "sync.deleteServer.description",
-                      "This action cannot be undone and will remove the server configuration from this device.",
+                      "Stop syncing this device with the server. This only removes the connection settings from this device and does not delete local or server data.",
                     )}
                   </span>
                 </div>
                 <div className={desktopStyles.SettingsItemActionWrapper}>
                   <SettingButton color="danger" size="small" onClick={handleDeleteServer} inline>
-                    {localize("database.delete", "Delete Database")}
+                    {deleteButtonLabel}
                   </SettingButton>
                 </div>
               </div>

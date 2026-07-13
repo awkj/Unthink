@@ -36,6 +36,10 @@ export const DesktopMenuItemComponent: React.FC<DesktopMenuItemComponentProps> =
   }
 
   const renderIcon = () => {
+    if (item.icon && typeof item.icon !== "string") {
+      return <span className={desktopStyles.DesktopMenuRichItemIcon}>{item.icon}</span>
+    }
+
     switch (item.icon) {
       case "plus-circle":
         return <PlusCircleIcon className={desktopStyles.DesktopMenuItemIcon} />
@@ -54,6 +58,7 @@ export const DesktopMenuItemComponent: React.FC<DesktopMenuItemComponentProps> =
     }
   }
   const shouldUseCheckAsLeadingIcon = showCheckmarks && !item.icon
+  const isRichItem = Boolean(item.description)
 
   const renderLeadingIcon = () => {
     if (shouldUseCheckAsLeadingIcon) {
@@ -70,7 +75,7 @@ export const DesktopMenuItemComponent: React.FC<DesktopMenuItemComponentProps> =
     <button
       ref={itemRef}
       className={classNames(
-        desktopStyles.DesktopMenuItemBase,
+        isRichItem ? desktopStyles.DesktopMenuItemRichBase : desktopStyles.DesktopMenuItemBase,
         "justify-between",
         item.disabled ? desktopStyles.DesktopMenuItemDisabled : desktopStyles.DesktopMenuItemEnabled,
         isActive && desktopStyles.DesktopMenuItemActive,
@@ -83,14 +88,21 @@ export const DesktopMenuItemComponent: React.FC<DesktopMenuItemComponentProps> =
       data-testid={item.testId}
       data-test-label={item.label}
     >
-      <div className={desktopStyles.DesktopMenuItemContent}>
+      <div className={isRichItem ? desktopStyles.DesktopMenuItemRichContent : desktopStyles.DesktopMenuItemContent}>
         {renderLeadingIcon()}
         {showCheckmarks && item.icon && (
           <div className={desktopStyles.DesktopMenuItemCheckbox}>
             {item.checked && <CheckIcon className={desktopStyles.DesktopMenuItemCheckIcon} strokeWidth={1.5} />}
           </div>
         )}
-        <span className={desktopStyles.DesktopMenuItemLabel}>{item.label}</span>
+        {isRichItem ? (
+          <span className={desktopStyles.DesktopMenuItemTextContent}>
+            <span className={desktopStyles.DesktopMenuItemRichLabel}>{item.label}</span>
+            <span className={desktopStyles.DesktopMenuItemDescription}>{item.description}</span>
+          </span>
+        ) : (
+          <span className={desktopStyles.DesktopMenuItemLabel}>{item.label}</span>
+        )}
       </div>
       {item.shortcut && <span className={desktopStyles.DesktopMenuItemShortcut}>{item.shortcut}</span>}
       {item.submenu && item.submenu.length > 0 && <ChevronRightIcon className={desktopStyles.DesktopMenuItemChevron} />}

@@ -28,14 +28,18 @@ idempotent.
 
 ## Automatic triggers
 
-- two seconds after a local change;
+- 500 milliseconds after a local change;
 - application startup;
-- every 15 seconds while the application is open;
+- an authenticated server-sent event after another client commits a revision;
+- every 60 seconds while the application is open as a fallback;
 - browser focus or visibility restoration;
 - network restoration;
 - Tauri application resume.
 
-Failures use exponential backoff from two seconds up to one minute. Manual
+The event stream carries only the committed revision and clients still use the
+normal changes endpoint to retrieve data. It reconnects with exponential
+backoff up to 30 seconds and sends a heartbeat every 25 seconds. Synchronization
+failures use exponential backoff from two seconds up to one minute. Manual
 synchronization remains available and waits for any running synchronization
 cycle instead of starting a competing request.
 
@@ -43,4 +47,7 @@ cycle instead of starting a competing request.
 
 The Go server authenticates the single user, assigns monotonic revisions,
 stores changes transactionally, and compacts covered changes. It deliberately
-does not parse or merge Loro data; merging remains on clients.
+does not parse or merge Loro data; merging remains on clients. Revision events
+are broadcast by the API process after the database transaction commits. Space
+names are trimmed and normalized to lowercase by both clients and the server,
+so names such as `Tasks` and `tasks` refer to the same sync space.

@@ -25,8 +25,28 @@ import { IWorkbenchOverlayService, WorkbenchOverlayService } from "@/services/ov
 import { WorkbenchTodoService } from "@/services/todo/workbenchTodoService.ts"
 import { App } from "./App.tsx"
 
+const startupStartedAt = performance.now()
+
+async function runStartupStep<T>(name: string, task: () => T | Promise<T>): Promise<T> {
+  const startedAt = performance.now()
+  try {
+    return await task()
+  } finally {
+    console.info(
+      `[startup] ${name}: ${(performance.now() - startedAt).toFixed(1)}ms (${(performance.now() - startupStartedAt).toFixed(1)}ms total)`,
+    )
+  }
+}
+
+function afterFirstPaint(task: () => void): void {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(task)
+  })
+}
+
 export const startMobile = async () => {
-  await import("./styles/main.css")
+  console.info("[startup] mobile bootstrap started")
+  await runStartupStep("load mobile styles", () => import("./styles/main.css"))
 
   initializeTheme()
   watchThemeChange()
@@ -47,26 +67,24 @@ export const startMobile = async () => {
   }
   serviceCollection.set(ISwitchService, new SyncDescriptor(SwitchService))
   const instantiationService = new InstantiationService(serviceCollection, true)
-  await instantiationService.invokeFunction(async (dss) => {
-    await dss.get(ISwitchService).init()
-  })
-  await instantiationService.invokeFunction(async (dss) => {
-    await dss.get(IConfigService).init()
-  })
-  await instantiationService.invokeFunction(async (dss) => {
-    const databaseService = dss.get(IDatabaseService)
-    const todoService = dss.get(ITodoService)
-    await databaseService.ensureDatabase(LocalDatabaseMeta)
-    await todoService.initStorage(await databaseService.getDatabaseStorage("local"), true)
-  })
-  await instantiationService.invokeFunction(async (dss) => {
-    await dss.get(ISelfhostedSyncService).init()
-  })
-  instantiationService.invokeFunction((dss) => {
-    // Reminder synchronization can wait on native permission/plugin calls;
-    // it must never delay the initial mobile render.
-    void dss.get(IReminderService).start()
-  })
+  await runStartupStep("initialize switches", () =>
+    instantiationService.invokeFunction(async (dss) => {
+      await dss.get(ISwitchService).init()
+    }),
+  )
+  await runStartupStep("initialize config", () =>
+    instantiationService.invokeFunction(async (dss) => {
+      await dss.get(IConfigService).init()
+    }),
+  )
+  await runStartupStep("initialize local database and todo model", () =>
+    instantiationService.invokeFunction(async (dss) => {
+      const databaseService = dss.get(IDatabaseService)
+      const todoService = dss.get(ITodoService)
+      await databaseService.ensureDatabase(LocalDatabaseMeta)
+      await todoService.initStorage(await databaseService.getDatabaseStorage("local"), true)
+    }),
+  )
 
   const globalContext = {
     instantiationService,
@@ -79,4 +97,25 @@ export const startMobile = async () => {
       </GlobalContext.Provider>
     </StrictMode>,
   )
+  console.info(`[startup] React render scheduled (${(performance.now() - startupStartedAt).toFixed(1)}ms total)`)
+
+  // Native permission dialogs can be presented before React commits its first
+  // frame. Start non-critical integrations only after the UI is visible.
+  afterFirstPaint(() => {
+    console.info(`[startup] first React frame painted (${(performance.now() - startupStartedAt).toFixed(1)}ms total)`)
+    void runStartupStep("initialize self-hosted sync", () =>
+      instantiationService.invokeFunction(async (dss) => {
+        await dss.get(ISelfhostedSyncService).init()
+      }),
+    ).catch((error: unknown) => {
+      console.error("Error starting self-hosted sync:", error)
+    })
+    void runStartupStep("initialize reminders", () =>
+      instantiationService.invokeFunction(async (dss) => {
+        await dss.get(IReminderService).start()
+      }),
+    ).catch((error: unknown) => {
+      console.error("Error starting mobile reminders:", error)
+    })
+  })
 }

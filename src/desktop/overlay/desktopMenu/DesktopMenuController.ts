@@ -4,6 +4,7 @@ import { Emitter } from "@hamsterbase/foundation/event"
 import { IDisposable } from "@hamsterbase/foundation/lifecycle"
 import { IInstantiationService } from "@hamsterbase/foundation/instantiation"
 import { IContextKeyService, IContextKey } from "@hamsterbase/foundation/contextkey"
+import type { ReactNode } from "react"
 import {
   DesktopMenuFocus,
   DesktopMenuCanMoveDown,
@@ -14,8 +15,9 @@ import {
 
 export interface IMenuConfig {
   label: string
+  description?: string
   testId?: string
-  icon?: "plus-circle" | "copy" | "trash" | "x-circle" | "archive" | "heading"
+  icon?: "plus-circle" | "copy" | "trash" | "x-circle" | "archive" | "heading" | ReactNode
   checked?: boolean
   danger?: boolean
   dividerAbove?: boolean
@@ -110,7 +112,19 @@ export class DesktopMenuController implements IDisposable {
     return this.initOptions.submenuPlacement ?? "auto"
   }
 
-  getMenuStyle({ menuItemHeight, menuWidth }: { menuItemHeight: number; menuWidth: number }) {
+  get hasDescriptions() {
+    return this.menuConfig.some((item) => Boolean(item.description))
+  }
+
+  getMenuStyle({
+    menuItemHeight,
+    menuWidth,
+    menuHeight = this.menuConfig.length * menuItemHeight,
+  }: {
+    menuItemHeight: number
+    menuWidth: number
+    menuHeight?: number
+  }) {
     const placement = this.initOptions.placement || "bottom-end"
     let left: number
     let top: number
@@ -118,7 +132,7 @@ export class DesktopMenuController implements IDisposable {
     switch (placement) {
       case "top":
         left = this.x - menuWidth / 2
-        top = this.y - this.menuConfig.length * menuItemHeight
+        top = this.y - menuHeight
         break
       case "bottom":
         left = this.x - menuWidth / 2
@@ -126,19 +140,19 @@ export class DesktopMenuController implements IDisposable {
         break
       case "left":
         left = this.x - menuWidth
-        top = this.y - (this.menuConfig.length * menuItemHeight) / 2
+        top = this.y - menuHeight / 2
         break
       case "right":
         left = this.x
-        top = this.y - (this.menuConfig.length * menuItemHeight) / 2
+        top = this.y - menuHeight / 2
         break
       case "top-start":
         left = this.x
-        top = this.y - this.menuConfig.length * menuItemHeight
+        top = this.y - menuHeight
         break
       case "top-end":
         left = this.x - menuWidth
-        top = this.y - this.menuConfig.length * menuItemHeight
+        top = this.y - menuHeight
         break
       case "bottom-start":
         left = this.x
@@ -154,7 +168,7 @@ export class DesktopMenuController implements IDisposable {
         break
       case "left-end":
         left = this.x - menuWidth
-        top = this.y - this.menuConfig.length * menuItemHeight
+        top = this.y - menuHeight
         break
       case "right-start":
         left = this.x
@@ -162,7 +176,7 @@ export class DesktopMenuController implements IDisposable {
         break
       case "right-end":
         left = this.x
-        top = this.y - this.menuConfig.length * menuItemHeight
+        top = this.y - menuHeight
         break
       default:
         left = this.x - menuWidth
@@ -180,17 +194,19 @@ export class DesktopMenuController implements IDisposable {
   getSubmenuStyle({
     menuItemHeight,
     menuWidth,
+    menuHeight,
     submenuWidth,
   }: {
     menuItemHeight: number
     menuWidth: number
+    menuHeight?: number
     submenuWidth: number
   }) {
     const submenuHeight = this.activeMenu?.submenu
       ? this.activeMenu.submenu.reduce((acc, group) => acc + group.length, 0) * menuItemHeight
       : 0
 
-    const menuStyle = this.getMenuStyle({ menuItemHeight, menuWidth })
+    const menuStyle = this.getMenuStyle({ menuItemHeight, menuWidth, menuHeight })
     const menuLeft = menuStyle.left as number
     const menuTop = menuStyle.top as number
     const submenuTop = menuTop + menuContentPadding + (this.activeIndex ?? 0) * menuItemHeight

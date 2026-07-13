@@ -114,8 +114,14 @@ Authorization: Bearer <AUTH_TOKEN>
 - `GET /api/v1/attachments/objects/{key...}`
 - `GET /api/v1/spaces/{space}/status`
 - `GET /api/v1/spaces/{space}/changes?after=0&clientId=<id>`
+- `GET /api/v1/spaces/{space}/events?clientId=<id>`
 - `POST /api/v1/spaces/{space}/changes`
 - `PUT /api/v1/spaces/{space}/snapshot`
 
 Payloads are base64-encoded Loro changes or snapshots. The server deliberately
-does not interpret CRDT contents.
+does not interpret CRDT contents. The events endpoint is an authenticated SSE
+stream that emits committed revision numbers and excludes revisions uploaded by
+the subscribing client. It sends a heartbeat every 25 seconds; reverse proxies
+must allow streaming responses and disable response buffering for this route.
+Space names are trimmed and normalized to lowercase, making them
+case-insensitive across every sync endpoint.

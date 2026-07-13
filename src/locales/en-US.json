@@ -608,17 +608,33 @@
     "defaultMessage": "Create Area",
     "content": "Create Area"
   },
+  "create_popup.create_area_description": {
+    "defaultMessage": "Organize projects and to-dos by responsibility, such as Home or Work.",
+    "content": "Organize projects and to-dos by responsibility, such as Home or Work."
+  },
   "create_popup.create_project": {
     "defaultMessage": "Create Project",
     "content": "Create Project"
+  },
+  "create_popup.create_project_description": {
+    "defaultMessage": "Define a goal, then complete its to-dos one by one.",
+    "content": "Define a goal, then complete its to-dos one by one."
   },
   "create_popup.create_task": {
     "defaultMessage": "Create Task",
     "content": "Create Task"
   },
+  "create_popup.create_task_description": {
+    "defaultMessage": "Capture an action to complete, then check it off when it is done.",
+    "content": "Capture an action to complete, then check it off when it is done."
+  },
   "create_popup.create_view": {
     "defaultMessage": "Create View",
     "content": "Create View"
+  },
+  "create_popup.create_view_description": {
+    "defaultMessage": "Bring related tasks together with filters in a focused view.",
+    "content": "Bring related tasks together with filters in a focused view."
   },
   "create_sask_action_sheet.task_notes_placeholder": {
     "defaultMessage": "Add Notes...",
@@ -1129,8 +1145,8 @@
     "content": "This Week"
   },
   "menu.about": {
-    "defaultMessage": "About UnThink",
-    "content": "About UnThink"
+    "defaultMessage": "About Unthink",
+    "content": "About Unthink"
   },
   "menu.close": {
     "defaultMessage": "Close Window",
@@ -1173,8 +1189,8 @@
     "content": "Paste"
   },
   "menu.quit": {
-    "defaultMessage": "Quit UnThink",
-    "content": "Quit UnThink"
+    "defaultMessage": "Quit Unthink",
+    "content": "Quit Unthink"
   },
   "menu.reload": {
     "defaultMessage": "Reload",
@@ -2013,16 +2029,16 @@
     "content": "Enter your authentication token"
   },
   "sync.deleteConfigSuccess": {
-    "defaultMessage": "Configuration deleted successfully",
-    "content": "Configuration deleted successfully"
+    "defaultMessage": "Sync disconnected",
+    "content": "Sync disconnected"
   },
   "sync.deleteServer": {
-    "defaultMessage": "Delete Server",
-    "content": "Delete Server"
+    "defaultMessage": "Disconnect Sync",
+    "content": "Disconnect Sync"
   },
   "sync.deleteServer.description": {
-    "defaultMessage": "This action cannot be undone and will remove the server configuration from this device.",
-    "content": "This action cannot be undone and will remove the server configuration from this device."
+    "defaultMessage": "Stop syncing this device with the server. This only removes the connection settings from this device and does not delete local or server data.",
+    "content": "Stop syncing this device with the server. This only removes the connection settings from this device and does not delete local or server data."
   },
   "sync.endpoint": {
     "defaultMessage": "Endpoint",
@@ -2039,6 +2055,14 @@
   "sync.folderNamePlaceholder": {
     "defaultMessage": "tasks",
     "content": "tasks"
+  },
+  "sync.lastSyncedAt": {
+    "defaultMessage": "Last synced: {0}",
+    "content": "Last synced: {0}"
+  },
+  "sync.notSyncedYet": {
+    "defaultMessage": "Not synced yet",
+    "content": "Not synced yet"
   },
   "sync.selfHosted.add": {
     "defaultMessage": "Add Selfhosted Server",
@@ -2071,6 +2095,10 @@
   "sync.serverType": {
     "defaultMessage": "Server Type",
     "content": "Server Type"
+  },
+  "sync.status": {
+    "defaultMessage": "Sync Status",
+    "content": "Sync Status"
   },
   "sync.success": {
     "defaultMessage": "Sync successful",

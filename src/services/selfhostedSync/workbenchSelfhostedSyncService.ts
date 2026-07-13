@@ -13,10 +13,11 @@ import {
   ISelfhostedSyncService,
 } from "./selfhostedSyncService.ts"
 
-const LOCAL_CHANGE_DEBOUNCE_MS = 2_000
-const REMOTE_POLL_INTERVAL_MS = 15_000
+const LOCAL_CHANGE_DEBOUNCE_MS = 500
+const REMOTE_POLL_INTERVAL_MS = 60_000
 const SNAPSHOT_INTERVAL = 100
 const MAX_RETRY_DELAY_MS = 60_000
+const MAX_EVENT_RECONNECT_DELAY_MS = 30_000
 
 function mergeVersions(left: Record<string, number>, right: Record<string, number>): Record<string, number> {
   const merged = { ...left }
@@ -56,6 +57,8 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
   private metadata: ISelfhostedSyncMetadata | null = null
   private syncRequest: Promise<void> | null = null
   private syncTimer: ReturnType<typeof setTimeout> | null = null
+  private syncAfterCurrent = false
+  private eventStreamController: AbortController | null = null
   private applyingRemoteChanges = false
   private retryAttempt = 0
   private _syncing = false
@@ -112,7 +115,11 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
   }
 
   async addServer(config: Omit<ISelfhostedSyncServerConfig, "id">): Promise<string> {
-    const newServer: ISelfhostedSyncServerConfig = { ...config, id: generateUuid() }
+    const folder = config.folder.trim().toLowerCase()
+    if (!folder) {
+      throw new Error("Folder name is required")
+    }
+    const newServer: ISelfhostedSyncServerConfig = { ...config, folder, id: generateUuid() }
     const storage = this.createStorage(newServer)
     await storage.status()
 
@@ -126,6 +133,7 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
     await this.configService.save(selfhostedSyncMetadataConfigKey(newServer.id), metadata)
     this.storage = storage
     this.metadata = metadata
+    this.startEventStream()
     await this.syncAttachmentStorage(storage, newServer)
     this._lastError = null
     this.onStateChangeEmitter.fire()
@@ -142,6 +150,7 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
     await this.configService.save(thirdpartySyncServersConfigKey(), null)
     this.storage = null
     this.metadata = null
+    this.stopEventStream()
     this._lastError = null
     this._lastSyncedAt = null
     this.clearScheduledSync()
@@ -172,19 +181,27 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
         throw error
       })
       .finally(() => {
+        let runAgain = false
         if (this.syncRequest === request) {
           this.syncRequest = null
+          runAgain = this.syncAfterCurrent
+          this.syncAfterCurrent = false
         }
         this._syncing = false
         this.onStateChangeEmitter.fire()
+        if (runAgain) this.scheduleSync(0)
       })
     this.syncRequest = request
     return request
   }
 
   async init(): Promise<void> {
-    const config = this.config
-    if (config) {
+    const storedConfig = this.config
+    if (storedConfig) {
+      const config = { ...storedConfig, folder: storedConfig.folder.trim().toLowerCase() }
+      if (config.folder !== storedConfig.folder) {
+        await this.configService.save(thirdpartySyncServersConfigKey(), config)
+      }
       this.storage = this.createStorage(config)
       this.metadata = this.configService.get(selfhostedSyncMetadataConfigKey(config.id))
       if (!this.metadata) {
@@ -197,6 +214,7 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
         await this.saveMetadata()
       }
       await this.syncAttachmentStorage(this.storage, config)
+      this.startEventStream()
     }
     this.installAutoSyncTriggers()
     this.onStateChangeEmitter.fire()
@@ -321,7 +339,7 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
 
   private installAutoSyncTriggers(): void {
     const trigger = () => {
-      if (this.hasServer) this.scheduleSync(0)
+      if (this.hasServer) this.requestImmediateSync()
     }
     window.addEventListener("online", trigger)
     window.addEventListener("focus", trigger)
@@ -340,6 +358,66 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
         // Error state and retry scheduling are handled by sync().
       })
     }, delay)
+  }
+
+  private requestImmediateSync(): void {
+    if (this.syncRequest) {
+      this.syncAfterCurrent = true
+      return
+    }
+    this.scheduleSync(0)
+  }
+
+  private startEventStream(): void {
+    this.stopEventStream()
+    if (!this.storage || !this.metadata || !this.enabled) return
+    const controller = new AbortController()
+    this.eventStreamController = controller
+    void this.runEventStream(this.storage, this.metadata.clientId, controller.signal)
+  }
+
+  private stopEventStream(): void {
+    this.eventStreamController?.abort()
+    this.eventStreamController = null
+  }
+
+  private async runEventStream(storage: SelfhostedServerStorage, clientId: string, signal: AbortSignal): Promise<void> {
+    let retryAttempt = 0
+    while (!signal.aborted) {
+      let connected = false
+      try {
+        await storage.subscribeChanges(
+          clientId,
+          () => this.requestImmediateSync(),
+          () => {
+            connected = true
+            retryAttempt = 0
+            this.requestImmediateSync()
+          },
+          signal,
+        )
+      } catch (error) {
+        if (signal.aborted) return
+        console.warn("Self-hosted sync event stream disconnected:", error)
+      }
+      if (signal.aborted) return
+      const delay = Math.min(1_000 * 2 ** retryAttempt, MAX_EVENT_RECONNECT_DELAY_MS)
+      retryAttempt += 1
+      if (connected) retryAttempt = 1
+      await this.waitForEventReconnect(delay, signal)
+    }
+  }
+
+  private waitForEventReconnect(delay: number, signal: AbortSignal): Promise<void> {
+    return new Promise((resolve) => {
+      const timer = setTimeout(done, delay)
+      signal.addEventListener("abort", done, { once: true })
+      function done() {
+        clearTimeout(timer)
+        signal.removeEventListener("abort", done)
+        resolve()
+      }
+    })
   }
 
   private scheduleRetry(): void {

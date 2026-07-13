@@ -1,5 +1,5 @@
 {
-  "name": "hamsterbase-tasks",
+  "name": "unthink",
   "private": true,
   "version": "99.99.99",
   "type": "module",
@@ -30,7 +30,7 @@
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
     "tauri:android:init": "ANDROID_HOME=/opt/homebrew/share/android-commandlinetools ANDROID_NDK_HOME=/opt/homebrew/share/android-commandlinetools/ndk/27.2.12479018 NDK_HOME=/opt/homebrew/share/android-commandlinetools/ndk/27.2.12479018 JAVA_HOME=\"$HOME/.local/share/mise/installs/java/temurin-17\" PATH=\"$HOME/.cargo/bin:/opt/homebrew/share/android-commandlinetools/cmdline-tools/latest/bin:/opt/homebrew/share/android-commandlinetools/platform-tools:$PATH\" tauri android init",
-    "tauri:android:dev": "ANDROID_HOME=/opt/homebrew/share/android-commandlinetools ANDROID_NDK_HOME=/opt/homebrew/share/android-commandlinetools/ndk/27.2.12479018 NDK_HOME=/opt/homebrew/share/android-commandlinetools/ndk/27.2.12479018 JAVA_HOME=\"$HOME/.local/share/mise/installs/java/temurin-17\" PATH=\"$HOME/.cargo/bin:/opt/homebrew/share/android-commandlinetools/cmdline-tools/latest/bin:/opt/homebrew/share/android-commandlinetools/platform-tools:$PATH\" tauri android dev --host \"$(ipconfig getifaddr en0)\"",
+    "tauri:android:dev": "ANDROID_HOME=/opt/homebrew/share/android-commandlinetools ANDROID_NDK_HOME=/opt/homebrew/share/android-commandlinetools/ndk/27.2.12479018 NDK_HOME=/opt/homebrew/share/android-commandlinetools/ndk/27.2.12479018 JAVA_HOME=\"$HOME/.local/share/mise/installs/java/temurin-17\" PATH=\"$HOME/.cargo/bin:/opt/homebrew/share/android-commandlinetools/cmdline-tools/latest/bin:/opt/homebrew/share/android-commandlinetools/platform-tools:$PATH\" tauri android dev --host 127.0.0.1",
     "tauri:android:build": "ANDROID_HOME=/opt/homebrew/share/android-commandlinetools ANDROID_NDK_HOME=/opt/homebrew/share/android-commandlinetools/ndk/27.2.12479018 NDK_HOME=/opt/homebrew/share/android-commandlinetools/ndk/27.2.12479018 JAVA_HOME=\"$HOME/.local/share/mise/installs/java/temurin-17\" PATH=\"$HOME/.cargo/bin:/opt/homebrew/share/android-commandlinetools/cmdline-tools/latest/bin:/opt/homebrew/share/android-commandlinetools/platform-tools:$PATH\" tauri android build",
     "cli": "tsx --tsconfig tsconfig.app.json src/cli/index.tsx"
   },

@@ -625,17 +625,27 @@ export const desktopStyles = {
   DesktopMessageUndo: /*tw*/ "px-8 text-brand mt-2 text-sm",
   DesktopMenuBackdrop: /*tw*/ "fixed inset-0",
   DesktopMenuContainer: /*tw*/ "fixed outline-none w-[180px]",
+  DesktopMenuRichContainer: /*tw*/ "fixed outline-none w-[360px]",
   DesktopMenuContent:
     /*tw*/ "bg-bg1 border border-line-regular rounded-md shadow-[0_4px_12px_rgba(0,0,0,0.08)] p-1 w-full",
+  DesktopMenuRichContent:
+    /*tw*/ "bg-bg1/95 backdrop-blur-xl border border-line-regular rounded-xl shadow-[0_12px_32px_rgba(0,0,0,0.16)] p-1 w-full overflow-hidden",
   DesktopMenuDivider: /*tw*/ "h-px bg-line-light mx-1 my-1",
 
   DesktopMenuItemBase: /*tw*/ "w-full flex items-center px-2 py-1.5 text-left text-xs rounded-sm transition-colors",
+  DesktopMenuItemRichBase:
+    /*tw*/ "w-full h-[72px] flex items-start px-3 py-3 text-left rounded-lg transition-colors duration-150",
   DesktopMenuItemEnabled: /*tw*/ "text-t1 hover:bg-bg3",
   DesktopMenuItemDisabled: /*tw*/ "text-t3 cursor-not-allowed",
   DesktopMenuItemActive: /*tw*/ "bg-bg3",
   DesktopMenuItemDanger: /*tw*/ "text-accent-danger hover:bg-accent-danger/10",
 
   DesktopMenuItemContent: /*tw*/ "flex items-center gap-2 flex-1 min-w-0",
+  DesktopMenuItemRichContent: /*tw*/ "flex items-start gap-3 flex-1 min-w-0",
+  DesktopMenuRichItemIcon: /*tw*/ "size-5 mt-0.5 flex items-center justify-center shrink-0 text-t2",
+  DesktopMenuItemTextContent: /*tw*/ "flex min-w-0 flex-1 flex-col gap-0.5",
+  DesktopMenuItemRichLabel: /*tw*/ "text-sm font-semibold leading-5 text-t1",
+  DesktopMenuItemDescription: /*tw*/ "text-xs leading-4 text-t2 whitespace-normal",
   DesktopMenuItemIcon: /*tw*/ "size-3.5 flex items-center justify-center flex-shrink-0",
   DesktopMenuItemIconEmpty: /*tw*/ "size-3.5 flex-shrink-0",
   DesktopMenuItemLabel: /*tw*/ "flex-1 truncate",

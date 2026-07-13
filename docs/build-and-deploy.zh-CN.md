@@ -5,7 +5,7 @@
 ## 一、公共准备
 
 ```bash
-cd /Users/doctor/Developer/personal/awkj/tasks
+cd /Users/doctor/Developer/personal/awkj/Unthink
 corepack enable
 pnpm install --frozen-lockfile
 pnpm check
@@ -174,7 +174,7 @@ curl http://127.0.0.1:8400/api/v1/health
 正常返回：
 
 ```json
-{"database":"ok","status":"ok"}
+{ "database": "ok", "status": "ok" }
 ```
 
 Web 地址默认为 `http://服务器地址:8400`。

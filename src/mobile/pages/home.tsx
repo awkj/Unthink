@@ -1,5 +1,11 @@
 import { getTodayTimestampInUtc } from "@/core/common/getTodayTimestampInUtc.ts"
-import { AreaIcon, CreateViewIcon, HomeIcon, SettingsIcon, SyncIcon } from "@/ui/components/icons"
+import { HomeIcon, SettingsIcon, SyncIcon } from "@/ui/components/icons"
+import {
+  CreateAreaMenuIcon,
+  CreateProjectMenuIcon,
+  CreateTaskMenuIcon,
+  CreateViewMenuIcon,
+} from "@/ui/components/icons/CreateMenuIcons.tsx"
 import { FlattenedResult } from "@/core/state/home/flattenedItemsToResult.ts"
 import { flattenRootCollections } from "@/core/state/home/getFlattenRootCollections.ts"
 import { getFutureProjects } from "@/core/state/home/getFutureProjects.ts"
@@ -27,9 +33,7 @@ import classNames from "classnames"
 import React from "react"
 import { InboxDropZone } from "../components/dnd/InboxDropZone.tsx"
 import { LastPlacement } from "../components/dnd/lastPlacement.tsx"
-import { MobileProjectCheckbox } from "../components/icon/MobileProjectCheckbox.tsx"
 import { PageLayout } from "../components/PageLayout.tsx"
-import { TaskCheckbox } from "../components/icon/TaskCheckbox.tsx"
 import { AreaHeader } from "../components/todo/AreaHeader.tsx"
 import { usePopupAction } from "../overlay/popupAction/usePopupAction.ts"
 import { useToast } from "../overlay/toast/useToast.ts"
@@ -203,31 +207,47 @@ export const MobileHome = () => {
             {
               items: [
                 {
-                  icon: <TaskCheckbox status={"completed"} />,
+                  icon: <CreateTaskMenuIcon />,
                   name: localize("create_popup.create_task", "Create Task"),
+                  description: localize(
+                    "create_popup.create_task_description",
+                    "Capture an action to complete, then check it off when it is done.",
+                  ),
                   onClick: () => {
                     navigationService.navigate({ path: "/create_task" })
                   },
                 },
                 {
-                  icon: <MobileProjectCheckbox progress={60} status={"created"} />,
+                  icon: <CreateProjectMenuIcon />,
                   name: localize("create_popup.create_project", "Create Project"),
+                  description: localize(
+                    "create_popup.create_project_description",
+                    "Define a goal, then complete its to-dos one by one.",
+                  ),
                   onClick: () => {
                     const id = todoService.addProject({ title: "" })
                     todoService.editItem(id)
                   },
                 },
                 {
-                  icon: <AreaIcon strokeWidth={1.5} />,
+                  icon: <CreateAreaMenuIcon />,
                   name: localize("create_popup.create_area", "Create Area"),
+                  description: localize(
+                    "create_popup.create_area_description",
+                    "Organize projects and to-dos by responsibility, such as Home or Work.",
+                  ),
                   onClick: () => {
                     const id = todoService.addArea({ title: "" })
                     todoService.editItem(id)
                   },
                 },
                 {
-                  icon: <CreateViewIcon strokeWidth={1.5} />,
+                  icon: <CreateViewMenuIcon />,
                   name: localize("create_popup.create_view", "Create View"),
+                  description: localize(
+                    "create_popup.create_view_description",
+                    "Bring related tasks together with filters in a focused view.",
+                  ),
                   onClick: () => {
                     const uid = todoService.addView({ name: "", rule: "" })
                     navigationService.navigate({ path: `/views/${uid}` })

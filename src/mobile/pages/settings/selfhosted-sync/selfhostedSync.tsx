@@ -1,4 +1,4 @@
-import { CircleCheckIcon, DeleteIcon, SettingsIcon } from "@/ui/components/icons"
+import { CircleCheckIcon, CloudSlashIcon, SettingsIcon } from "@/ui/components/icons"
 import { useService } from "@/ui/hooks/use-service"
 import { useWatchEvent } from "@/ui/hooks/use-watch-event"
 import { localize } from "@/nls"
@@ -101,7 +101,7 @@ export const SelfhostedSync = () => {
           },
         },
         {
-          icon: <DeleteIcon className={styles.settingsDatabaseIcon} />,
+          icon: <CloudSlashIcon className={styles.settingsDatabaseIcon} />,
           title: deleteButtonLabel,
           onClick: handleDeleteServer,
           mode: {

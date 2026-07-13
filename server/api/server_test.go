@@ -94,6 +94,10 @@ func TestSyncAPI(t *testing.T) {
 	if result["revision"].(float64) != 2 {
 		t.Fatalf("unexpected second append response: %#v", result)
 	}
+	result = requestJSON(t, server.URL, http.MethodGet, "/api/v1/spaces/DEFAULT/status", nil)
+	if result["revision"].(float64) != 2 {
+		t.Fatalf("uppercase space did not resolve to default: %#v", result)
+	}
 
 	result = requestJSON(t, server.URL, http.MethodGet,
 		"/api/v1/spaces/default/changes?after=0&clientId=web-1", nil)

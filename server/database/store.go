@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
@@ -135,6 +136,10 @@ func (s *Store) Close() error { return s.db.Close() }
 func (s *Store) Ping(ctx context.Context) error { return s.db.PingContext(ctx) }
 
 func (s *Store) ensureSpace(ctx context.Context, e executor, name string) (int64, error) {
+	name = strings.ToLower(strings.TrimSpace(name))
+	if name == "" {
+		return 0, errors.New("space name must not be empty")
+	}
 	now := time.Now().UnixMilli()
 	var id int64
 	err := e.QueryRowContext(ctx, `

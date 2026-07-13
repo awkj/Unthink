@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "UnThink",
+  "productName": "Unthink",
   "version": "0.1.0",
   "identifier": "io.github.awkj.unthink",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "UnThink",
+        "title": "Unthink",
         "width": 1200,
         "height": 800,
         "minWidth": 800,

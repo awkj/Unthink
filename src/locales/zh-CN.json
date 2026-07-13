@@ -242,19 +242,19 @@
   },
   "area.delete": {
     "defaultMessage": "Delete Area",
-    "content": "删除领域"
+    "content": "删除区域"
   },
   "area.delete_area": {
     "defaultMessage": "Delete Area",
-    "content": "删除领域"
+    "content": "删除区域"
   },
   "area.delete_area_confirm_description": {
     "defaultMessage": "Are you sure you want to delete this area? This action cannot be undone.",
-    "content": "您确定要删除此领域吗？此操作无法撤销。"
+    "content": "您确定要删除此区域吗？此操作无法撤销。"
   },
   "area.delete_area_confirm_title": {
     "defaultMessage": "Delete Area",
-    "content": "删除领域"
+    "content": "删除区域"
   },
   "area.delete_confirm": {
     "defaultMessage": "Delete",
@@ -262,7 +262,7 @@
   },
   "area.delete_description": {
     "defaultMessage": "Are you sure you want to delete this area? This action cannot be undone.",
-    "content": "您确定要删除此领域吗？此操作无法撤销。"
+    "content": "您确定要删除此区域吗？此操作无法撤销。"
   },
   "area.edit_title": {
     "defaultMessage": "Edit Title",
@@ -286,7 +286,7 @@
   },
   "area.notFound": {
     "defaultMessage": "Area not found",
-    "content": "未找到领域"
+    "content": "未找到区域"
   },
   "area.projects": {
     "defaultMessage": "Projects",
@@ -298,11 +298,11 @@
   },
   "area.title_placeholder": {
     "defaultMessage": "New Area",
-    "content": "新领域"
+    "content": "新区域"
   },
   "area.untitled": {
     "defaultMessage": "New Area",
-    "content": "新领域"
+    "content": "新区域"
   },
   "attachments.accessKeyId": {
     "defaultMessage": "Access Key ID",
@@ -606,19 +606,35 @@
   },
   "create_popup.create_area": {
     "defaultMessage": "Create Area",
-    "content": "创建领域"
+    "content": "创建区域"
+  },
+  "create_popup.create_area_description": {
+    "defaultMessage": "Organize projects and to-dos by responsibility, such as Home or Work.",
+    "content": "按不同责任范围组织项目和待办事项，例如家庭或工作。"
   },
   "create_popup.create_project": {
     "defaultMessage": "Create Project",
     "content": "创建项目"
   },
+  "create_popup.create_project_description": {
+    "defaultMessage": "Define a goal, then complete its to-dos one by one.",
+    "content": "定义一个目标，然后逐步完成其中的待办事项。"
+  },
   "create_popup.create_task": {
     "defaultMessage": "Create Task",
     "content": "创建任务"
   },
+  "create_popup.create_task_description": {
+    "defaultMessage": "Capture an action to complete, then check it off when it is done.",
+    "content": "记录一个需要完成的行动，并在完成后将它勾选。"
+  },
   "create_popup.create_view": {
     "defaultMessage": "Create View",
     "content": "创建视图"
+  },
+  "create_popup.create_view_description": {
+    "defaultMessage": "Bring related tasks together with filters in a focused view.",
+    "content": "使用筛选条件汇集相关任务，创建专注的工作视图。"
   },
   "create_sask_action_sheet.task_notes_placeholder": {
     "defaultMessage": "Add Notes...",
@@ -1129,8 +1145,8 @@
     "content": "本周"
   },
   "menu.about": {
-    "defaultMessage": "About UnThink",
-    "content": "关于 UnThink"
+    "defaultMessage": "About Unthink",
+    "content": "关于 Unthink"
   },
   "menu.close": {
     "defaultMessage": "Close Window",
@@ -1173,8 +1189,8 @@
     "content": "粘贴"
   },
   "menu.quit": {
-    "defaultMessage": "Quit UnThink",
-    "content": "退出 UnThink"
+    "defaultMessage": "Quit Unthink",
+    "content": "退出 Unthink"
   },
   "menu.reload": {
     "defaultMessage": "Reload",
@@ -1246,7 +1262,7 @@
   },
   "project_area_selector.search": {
     "defaultMessage": "Search projects and areas...",
-    "content": "搜索项目和领域..."
+    "content": "搜索项目和区域..."
   },
   "project_heading.archive": {
     "defaultMessage": "Archive Heading",
@@ -1298,7 +1314,7 @@
   },
   "project.area": {
     "defaultMessage": "Area",
-    "content": "领域"
+    "content": "区域"
   },
   "project.cancel_project": {
     "defaultMessage": "Cancel project",
@@ -1562,7 +1578,7 @@
   },
   "search.placeholder": {
     "defaultMessage": "Search tasks, projects, areas...",
-    "content": "搜索任务、项目、领域..."
+    "content": "搜索任务、项目、区域..."
   },
   "search.title": {
     "defaultMessage": "Search",
@@ -2013,20 +2029,20 @@
     "content": "输入您的认证令牌"
   },
   "sync.deleteConfigSuccess": {
-    "defaultMessage": "Configuration deleted successfully",
-    "content": "配置删除成功"
+    "defaultMessage": "Sync disconnected",
+    "content": "已断开同步"
   },
   "sync.deleteServer": {
-    "defaultMessage": "Delete Server",
-    "content": "删除服务器"
+    "defaultMessage": "Disconnect Sync",
+    "content": "断开同步"
   },
   "sync.deleteServer.description": {
-    "defaultMessage": "This action cannot be undone and will remove the server configuration from this device.",
-    "content": "此操作无法撤销，将从本设备移除该服务器配置。"
+    "defaultMessage": "Stop syncing this device with the server. This only removes the connection settings from this device and does not delete local or server data.",
+    "content": "停止本设备与该服务器同步。此操作仅移除本设备上的连接配置，不会删除本地或服务器上的数据。"
   },
   "sync.endpoint": {
     "defaultMessage": "Endpoint",
-    "content": "端点"
+    "content": "服务器地址"
   },
   "sync.error.invalidEndpoint": {
     "defaultMessage": "Please enter a valid URL",
@@ -2034,11 +2050,19 @@
   },
   "sync.folderName": {
     "defaultMessage": "Folder Name",
-    "content": "文件夹名称"
+    "content": "账号"
   },
   "sync.folderNamePlaceholder": {
     "defaultMessage": "tasks",
-    "content": "tasks"
+    "content": "请输入账号"
+  },
+  "sync.lastSyncedAt": {
+    "defaultMessage": "Last synced: {0}",
+    "content": "上次同步：{0}"
+  },
+  "sync.notSyncedYet": {
+    "defaultMessage": "Not synced yet",
+    "content": "尚未同步"
   },
   "sync.selfHosted.add": {
     "defaultMessage": "Add Selfhosted Server",
@@ -2071,6 +2095,10 @@
   "sync.serverType": {
     "defaultMessage": "Server Type",
     "content": "服务器类型"
+  },
+  "sync.status": {
+    "defaultMessage": "Sync Status",
+    "content": "同步状态"
   },
   "sync.success": {
     "defaultMessage": "Sync successful",
@@ -2110,7 +2138,7 @@
   },
   "task_attr.no_areas": {
     "defaultMessage": "No areas",
-    "content": "无领域"
+    "content": "无区域"
   },
   "task_attr.no_location": {
     "defaultMessage": "No locations",

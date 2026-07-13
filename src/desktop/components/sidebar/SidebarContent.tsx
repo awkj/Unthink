@@ -1,5 +1,5 @@
 import { getTodayTimestampInUtc } from "@/core/common/getTodayTimestampInUtc.ts"
-import { areaPageTitleInputId, projectPageTitleInputId } from "@/ui/components/edit/inputId"
+import { areaPageTitleInputId, projectPageTitleInputId, viewPageTitleInputId } from "@/ui/components/edit/inputId"
 import { PlusIcon, SearchIcon, SettingsIcon, SyncIcon } from "@/ui/components/icons"
 import { FlattenedResult } from "@/core/state/home/flattenedItemsToResult"
 import { flattenRootCollections } from "@/core/state/home/getFlattenRootCollections"
@@ -35,13 +35,19 @@ import { SidebarMenu } from "./SidebarMenu/SidebarMenu.tsx"
 import { SidebarViewsSection } from "./SidebarViewsSection/SidebarViewsSection.tsx"
 import { SidebarProjectItem as SidebarProjectItemComponent } from "./SidebarProjectItem/SidebarProjectItem.tsx"
 import { MacTopBar } from "../MacTopBar.tsx"
+import {
+  CreateAreaMenuIcon,
+  CreateProjectMenuIcon,
+  CreateTaskMenuIcon,
+  CreateViewMenuIcon,
+} from "@/ui/components/icons/CreateMenuIcons.tsx"
 
 interface SidebarProjectAndAreaProps {
   flattenedResult: FlattenedResult<AreaInfoState, ProjectInfoState>
   unstartedProjects: ProjectInfoState[]
 }
 
-const desktopMenuVerticalChrome = 10
+const desktopMenuGap = 8
 
 const SidebarProjectsAndAreas: React.FC<SidebarProjectAndAreaProps> = ({ flattenedResult, unstartedProjects }) => {
   const { active } = useDndContext()
@@ -142,7 +148,26 @@ export const SidebarContent: React.FC = () => {
       {
         menuConfig: [
           {
+            label: localize("create_popup.create_task", "Create Task"),
+            description: localize(
+              "create_popup.create_task_description",
+              "Capture an action to complete, then check it off when it is done.",
+            ),
+            icon: <CreateTaskMenuIcon />,
+            onSelect: () => {
+              const taskId = flushSync(() => todoService.addTask({ title: "" }))
+              navigate("/desktop/inbox", {
+                state: { highlightTaskId: taskId },
+              })
+            },
+          },
+          {
             label: localize("create_popup.create_project", "Create Project"),
+            description: localize(
+              "create_popup.create_project_description",
+              "Define a goal, then complete its to-dos one by one.",
+            ),
+            icon: <CreateProjectMenuIcon />,
             onSelect: () => {
               const projectId = flushSync(() => {
                 return todoService.addProject({ title: "" })
@@ -162,6 +187,11 @@ export const SidebarContent: React.FC = () => {
           },
           {
             label: localize("create_popup.create_area", "Create Area"),
+            description: localize(
+              "create_popup.create_area_description",
+              "Organize projects and to-dos by responsibility, such as Home or Work.",
+            ),
+            icon: <CreateAreaMenuIcon />,
             onSelect: () => {
               const areaId = flushSync(() => {
                 return todoService.addArea({ title: "" })
@@ -179,9 +209,25 @@ export const SidebarContent: React.FC = () => {
               }
             },
           },
+          {
+            label: localize("create_popup.create_view", "Create View"),
+            description: localize(
+              "create_popup.create_view_description",
+              "Bring related tasks together with filters in a focused view.",
+            ),
+            icon: <CreateViewMenuIcon />,
+            onSelect: () => {
+              const uid = flushSync(() => todoService.addView({ name: "", rule: "" }))
+              if (uid) {
+                navigate(`/desktop/views/${uid}`, {
+                  state: { focusInput: viewPageTitleInputId(uid) },
+                })
+              }
+            },
+          },
         ],
         x: rect.left,
-        y: rect.top - desktopMenuVerticalChrome,
+        y: rect.top - desktopMenuGap,
         placement: "top-start",
       },
       instantiationService,

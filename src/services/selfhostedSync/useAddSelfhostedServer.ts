@@ -84,7 +84,7 @@ export const useAddSelfhostedServer = (options: UseAddSelfhostedServerOptions) =
   const handleDeleteServer = async () => {
     try {
       await selfhostedSyncService.deleteServer()
-      options.toast("success", localize("sync.deleteConfigSuccess", "Configuration deleted successfully"))
+      options.toast("success", localize("sync.deleteConfigSuccess", "Sync disconnected"))
     } catch (error) {
       options.toast("error", (error as Error).message)
     }
@@ -121,7 +121,7 @@ export const useAddSelfhostedServer = (options: UseAddSelfhostedServerOptions) =
     })
   }
 
-  const deleteButtonLabel = localize("sync.deleteServer", "Delete Server")
+  const deleteButtonLabel = localize("sync.deleteServer", "Disconnect Sync")
 
   return {
     title,
