@@ -38,3 +38,4 @@ src-tauri/gen/android/app/build
 # Local Codex previews and safety backups
 .codex-artifacts/
 .codex-backups/
+test-results/

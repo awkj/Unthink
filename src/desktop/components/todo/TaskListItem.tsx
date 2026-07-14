@@ -1,5 +1,5 @@
 import { useTaskItemActions } from "@/ui/hooks/useTaskItemActions"
-import { taskTitleInputKey } from "@/ui/components/edit/inputKeys"
+import { taskListTitleInputKey } from "@/ui/components/edit/inputKeys"
 import { ITaskList } from "@/ui/components/taskList/type.ts"
 import { TaskInfo } from "@/core/state/type"
 import { desktopStyles } from "@/desktop/theme/main"
@@ -231,7 +231,7 @@ export const TaskListItem: React.FC<TaskListItemProps> = ({
       <div className={desktopStyles.TaskListItemContent} style={{ visibility: isDragging ? "hidden" : "visible" }}>
         <div className={desktopStyles.TaskListItemTitleRow} data-testid={TestIds.TaskListItem.Title}>
           <EditableInputSpan
-            inputKey={taskTitleInputKey(task.id)}
+            inputKey={taskListTitleInputKey(task.id)}
             ref={inputRef}
             defaultValue={task.title}
             onChange={handleChange}

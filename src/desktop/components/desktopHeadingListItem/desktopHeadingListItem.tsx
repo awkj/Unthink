@@ -1,5 +1,5 @@
 import { EditableInputSpan } from "@/ui/components/edit/EditableInputSpan"
-import { projectHeadingTitleInputKey } from "@/ui/components/edit/inputKeys"
+import { projectHeadingListTitleInputKey } from "@/ui/components/edit/inputKeys"
 import { DragHandleIcon } from "@/ui/components/icons"
 import { ITaskList } from "@/ui/components/taskList/type.ts"
 import { ProjectHeadingInfo } from "@/core/state/type.ts"
@@ -122,7 +122,7 @@ export const DesktopHeadingListItem: React.FC<DesktopHeadingListItemProps> = ({
         </span>
         <EditableInputSpan
           ref={inputRef}
-          inputKey={projectHeadingTitleInputKey(projectHeadingInfo.id)}
+          inputKey={projectHeadingListTitleInputKey(projectHeadingInfo.id)}
           defaultValue={projectHeadingInfo.title}
           onChange={(e) => {
             taskList?.updateInputValue(e.target.value)
