@@ -7,4 +7,3 @@ src-tauri/icons/**/*.png filter=lfs diff=lfs merge=lfs -text
 src-tauri/icons/*.png filter=lfs diff=lfs merge=lfs -text
 src-tauri/icons/*.icns filter=lfs diff=lfs merge=lfs -text
 src-tauri/gen/android/app/src/main/res/mipmap-*/ic_launcher*.png filter=lfs diff=lfs merge=lfs -text
-src-tauri/icons/** filter=lfs diff=lfs merge=lfs -text
