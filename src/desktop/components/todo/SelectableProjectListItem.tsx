@@ -103,7 +103,7 @@ export const SelectableProjectListItem: React.FC<SelectableProjectListItemProps>
           return
         }
         if (isOnlySelection) {
-          navigate(`/desktop/project/${project.uid}`)
+          navigate(`/project/${project.uid}`)
           return
         }
         taskList.select(project.id, { offset: null, multipleMode: false })

@@ -63,7 +63,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
       <div className={desktopStyles.AIChatInputOuter}>
         <div className={`${desktopStyles.AIChatContentWidth} ${desktopStyles.AIChatInputNotice}`}>
           {localize("ai_chat.not_configured")}
-          <Link to="/desktop/settings/ai" className={desktopStyles.AIChatInputNoticeLink}>
+          <Link to="/settings/ai" className={desktopStyles.AIChatInputNoticeLink}>
             {localize("ai_chat.go_to_settings")}
           </Link>
         </div>

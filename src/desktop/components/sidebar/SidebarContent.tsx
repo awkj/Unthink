@@ -154,7 +154,7 @@ export const SidebarContent: React.FC = () => {
             icon: <CreateTaskMenuIcon />,
             onSelect: () => {
               const taskId = flushSync(() => todoService.addTask({ title: "" }))
-              navigate("/desktop/inbox", {
+              navigate("/inbox", {
                 state: { highlightTaskId: taskId },
               })
             },
@@ -171,7 +171,7 @@ export const SidebarContent: React.FC = () => {
               if (projectId) {
                 const projectUid = todoService.modelState.taskObjectMap.get(projectId)?.uid
                 if (projectUid) {
-                  navigate(`/desktop/project/${projectUid}`, {
+                  navigate(`/project/${projectUid}`, {
                     state: {
                       focusInput: projectPageTitleInputId(projectId),
                     },
@@ -192,7 +192,7 @@ export const SidebarContent: React.FC = () => {
               if (areaId) {
                 const areaUid = todoService.modelState.taskObjectMap.get(areaId)?.uid
                 if (areaUid) {
-                  navigate(`/desktop/area/${areaUid}`, {
+                  navigate(`/area/${areaUid}`, {
                     state: {
                       focusInput: areaPageTitleInputId(areaId),
                     },
@@ -208,7 +208,7 @@ export const SidebarContent: React.FC = () => {
             onSelect: () => {
               const uid = flushSync(() => todoService.addView({ name: "", rule: "" }))
               if (uid) {
-                navigate(`/desktop/views/${uid}`, {
+                navigate(`/views/${uid}`, {
                   state: { focusInput: viewPageTitleInputId(uid) },
                 })
               }
@@ -256,11 +256,7 @@ export const SidebarContent: React.FC = () => {
         </button>
         <div className={desktopStyles.SidebarBottomActions}>
           {showAIEntry && (
-            <Link
-              to="/desktop/ai-chat"
-              className={desktopStyles.SidebarBottomIconButton}
-              aria-label={localize("ai_chat")}
-            >
+            <Link to="/ai-chat" className={desktopStyles.SidebarBottomIconButton} aria-label={localize("ai_chat")}>
               <ThingsAIIcon className={desktopStyles.SidebarBottomIcon} />
             </Link>
           )}
@@ -287,7 +283,7 @@ export const SidebarContent: React.FC = () => {
             <SearchIcon className={desktopStyles.SidebarBottomIcon} />
           </button>
           <Link
-            to="/desktop/settings"
+            to="/settings"
             className={desktopStyles.SidebarBottomIconButton}
             aria-label={localize("settings.title")}
           >

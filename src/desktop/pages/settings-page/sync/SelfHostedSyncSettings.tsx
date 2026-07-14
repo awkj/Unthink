@@ -4,6 +4,7 @@ import { SettingButton } from "@/desktop/components/settings/Button/Button"
 import { ItemGroup } from "@/desktop/components/settings/ItemGroup"
 import { SettingsContent } from "@/desktop/components/settings/SettingsContent/SettingsContent"
 import { SettingsEmptyStateAction } from "@/desktop/components/settings/SettingsEmptyStateAction"
+import { SettingsItem } from "@/desktop/components/settings/SettingsItem"
 import { useDesktopMessage } from "@/desktop/overlay/desktopMessage/useDesktopMessage"
 import { desktopStyles } from "@/desktop/theme/main"
 import { useService } from "@/ui/hooks/use-service"
@@ -29,7 +30,8 @@ export const SelfHostedSyncSettings: React.FC = () => {
     pageTitle,
     disabledStateMessage,
     formItemsLabel,
-    handleDeleteServer,
+    handleRemoveServer,
+    handleSetSyncEnabled,
     handleSync,
     deleteButtonLabel,
   } = useAddSelfhostedServer({
@@ -48,7 +50,17 @@ export const SelfHostedSyncSettings: React.FC = () => {
   const addServerButtonLabel = localize("sync.addServer")
   const addServerDialogTitle = localize("sync.selfHosted.add")
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search])
-  const isAddServerDialogVisible = searchParams.get("dialog") === "add-server"
+  const dialog = searchParams.get("dialog")
+  const isAddServerDialogVisible = dialog === "add-server"
+  const isEditServerDialogVisible = dialog === "edit-server"
+  const isServerDialogVisible = isAddServerDialogVisible || isEditServerDialogVisible
+  const serverSavedMessage = isEditServerDialogVisible
+    ? localize("sync.updateServerSuccess")
+    : localize("sync.addServerSuccess")
+  const authTokenPlaceholder = isEditServerDialogVisible
+    ? localize("sync.authTokenUpdatePlaceholder")
+    : localize("sync.authTokenPlaceholder")
+  const confirmButtonLabel = isEditServerDialogVisible ? localize("common.save") : localize("confirm")
   const isEndpointValid = useMemo(() => {
     if (!endpoint.trim()) return false
     try {
@@ -58,29 +70,52 @@ export const SelfHostedSyncSettings: React.FC = () => {
       return false
     }
   }, [endpoint])
-  const isAddServerFormValid = isEndpointValid && authToken.trim() !== "" && folder.trim() !== ""
+  const isServerFormValid =
+    isEndpointValid && folder.trim() !== "" && (isEditServerDialogVisible || authToken.trim() !== "")
 
   const openAddServerDialog = () => {
+    setEndpoint("")
+    setAuthToken("")
+    setFolder("")
     navigate(`${location.pathname}?dialog=add-server`)
+  }
+
+  const openEditServerDialog = () => {
+    const config = selfhostedSyncService.config
+    if (!config) return
+    setEndpoint(config.entrypoint)
+    setAuthToken("")
+    setFolder(config.folder)
+    navigate(`${location.pathname}?dialog=edit-server`)
   }
 
   const closeAddServerDialog = () => {
     navigate(location.pathname, { replace: true })
   }
 
-  const handleConfirmAddServer = async () => {
-    if (!isAddServerFormValid) return
+  const handleConfirmServer = async () => {
+    if (!isServerFormValid) return
 
     try {
-      await selfhostedSyncService.addServer({
-        type: "selfhosted",
-        entrypoint: endpoint.trim(),
-        authToken: authToken.trim(),
-        folder: folder.trim(),
-      })
+      const currentConfig = selfhostedSyncService.config
+      if (isEditServerDialogVisible && currentConfig) {
+        await selfhostedSyncService.updateServer({
+          type: "selfhosted",
+          entrypoint: endpoint.trim(),
+          authToken: authToken.trim() || currentConfig.authToken,
+          folder: folder.trim(),
+        })
+      } else {
+        await selfhostedSyncService.addServer({
+          type: "selfhosted",
+          entrypoint: endpoint.trim(),
+          authToken: authToken.trim(),
+          folder: folder.trim(),
+        })
+      }
       showMessage({
         type: "success",
-        message: localize("sync.addServerSuccess"),
+        message: serverSavedMessage,
       })
       setEndpoint("")
       setAuthToken("")
@@ -102,32 +137,54 @@ export const SelfHostedSyncSettings: React.FC = () => {
         return (
           <>
             <ItemGroup>
-              <InfoItem label={formItemsLabel.serverType} value={formItemsLabel.selfHosted} />
+              <SettingsItem
+                title={formItemsLabel.selfHosted}
+                description={localize("sync.serverInfoDescription")}
+                action={{
+                  type: "button",
+                  label: localize("sync.editServer"),
+                  onClick: openEditServerDialog,
+                  disabled: selfhostedSyncService.syncing,
+                }}
+              />
               <InfoItem label={formItemsLabel.endpoint} value={config.entrypoint} />
               <InfoItem label={formItemsLabel.folderName} value={config.folder} />
+            </ItemGroup>
+            <ItemGroup>
+              <SettingsItem
+                title={localize("sync.syncEnabled")}
+                description={localize("sync.syncEnabled.description")}
+                action={{
+                  type: "switch",
+                  currentValue: selfhostedSyncService.syncEnabled,
+                  onChange: (enabled) => void handleSetSyncEnabled(enabled),
+                  disabled: selfhostedSyncService.syncing,
+                }}
+              />
               <InfoItem
                 label={localize("sync.status")}
                 value={
-                  selfhostedSyncService.lastError ??
-                  (selfhostedSyncService.lastSyncedAt
-                    ? localize("sync.lastSyncedAt", {
-                        0: new Date(selfhostedSyncService.lastSyncedAt).toLocaleString(),
-                      })
-                    : localize("sync.notSyncedYet"))
+                  !selfhostedSyncService.syncEnabled
+                    ? localize("sync.paused")
+                    : (selfhostedSyncService.lastError ??
+                      (selfhostedSyncService.lastSyncedAt
+                        ? localize("sync.lastSyncedAt", {
+                            0: new Date(selfhostedSyncService.lastSyncedAt).toLocaleString(),
+                          })
+                        : localize("sync.notSyncedYet")))
                 }
               />
+              <SettingsItem
+                title={localize("sync.syncNow")}
+                description={localize("sync.manualSyncDescription")}
+                action={{
+                  type: "button",
+                  label: syncButtonLabel,
+                  onClick: handleSync,
+                  disabled: !selfhostedSyncService.syncEnabled || selfhostedSyncService.syncing,
+                }}
+              />
             </ItemGroup>
-            <div className={desktopStyles.SettingsButtonRow}>
-              <SettingButton
-                variant="filled"
-                size="medium"
-                inline
-                onClick={handleSync}
-                disabled={selfhostedSyncService.syncing}
-              >
-                {syncButtonLabel}
-              </SettingButton>
-            </div>
             <ItemGroup>
               <div className={desktopStyles.SettingsItemContainer}>
                 <div className={desktopStyles.SettingsItemContentWrapper}>
@@ -137,7 +194,7 @@ export const SelfHostedSyncSettings: React.FC = () => {
                   </span>
                 </div>
                 <div className={desktopStyles.SettingsItemActionWrapper}>
-                  <SettingButton color="danger" size="small" onClick={handleDeleteServer} inline>
+                  <SettingButton color="danger" size="small" onClick={handleRemoveServer} inline>
                     {deleteButtonLabel}
                   </SettingButton>
                 </div>
@@ -176,12 +233,14 @@ export const SelfHostedSyncSettings: React.FC = () => {
   return (
     <SettingsContent title={pageTitle}>
       {renderDisabledView()}
-      {isAddServerDialogVisible && (
+      {isServerDialogVisible && (
         <div className={desktopStyles.SettingsDialogRoot}>
           <div className={desktopStyles.SettingsDialogBackdrop} onClick={closeAddServerDialog} />
           <div className={desktopStyles.SettingsDialogSurface} data-test-id={TestIds.DesktopDialog.Container}>
             <div className={desktopStyles.SettingsDialogHeader}>
-              <h3 className={desktopStyles.SettingsDialogTitle}>{addServerDialogTitle}</h3>
+              <h3 className={desktopStyles.SettingsDialogTitle}>
+                {isEditServerDialogVisible ? localize("sync.editServerTitle") : addServerDialogTitle}
+              </h3>
               <button
                 type="button"
                 className={desktopStyles.SettingsDialogCloseButton}
@@ -209,14 +268,14 @@ export const SelfHostedSyncSettings: React.FC = () => {
                 <div className={desktopStyles.SettingsDialogField}>
                   <label className={desktopStyles.SettingsDialogLabel}>
                     {formItemsLabel.authToken}
-                    <span className={desktopStyles.SettingsDialogRequired}>*</span>
+                    {!isEditServerDialogVisible && <span className={desktopStyles.SettingsDialogRequired}>*</span>}
                   </label>
                   <input
                     type="password"
                     value={authToken}
                     onChange={(e) => setAuthToken(e.target.value)}
                     className={desktopStyles.SettingsDialogInput}
-                    placeholder={localize("sync.authTokenPlaceholder")}
+                    placeholder={authTokenPlaceholder}
                   />
                 </div>
                 <div className={desktopStyles.SettingsDialogField}>
@@ -241,10 +300,10 @@ export const SelfHostedSyncSettings: React.FC = () => {
               <button
                 type="button"
                 className={desktopStyles.SettingsDialogConfirmButton}
-                disabled={!isAddServerFormValid}
-                onClick={handleConfirmAddServer}
+                disabled={!isServerFormValid || selfhostedSyncService.syncing}
+                onClick={handleConfirmServer}
               >
-                {localize("confirm")}
+                {confirmButtonLabel}
               </button>
             </div>
           </div>

@@ -120,6 +120,9 @@ CORS configuration.
 
 ## API
 
+完整的客户端请求流程、通知去重、快照策略和接口请求/响应示例见
+[自托管同步流程与服务端 API](../docs/self-hosted-sync.md)。
+
 All space endpoints require:
 
 ```http

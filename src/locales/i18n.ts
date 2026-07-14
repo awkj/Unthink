@@ -47,10 +47,18 @@ void i18n.use(initReactI18next).init({
   lng: locale,
   supportedLngs: Object.keys(resources),
   fallbackLng: false,
+  load: "currentOnly",
   defaultNS: defaultNamespace,
   ns: [defaultNamespace],
+  keySeparator: false,
   initAsync: false,
   returnNull: false,
+  parseMissingKeyHandler: (key) => {
+    throw new Error(`Missing translation: ${key}`)
+  },
+  missingInterpolationHandler: (_text, value) => {
+    throw new Error(`Missing interpolation value: ${value}`)
+  },
   interpolation: {
     escapeValue: false,
   },

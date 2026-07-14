@@ -41,7 +41,7 @@ export const ViewEditPanel: React.FC<ViewEditPanelProps> = ({ viewUid }) => {
       description: localize("view.delete.description"),
       onConfirm: () => {
         todoService.deleteView(viewUid)
-        navigate("/desktop/inbox")
+        navigate("/inbox")
       },
     })
   }

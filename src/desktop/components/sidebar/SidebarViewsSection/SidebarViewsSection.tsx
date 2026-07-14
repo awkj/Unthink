@@ -30,7 +30,7 @@ const ViewRow: React.FC<ViewRowProps> = ({ uid, name, active }) => {
     <Link
       ref={setNodeRef}
       style={style}
-      to={`/desktop/views/${uid}`}
+      to={`/views/${uid}`}
       className={classNames(
         desktopStyles.SidebarMenuItem,
         active ? desktopStyles.SidebarViewsItemActive : desktopStyles.SidebarViewsItemInactive,
@@ -71,7 +71,7 @@ export const SidebarViewsSection: React.FC = () => {
         <SortableContext items={views.map((v) => v.uid)} strategy={verticalListSortingStrategy}>
           <div className={desktopStyles.SidebarMenuItemContainer}>
             {views.map((v) => (
-              <ViewRow key={v.uid} uid={v.uid} name={v.name} active={location.pathname === `/desktop/views/${v.uid}`} />
+              <ViewRow key={v.uid} uid={v.uid} name={v.name} active={location.pathname === `/views/${v.uid}`} />
             ))}
           </div>
         </SortableContext>

@@ -32,11 +32,11 @@ export const SelectionPanel: React.FC = () => {
 
   if (selectedItems.length === 0) {
     // Check if we're on area or project routes using proper route matching
-    const areaMatch = matchPath({ path: "/desktop/area/:areaUid" }, location.pathname)
+    const areaMatch = matchPath({ path: "/area/:areaUid" }, location.pathname)
 
-    const projectMatch = matchPath({ path: "/desktop/project/:projectUid" }, location.pathname)
+    const projectMatch = matchPath({ path: "/project/:projectUid" }, location.pathname)
 
-    const viewMatch = matchPath({ path: "/desktop/views/:viewUid" }, location.pathname)
+    const viewMatch = matchPath({ path: "/views/:viewUid" }, location.pathname)
 
     if (areaMatch) {
       return <AreaDetailPanel />

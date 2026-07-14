@@ -94,6 +94,14 @@ export function thirdpartySyncServersConfigKey(): ConfigKey<ISelfhostedSyncServe
   }
 }
 
+export function selfhostedSyncEnabledConfigKey(): ConfigKey<boolean> {
+  return {
+    key: "selfhostedSyncEnabled",
+    default: true,
+    check: (value: boolean) => typeof value === "boolean",
+  }
+}
+
 export function selfhostedSyncMetadataConfigKey(serverId: string): ConfigKey<ISelfhostedSyncMetadata | null> {
   return {
     key: `selfhostedSyncMetadata-${serverId}`,

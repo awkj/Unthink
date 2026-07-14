@@ -11,14 +11,14 @@ export const desktopStyles = {
     "flex items-center justify-center hover:bg-bg3 hover:text-t1 rounded-md transition-colors size-6 text-t3",
   SidebarHeaderIconButtonIcon: /*tw*/ "size-4",
 
-  SidebarBottomBar: /*tw*/ "h-11 flex flex-shrink-0 items-center gap-1 border-t border-line-light pl-3.5 pr-1.5",
+  SidebarBottomBar: /*tw*/ "h-11 flex flex-shrink-0 items-center gap-1 border-t border-line-light pl-1.5 pr-0.5",
   SidebarBottomCreateButton:
     /*tw*/ "flex h-7 min-w-0 items-center gap-2 rounded-full border border-transparent px-2 text-sm text-t2 transition-colors hover:border-line-regular",
   SidebarBottomCreateIcon: /*tw*/ "size-4.5 flex-shrink-0",
   SidebarBottomCreateLabel: /*tw*/ "truncate font-medium",
-  SidebarBottomActions: /*tw*/ "ml-auto flex items-center gap-1",
+  SidebarBottomActions: /*tw*/ "ml-auto flex items-center gap-0",
   SidebarBottomIconButton:
-    /*tw*/ "flex size-6 items-center justify-center rounded-full border border-transparent text-t3 transition-colors hover:border-line-regular disabled:pointer-events-none disabled:opacity-50",
+    /*tw*/ "flex h-7 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-transparent text-t3 transition-colors hover:border-line-regular disabled:pointer-events-none disabled:opacity-50",
   SidebarBottomIcon: /*tw*/ "size-4.5",
 
   SidebarMenuItemContainer: /*tw*/ "flex flex-col gap-0.5 px-3.5",
@@ -42,13 +42,13 @@ export const desktopStyles = {
 
   SidebarAreaItem:
     /*tw*/ "h-7 px-2 flex rounded-lg text-sm leading-5 items-center gap-2 group cursor-pointer transition-colors font-medium",
-  SidebarAreaItemActive: /*tw*/ "bg-bg3 text-t1",
+  SidebarAreaItemActive: /*tw*/ "bg-sidebar-active text-t1",
   SidebarAreaItemInactive: /*tw*/ "text-t1 hover:bg-bg3",
   SidebarAreaItemIcon: /*tw*/ "size-4 flex items-center justify-center flex-shrink-0 text-t3",
   SidebarAreaToggleButton: "flex-shrink-0 size-4 transition-all flex items-center justify-center text-t3",
   SidebarAreaGap: /*tw*/ "mt-3 first:mt-0",
 
-  SidebarProjectItemActive: /*tw*/ "bg-bg3 text-t1",
+  SidebarProjectItemActive: /*tw*/ "bg-sidebar-active text-t1",
   SidebarProjectItemInactive: /*tw*/ "text-t2 hover:bg-bg3 hover:text-t1",
   SidebarProjectItemIcon: /*tw*/ "size-4 flex items-center justify-center flex-shrink-0 text-t3",
   SidebarProjectItemDueDate: /*tw*/ "text-xs leading-5",
@@ -183,6 +183,7 @@ export const desktopStyles = {
   SettingsSidebarBackIconContainer: /*tw*/ "flex size-3.5 items-center justify-center",
   SettingsSidebarBackIcon: /*tw*/ "size-3.5",
   SettingsSidebarBackLabel: /*tw*/ "font-medium",
+  SettingsSidebarGuideLink: /*tw*/ "ml-auto",
   SettingsSidebarGroupList: /*tw*/ "flex flex-1 flex-col gap-0.5 overflow-y-auto px-2 pb-2",
   SettingsSidebarGroup: /*tw*/ "flex flex-col gap-0.5",
   SettingsSidebarGroupHeading: /*tw*/ "px-2 pb-1.5 pt-3 text-xs font-semibold text-t3",
@@ -481,7 +482,7 @@ export const desktopStyles = {
 
   SettingsContentContainer: /*tw*/ "h-full w-full overflow-y-auto",
   SettingsContentBackButton: /*tw*/ "p-3",
-  SettingsContentInner: /*tw*/ "mx-auto flex w-full max-w-2xl flex-col gap-12 px-4 pb-32",
+  SettingsContentInner: /*tw*/ "mx-auto flex w-full max-w-3xl flex-col gap-12 px-4 pb-32",
   SettingsContentInnerWithBack: /*tw*/ "pt-6",
   SettingsContentInnerWithoutBack: /*tw*/ "pt-6",
   SettingsContentPageTitle: /*tw*/ "px-4 text-3xl font-semibold leading-9 text-t1",
@@ -884,13 +885,13 @@ export const desktopStyles = {
     "flex items-center justify-center hover:bg-bg3 hover:text-t1 rounded-md transition-colors size-5 text-t3",
   SidebarViewsHeaderAddIcon: /*tw*/ "size-3.5",
   SidebarProjectsHeader: /*tw*/ "px-4 pt-3 pb-1.5 text-xs font-semibold text-t3",
-  SidebarViewsItemActive: /*tw*/ "bg-bg3 text-t1",
+  SidebarViewsItemActive: /*tw*/ "bg-sidebar-active text-t1",
   SidebarViewsItemInactive: /*tw*/ "text-t2 hover:bg-bg3 hover:text-t1",
   SidebarViewsEmpty: /*tw*/ "px-4 py-1 text-xs text-t3",
 
   // Views — pages
   ViewDetailEmpty: /*tw*/ "px-4 py-8 text-sm text-t3 text-center",
-  GuidePageContent: /*tw*/ "mx-auto flex w-full max-w-3xl flex-col gap-9 px-6 py-7 pb-16",
+  GuidePageContent: /*tw*/ "flex w-full flex-col gap-9 px-4",
   GuideIntro: /*tw*/ "max-w-2xl text-sm leading-6 text-t2",
   GuideSection: /*tw*/ "flex flex-col gap-3",
   GuideSectionHeader: /*tw*/ "flex flex-col gap-1",

@@ -35,7 +35,7 @@ export const SidebarProjectItem: React.FC<SidebarProjectItemProps> = ({ projectI
     pointerEvents: (isDragging ? "none" : "auto") as React.CSSProperties["pointerEvents"],
   }
 
-  const isActive = location.pathname === `/desktop/project/${projectInfo.uid}`
+  const isActive = location.pathname === `/project/${projectInfo.uid}`
 
   const sidebarProjectClass = classNames(desktopStyles.SidebarMenuItem, {
     [desktopStyles.SidebarProjectItemActive]: isActive,
@@ -44,7 +44,7 @@ export const SidebarProjectItem: React.FC<SidebarProjectItemProps> = ({ projectI
 
   return (
     <Link
-      to={`/desktop/project/${projectInfo.uid}`}
+      to={`/project/${projectInfo.uid}`}
       className={sidebarProjectClass}
       ref={setNodeRef}
       style={style}

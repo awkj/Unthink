@@ -31,7 +31,7 @@ export const SidebarAreaItem: React.FC<SidebarAreaItemProps> = ({ areaInfo }) =>
   }
 
   const isExpanded = !config.includes(areaInfo.id)
-  const isActive = location.pathname === `/desktop/area/${areaInfo.uid}`
+  const isActive = location.pathname === `/area/${areaInfo.uid}`
 
   const handleToggle = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -65,7 +65,7 @@ export const SidebarAreaItem: React.FC<SidebarAreaItemProps> = ({ areaInfo }) =>
         style={style}
         {...attributes}
         {...listeners}
-        to={`/desktop/area/${areaInfo.uid}`}
+        to={`/area/${areaInfo.uid}`}
         className={classNames(sidebarAreaClass)}
       >
         <div className={classNames(desktopStyles.SidebarAreaItemIcon)}>

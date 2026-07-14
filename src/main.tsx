@@ -9,10 +9,6 @@ function shouldLoadDesktop() {
   if (platform.isTauri && !platform.isNative) {
     return true
   }
-  const pathname = location.pathname
-  if (pathname !== "/") {
-    return pathname.startsWith("/desktop")
-  }
   return !platform.prefersMobileLayout
 }
 

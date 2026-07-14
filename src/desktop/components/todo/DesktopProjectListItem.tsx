@@ -57,7 +57,7 @@ export const DesktopProjectListItem: React.FC<DesktopProjectListItemProps> = ({
       style={style}
       {...attributes}
       {...listeners}
-      to={`/desktop/project/${project.uid}`}
+      to={`/project/${project.uid}`}
       draggable={false}
       data-testid={TestIds.ProjectListItem.Root}
       className={classNames(desktopStyles.DesktopProjectListItemLink, {

@@ -1,4 +1,8 @@
-import { selfhostedSyncMetadataConfigKey, thirdpartySyncServersConfigKey } from "@/services/config/config"
+import {
+  selfhostedSyncEnabledConfigKey,
+  selfhostedSyncMetadataConfigKey,
+  thirdpartySyncServersConfigKey,
+} from "@/services/config/config"
 import { IConfigService } from "@/services/config/configService"
 import { ITodoService } from "@/services/todo/todoService"
 import { IAttachmentUploadService } from "@/services/attachment/attachmentUploadService"
@@ -61,7 +65,7 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
   private metadata: ISelfhostedSyncMetadata | null = null
   private syncRequest: Promise<void> | null = null
   private syncTimer: ReturnType<typeof setTimeout> | null = null
-  private syncAfterCurrent = false
+  private pendingServerRevision = 0
   private eventStreamController: AbortController | null = null
   private applyingRemoteChanges = false
   private retryAttempt = 0
@@ -91,7 +95,7 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
   }
 
   get showSyncIcon(): boolean {
-    return this.enabled && this.hasServer
+    return this.enabled && this.hasServer && this.syncEnabled
   }
 
   get hasServer(): boolean {
@@ -104,6 +108,10 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
 
   get config(): ISelfhostedSyncServerConfig | null {
     return this.configService.get(thirdpartySyncServersConfigKey())
+  }
+
+  get syncEnabled(): boolean {
+    return this.configService.get(selfhostedSyncEnabledConfigKey())
   }
 
   get syncing(): boolean {
@@ -134,9 +142,11 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
       uploadedVersion: {},
     }
     await this.configService.save(thirdpartySyncServersConfigKey(), newServer)
+    await this.configService.save(selfhostedSyncEnabledConfigKey(), true)
     await this.configService.save(selfhostedSyncMetadataConfigKey(newServer.id), metadata)
     this.storage = storage
     this.metadata = metadata
+    this.pendingServerRevision = 0
     this.startEventStream()
     await this.syncAttachmentStorage(storage, newServer)
     this._lastError = null
@@ -145,15 +155,94 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
     return newServer.id
   }
 
-  async deleteServer(): Promise<void> {
+  async updateServer(config: Omit<ISelfhostedSyncServerConfig, "id">): Promise<void> {
+    const currentConfig = this.config
+    if (!currentConfig || !this.metadata) {
+      throw new Error("No sync server configured")
+    }
+    if (this.syncRequest) {
+      await this.syncRequest
+    }
+
+    const folder = config.folder.trim().toLowerCase()
+    if (!folder) {
+      throw new Error("Folder name is required")
+    }
+    const updatedConfig: ISelfhostedSyncServerConfig = {
+      ...config,
+      folder,
+      id: currentConfig.id,
+    }
+    const storage = this.createStorage(updatedConfig)
+    await storage.status()
+
+    const serverChanged =
+      updatedConfig.entrypoint !== currentConfig.entrypoint || updatedConfig.folder !== currentConfig.folder
+    const metadata: ISelfhostedSyncMetadata = serverChanged
+      ? {
+          clientId: generateUuid(),
+          serverRevision: 0,
+          snapshotRevision: 0,
+          uploadedVersion: {},
+        }
+      : this.metadata
+
+    this.stopEventStream()
+    this.clearScheduledSync()
+    await this.configService.save(thirdpartySyncServersConfigKey(), updatedConfig)
+    if (serverChanged) {
+      await this.configService.save(selfhostedSyncMetadataConfigKey(updatedConfig.id), metadata)
+    }
+    this.storage = storage
+    this.metadata = metadata
+    this.pendingServerRevision = 0
+    this.retryAttempt = 0
+    this._lastError = null
+    this._lastSyncedAt = null
+    if (!this.syncEnabled) {
+      this.onStateChangeEmitter.fire()
+      return
+    }
+    await this.syncAttachmentStorage(storage, updatedConfig)
+    this.startEventStream()
+    this.onStateChangeEmitter.fire()
+    await this.sync()
+  }
+
+  async setSyncEnabled(enabled: boolean): Promise<void> {
+    const config = this.config
+    if (!config) {
+      throw new Error("No sync server configured")
+    }
+    if (this.syncRequest) {
+      await this.syncRequest
+    }
+    await this.configService.save(selfhostedSyncEnabledConfigKey(), enabled)
+    this.clearScheduledSync()
+    this.pendingServerRevision = 0
+    if (enabled) {
+      this._lastError = null
+      await this.syncAttachmentStorage(this.requireStorage(), config)
+      this.startEventStream()
+      this.scheduleSync(0)
+    } else {
+      this.stopEventStream()
+      await this.attachmentService.clearSelfhostedConfig(config.id)
+    }
+    this.onStateChangeEmitter.fire()
+  }
+
+  async removeServer(): Promise<void> {
     const config = this.config
     if (config) {
       await this.attachmentService.clearSelfhostedConfig(config.id)
       await this.configService.save(selfhostedSyncMetadataConfigKey(config.id), null)
     }
     await this.configService.save(thirdpartySyncServersConfigKey(), null)
+    await this.configService.save(selfhostedSyncEnabledConfigKey(), true)
     this.storage = null
     this.metadata = null
+    this.pendingServerRevision = 0
     this.stopEventStream()
     this._lastError = null
     this._lastSyncedAt = null
@@ -169,12 +258,17 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
     if (!this.enabled) {
       return Promise.reject(new Error("Self-hosted sync is only available for the local database"))
     }
+    if (!this.syncEnabled) {
+      return Promise.reject(new Error("Self-hosted sync is paused"))
+    }
 
     this.clearScheduledSync()
     this._syncing = true
     this.onStateChangeEmitter.fire()
+    let succeeded = false
     const request = this.performSync()
       .then(() => {
+        succeeded = true
         this.retryAttempt = 0
         this._lastError = null
         this._lastSyncedAt = Date.now()
@@ -185,15 +279,12 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
         throw error
       })
       .finally(() => {
-        let runAgain = false
         if (this.syncRequest === request) {
           this.syncRequest = null
-          runAgain = this.syncAfterCurrent
-          this.syncAfterCurrent = false
         }
         this._syncing = false
         this.onStateChangeEmitter.fire()
-        if (runAgain) this.scheduleSync(0)
+        if (succeeded && this.hasPendingSyncWork()) this.scheduleSync(0)
       })
     this.syncRequest = request
     return request
@@ -217,20 +308,24 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
         }
         await this.saveMetadata()
       }
-      await this.syncAttachmentStorage(this.storage, config)
-      this.startEventStream()
+      if (this.syncEnabled) {
+        await this.syncAttachmentStorage(this.storage, config)
+        this.startEventStream()
+      }
     }
     this.installAutoSyncTriggers()
     this.onStateChangeEmitter.fire()
-    if (this.hasServer) {
+    if (this.hasServer && this.syncEnabled) {
       this.scheduleSync(0)
     }
   }
 
   private async performSync(): Promise<void> {
     await this.pullRemoteChanges()
-    await this.pushLocalChanges()
-    await this.pullRemoteChanges()
+    const pushedLocalChanges = await this.pushLocalChanges()
+    if (pushedLocalChanges) {
+      await this.pullRemoteChanges()
+    }
     await this.compactIfNeeded()
   }
 
@@ -269,17 +364,18 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
     }
   }
 
-  private async pushLocalChanges(): Promise<void> {
+  private async pushLocalChanges(): Promise<boolean> {
     const storage = this.requireStorage()
     const metadata = this.requireMetadata()
     const currentVersion = this.todoService.getModelVersion(this.todoService.storageId)
     if (!hasVersionBeyond(currentVersion, metadata.uploadedVersion)) {
-      return
+      return false
     }
     const patch = this.todoService.exportPatch(metadata.uploadedVersion, this.todoService.storageId)
     await storage.appendChange(metadata.clientId, generateUuid(), encodeBase64(ByteBuffer.wrap(patch)))
     metadata.uploadedVersion = mergeVersions(metadata.uploadedVersion, currentVersion)
     await this.saveMetadata()
+    return true
   }
 
   private async compactIfNeeded(): Promise<void> {
@@ -343,7 +439,7 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
 
   private installAutoSyncTriggers(): void {
     const trigger = () => {
-      if (this.hasServer) this.requestImmediateSync()
+      if (this.hasServer && this.syncEnabled) this.requestImmediateSync()
     }
     window.addEventListener("online", trigger)
     window.addEventListener("focus", trigger)
@@ -354,7 +450,7 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
   }
 
   private scheduleSync(delay: number): void {
-    if (!this.storage || !this.metadata || !this.enabled) return
+    if (!this.storage || !this.metadata || !this.enabled || !this.syncEnabled) return
     this.clearScheduledSync()
     this.syncTimer = setTimeout(() => {
       this.syncTimer = null
@@ -364,17 +460,32 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
     }, delay)
   }
 
-  private requestImmediateSync(): void {
-    if (this.syncRequest) {
-      this.syncAfterCurrent = true
-      return
+  private requestImmediateSync(serverRevision?: number): void {
+    if (serverRevision !== undefined) {
+      const metadata = this.metadata
+      if (metadata && serverRevision <= metadata.serverRevision) return
+      this.pendingServerRevision = Math.max(this.pendingServerRevision, serverRevision)
     }
+    if (this.syncRequest) return
     this.scheduleSync(0)
+  }
+
+  private hasPendingSyncWork(): boolean {
+    const metadata = this.metadata
+    if (!metadata || !this.storage || !this.enabled || !this.syncEnabled) return false
+
+    const hasPendingRemoteChanges = this.pendingServerRevision > metadata.serverRevision
+    if (!hasPendingRemoteChanges) {
+      this.pendingServerRevision = 0
+    }
+    const currentVersion = this.todoService.getModelVersion(this.todoService.storageId)
+    const hasPendingLocalChanges = hasVersionBeyond(currentVersion, metadata.uploadedVersion)
+    return hasPendingRemoteChanges || hasPendingLocalChanges
   }
 
   private startEventStream(): void {
     this.stopEventStream()
-    if (!this.storage || !this.metadata || !this.enabled) return
+    if (!this.storage || !this.metadata || !this.enabled || !this.syncEnabled) return
     const controller = new AbortController()
     this.eventStreamController = controller
     void this.runEventStream(this.storage, this.metadata.clientId, controller.signal)
@@ -392,7 +503,7 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
       try {
         await storage.subscribeChanges(
           clientId,
-          () => this.requestImmediateSync(),
+          (revision) => this.requestImmediateSync(revision),
           () => {
             connected = true
             retryAttempt = 0

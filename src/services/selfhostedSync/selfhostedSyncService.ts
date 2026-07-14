@@ -21,6 +21,7 @@ export interface ISelfhostedSyncService {
 
   readonly hasServer: boolean
   readonly enabled: boolean
+  readonly syncEnabled: boolean
   readonly syncing: boolean
   readonly lastError: string | null
   readonly lastSyncedAt: number | null
@@ -32,7 +33,11 @@ export interface ISelfhostedSyncService {
 
   addServer(config: Omit<ISelfhostedSyncServerConfig, "id">): Promise<string>
 
-  deleteServer(): Promise<void>
+  updateServer(config: Omit<ISelfhostedSyncServerConfig, "id">): Promise<void>
+
+  setSyncEnabled(enabled: boolean): Promise<void>
+
+  removeServer(): Promise<void>
 
   sync(): Promise<void>
 

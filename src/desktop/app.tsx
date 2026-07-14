@@ -98,7 +98,7 @@ export const App = () => {
 
   const element = useRoutes([
     {
-      path: "/desktop",
+      path: "/",
       children: [
         {
           path: "",
@@ -121,7 +121,7 @@ export const App = () => {
               element: <Today />,
             },
             {
-              path: "schedule",
+              path: "scheduled",
               element: <Schedule />,
             },
             {
@@ -135,10 +135,6 @@ export const App = () => {
             {
               path: "deleted",
               element: <Deleted />,
-            },
-            {
-              path: "guide",
-              element: <Guide />,
             },
             {
               path: "future_projects",
@@ -185,6 +181,10 @@ export const App = () => {
                   path: "ai",
                   element: <AISettings />,
                 },
+                {
+                  path: "guide",
+                  element: <Guide />,
+                },
               ],
             },
           ],
@@ -193,7 +193,7 @@ export const App = () => {
     },
     {
       path: "*",
-      element: <Navigate to="/desktop/inbox" replace />,
+      element: <Navigate to="/inbox" replace />,
     },
   ])
 

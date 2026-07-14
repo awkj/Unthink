@@ -23,7 +23,7 @@ export const SidebarFutureProjectsItem: React.FC<SidebarFutureProjectsItemProps>
     transition,
   }
 
-  const isActive = location.pathname === "/desktop/future_projects"
+  const isActive = location.pathname === "/future_projects"
   const sidebarFutureTasksClass = classNames(desktopStyles.SidebarMenuItem, {
     [desktopStyles.SidebarMenuItemActive]: isActive,
     [desktopStyles.SidebarMenuItemInactive]: !isActive,
@@ -31,7 +31,7 @@ export const SidebarFutureProjectsItem: React.FC<SidebarFutureProjectsItemProps>
 
   return (
     <Link
-      to="/desktop/future_projects"
+      to="/future_projects"
       className={sidebarFutureTasksClass}
       ref={setNodeRef}
       style={style}

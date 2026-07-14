@@ -1,4 +1,4 @@
-import { CircleCheckIcon, CloudSlashIcon, SettingsIcon } from "@/ui/components/icons"
+import { CircleCheckIcon, SettingsIcon, TrashIcon } from "@/ui/components/icons"
 import { useService } from "@/ui/hooks/use-service"
 import { useWatchEvent } from "@/ui/hooks/use-watch-event"
 import { localize } from "@/nls"
@@ -25,7 +25,8 @@ export const SelfhostedSync = () => {
     addButtonLabel,
     syncButtonLabel,
     formItemsLabel,
-    handleDeleteServer,
+    handleRemoveServer,
+    handleSetSyncEnabled,
     handleSync,
     onAddServer,
   } = useAddSelfhostedServer({
@@ -73,11 +74,14 @@ export const SelfhostedSync = () => {
         },
         {
           title: localize("sync.status"),
-          description:
-            selfhostedSyncService.lastError ??
-            (selfhostedSyncService.lastSyncedAt
-              ? localize("sync.lastSyncedAt", { 0: new Date(selfhostedSyncService.lastSyncedAt).toLocaleString() })
-              : localize("sync.notSyncedYet")),
+          description: !selfhostedSyncService.syncEnabled
+            ? localize("sync.paused")
+            : (selfhostedSyncService.lastError ??
+              (selfhostedSyncService.lastSyncedAt
+                ? localize("sync.lastSyncedAt", {
+                    0: new Date(selfhostedSyncService.lastSyncedAt).toLocaleString(),
+                  })
+                : localize("sync.notSyncedYet"))),
           mode: {
             type: "label",
             label: "",
@@ -87,9 +91,19 @@ export const SelfhostedSync = () => {
 
       const actionItems: ListItemOption[] = [
         {
+          title: localize("sync.syncEnabled"),
+          description: localize("sync.syncEnabled.description"),
+          onClick: () => void handleSetSyncEnabled(!selfhostedSyncService.syncEnabled),
+          mode: {
+            type: "switch",
+            checked: selfhostedSyncService.syncEnabled,
+          },
+        },
+        {
           icon: <CircleCheckIcon className={styles.settingsDatabaseIcon} />,
           title: syncButtonLabel,
           onClick: handleSync,
+          hidden: !selfhostedSyncService.syncEnabled,
           mode: {
             type: "button",
             theme: "primary",
@@ -97,9 +111,9 @@ export const SelfhostedSync = () => {
           },
         },
         {
-          icon: <CloudSlashIcon className={styles.settingsDatabaseIcon} />,
+          icon: <TrashIcon className={styles.settingsDatabaseIcon} />,
           title: deleteButtonLabel,
-          onClick: handleDeleteServer,
+          onClick: handleRemoveServer,
           mode: {
             type: "button",
             theme: "danger",

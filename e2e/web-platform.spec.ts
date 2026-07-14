@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 test("OPFS database adapter creates a valid manifest-backed local database", async ({ page }) => {
-  await page.goto("/desktop/inbox")
+  await page.goto("/inbox")
   await expect(page.locator("#root")).not.toBeEmpty({ timeout: 15_000 })
   const storageState = await page.evaluate(async () => {
     const root = await navigator.storage.getDirectory()
@@ -35,13 +35,13 @@ test("OPFS database adapter creates a valid manifest-backed local database", asy
 test("cold browser startup stays within budget", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name === "mobile-chromium", "desktop cold-start budget is the canonical CI sample")
   const startedAt = performance.now()
-  await page.goto("/desktop/inbox")
+  await page.goto("/inbox")
   await expect(page.locator("#root")).not.toBeEmpty({ timeout: 5_000 })
   expect(performance.now() - startedAt).toBeLessThan(5_000)
 })
 
-test("desktop and mobile routes survive a hard refresh", async ({ page }, testInfo) => {
-  const path = testInfo.project.name === "mobile-chromium" ? "/today" : "/desktop/today"
+test("desktop and mobile routes survive a hard refresh", async ({ page }) => {
+  const path = "/today"
   await page.goto(path)
   await page.reload()
   await expect(page).toHaveURL(new RegExp(`${path}$`))
@@ -49,7 +49,7 @@ test("desktop and mobile routes survive a hard refresh", async ({ page }, testIn
 })
 
 test("service worker starts the app shell offline", async ({ page, context }) => {
-  await page.goto("/desktop/inbox")
+  await page.goto("/inbox")
   await page.evaluate(() => navigator.serviceWorker.ready)
   await expect
     .poll(
@@ -85,7 +85,7 @@ test("service worker starts the app shell offline", async ({ page, context }) =>
 })
 
 test("PWA registration checks for updates and reports its active version", async ({ page }) => {
-  await page.goto("/desktop/inbox")
+  await page.goto("/inbox")
   const version = await page.evaluate(async () => {
     const registration = await navigator.serviceWorker.ready
     await registration.update()

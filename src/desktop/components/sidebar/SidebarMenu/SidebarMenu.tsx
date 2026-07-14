@@ -21,32 +21,32 @@ import { MenuItem } from "../../MenuItem/MenuItem.tsx"
 
 const baseLinks = [
   {
-    to: "/desktop/inbox",
+    to: "/inbox",
     text: localize("inbox"),
     icon: <ThingsInboxIcon />,
   },
   {
-    to: "/desktop/today",
+    to: "/today",
     text: localize("today"),
     icon: <ThingsTodayIcon />,
   },
   {
-    to: "/desktop/schedule",
+    to: "/scheduled",
     text: localize("schedule"),
     icon: <ThingsScheduleIcon />,
   },
   {
-    to: "/desktop/pending",
+    to: "/pending",
     text: localize("pending"),
     icon: <ThingsAnytimeIcon />,
   },
   {
-    to: "/desktop/completed",
+    to: "/completed",
     text: localize("completed"),
     icon: <ThingsLogbookIcon />,
   },
   {
-    to: "/desktop/deleted",
+    to: "/deleted",
     text: localize("deleted"),
     icon: <ThingsDeletedIcon />,
   },
@@ -68,8 +68,8 @@ export const SidebarMenu: React.FC = () => {
   return (
     <ul className={classNames(desktopStyles.SidebarMenuItemContainer, desktopStyles.SidebarPrimaryMenuSpacing)}>
       {baseLinks.map((link) => {
-        const isTodayLink = link.to === "/desktop/today"
-        const isInboxLink = link.to === "/desktop/inbox"
+        const isTodayLink = link.to === "/today"
+        const isInboxLink = link.to === "/inbox"
         const startDateCount = isTodayLink ? todayItems.startDateItemsCount : 0
         const dueDateCount = isTodayLink ? todayItems.dueDateItemsCount : 0
         return (
@@ -81,7 +81,7 @@ export const SidebarMenu: React.FC = () => {
             className={
               isInboxLink
                 ? desktopStyles.SidebarInboxMenuItem
-                : link.to === "/desktop/completed"
+                : link.to === "/completed"
                   ? desktopStyles.SidebarLogbookMenuItem
                   : undefined
             }

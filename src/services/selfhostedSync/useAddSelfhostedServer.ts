@@ -15,7 +15,7 @@ interface UseAddSelfhostedServerOptions {
   handleAddServerDialog(options: AddServerDialog): void
 }
 
-export const selfhostedSyncPageTitle = localize("sync.selfHostedSync")
+export const selfhostedSyncPageTitle = localize("sync.serverSettings")
 
 export const useAddSelfhostedServer = (options: UseAddSelfhostedServerOptions) => {
   const selfhostedSyncService = useService(ISelfhostedSyncService)
@@ -73,10 +73,19 @@ export const useAddSelfhostedServer = (options: UseAddSelfhostedServerOptions) =
     folderName: localize("sync.folderName"),
   }
 
-  const handleDeleteServer = async () => {
+  const handleRemoveServer = async () => {
     try {
-      await selfhostedSyncService.deleteServer()
+      await selfhostedSyncService.removeServer()
       options.toast("success", localize("sync.deleteConfigSuccess"))
+    } catch (error) {
+      options.toast("error", (error as Error).message)
+    }
+  }
+
+  const handleSetSyncEnabled = async (enabled: boolean) => {
+    try {
+      await selfhostedSyncService.setSyncEnabled(enabled)
+      options.toast("success", enabled ? localize("sync.resumeSuccess") : localize("sync.pauseSuccess"))
     } catch (error) {
       options.toast("error", (error as Error).message)
     }
@@ -118,14 +127,15 @@ export const useAddSelfhostedServer = (options: UseAddSelfhostedServerOptions) =
   return {
     title,
     actions,
-    pageTitle: localize("sync.selfHostedSync"),
+    pageTitle: localize("sync.serverSettings"),
     addButtonLabel,
     syncButtonLabel,
     emptyStateMessage,
     disabledStateMessage,
     formItemsLabel,
     deleteButtonLabel,
-    handleDeleteServer,
+    handleRemoveServer,
+    handleSetSyncEnabled,
     handleSync,
     onAddServer,
   }

@@ -17,13 +17,13 @@ const groups = [
       {
         id: "appearance",
         label: localize("settings.appearance"),
-        path: "/desktop/settings/appearance",
+        path: "/settings/appearance",
         icon: PaletteIcon,
       },
       {
         id: "ai",
         label: localize("settings.ai"),
-        path: "/desktop/settings/ai",
+        path: "/settings/ai",
         icon: AIIcon,
       },
     ],
@@ -34,14 +34,14 @@ const groups = [
     items: [
       {
         id: "selfhosted-sync",
-        label: localize("sync.selfHostedSync"),
-        path: "/desktop/settings/selfhosted-sync",
+        label: localize("sync.serverSettings"),
+        path: "/settings/selfhosted-sync",
         icon: Server,
       },
       {
         id: "import-export",
         label: localize("settings.import_export"),
-        path: "/desktop/settings/import-export",
+        path: "/settings/import-export",
         icon: DownloadIcon,
       },
     ],
@@ -84,17 +84,18 @@ export const SettingsSidebarContent: React.FC = () => {
         ))}
       </div>
       <div className={desktopStyles.SettingsSidebarFooter}>
-        <Link to="/desktop" className={desktopStyles.SettingsSidebarBackLink}>
+        <Link to="/" className={desktopStyles.SettingsSidebarBackLink}>
           <span className={desktopStyles.SettingsSidebarBackIconContainer}>
             <BackIcon className={desktopStyles.SettingsSidebarBackIcon} strokeWidth={1.5} />
           </span>
           <span className={desktopStyles.SettingsSidebarBackLabel}>{localize("settings.back_to_home")}</span>
         </Link>
-        <Link to="/desktop/guide" className={desktopStyles.SettingsSidebarBackLink}>
-          <span className={desktopStyles.SettingsSidebarBackIconContainer}>
-            <CircleQuestionMark className={desktopStyles.SettingsSidebarBackIcon} strokeWidth={1.5} />
-          </span>
-          <span className={desktopStyles.SettingsSidebarBackLabel}>{localize("guide.title")}</span>
+        <Link
+          to="/settings/guide"
+          className={classNames(desktopStyles.SidebarBottomIconButton, desktopStyles.SettingsSidebarGuideLink)}
+          aria-label={localize("guide.title")}
+        >
+          <CircleQuestionMark className={desktopStyles.SidebarBottomIcon} strokeWidth={1.5} />
         </Link>
       </div>
     </div>

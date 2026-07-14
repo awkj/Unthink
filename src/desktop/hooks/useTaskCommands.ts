@@ -58,7 +58,7 @@ export const useTaskCommands = (options: UseTaskCommands) => {
         if (projectId) {
           const projectUid = todoService.modelState.taskObjectMap.get(projectId)?.uid
           if (projectUid) {
-            navigate(`/desktop/project/${projectUid}`, {
+            navigate(`/project/${projectUid}`, {
               state: {
                 focusInput: projectPageTitleInputId(projectId),
               },

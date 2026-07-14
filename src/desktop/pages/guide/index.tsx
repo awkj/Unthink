@@ -1,10 +1,8 @@
-import { EntityHeader } from "@/desktop/components/common/EntityHeader"
-import { DesktopPage } from "@/desktop/components/DesktopPage"
+import { SettingsContent } from "@/desktop/components/settings/SettingsContent/SettingsContent"
 import { desktopStyles } from "@/desktop/theme/main"
 import { localize } from "@/nls"
 import {
   BoxIcon,
-  CircleQuestionMark,
   SubtaskIcon,
   ThingsAnytimeIcon,
   ThingsAreaIcon,
@@ -90,10 +88,7 @@ const workflowSteps = [
 ]
 
 export const Guide = () => (
-  <DesktopPage
-    showDetailPanel={false}
-    header={<EntityHeader renderIcon={() => <CircleQuestionMark />} title={localize("guide.title")} />}
-  >
+  <SettingsContent title={localize("guide.title")}>
     <div className={desktopStyles.GuidePageContent}>
       <p className={desktopStyles.GuideIntro}>{localize("guide.intro")}</p>
 
@@ -177,5 +172,5 @@ export const Guide = () => (
         </div>
       </section>
     </div>
-  </DesktopPage>
+  </SettingsContent>
 )

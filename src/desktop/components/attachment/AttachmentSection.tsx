@@ -250,7 +250,7 @@ export const AttachmentSection: React.FC<AttachmentSectionProps> = ({ parentUid 
           <span className={desktopStyles.AttachmentSectionWarningText}>
             {localize("attachments.notConfiguredWarning")}
           </span>
-          <Link to="/desktop/settings/selfhosted-sync" className={desktopStyles.AttachmentSectionWarningLink}>
+          <Link to="/settings/selfhosted-sync" className={desktopStyles.AttachmentSectionWarningLink}>
             <span>{localize("attachments.configureAction")}</span>
             <RightArrowIcon className={desktopStyles.AttachmentSectionWarningLinkArrow} strokeWidth={1.75} />
           </Link>

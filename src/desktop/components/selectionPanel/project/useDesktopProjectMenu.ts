@@ -84,7 +84,7 @@ export const useDesktopProjectMenu = (taskId: TreeID) => {
       description: localize("task.delete_project_confirm_description"),
       onConfirm: () => {
         todoService.deleteItem(taskId)
-        navigate("/desktop/inbox")
+        navigate("/inbox")
       },
     })
   }

@@ -115,7 +115,7 @@ export const ViewDetailPage: React.FC = () => {
     }
   }, [focusInputState, editService, hasUnnamedView])
 
-  if (!viewUid || !view) return <Navigate to="/desktop" replace />
+  if (!viewUid || !view) return <Navigate to="/" replace />
 
   // Hold rendering of TaskListItem until the IListService.mainList has been
   // swapped to this view's list. Otherwise the first render hands out the

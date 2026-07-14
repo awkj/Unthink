@@ -20,17 +20,17 @@ export function getNavigationPath(
 ): NavigationPath | null {
   switch (item.type) {
     case "area":
-      return { path: `/desktop/area/${item.uid}` }
+      return { path: `/area/${item.uid}` }
 
     case "project":
-      return { path: `/desktop/project/${item.uid}` }
+      return { path: `/project/${item.uid}` }
 
     case "task": {
       const parentId = item.parentId
       if (!parentId) {
         // Task with no parent goes to inbox
         return {
-          path: "/desktop/inbox",
+          path: "/inbox",
           state: { highlightTaskId: item.id },
         }
       }
@@ -43,14 +43,14 @@ export function getNavigationPath(
 
       if (parent.type === "area") {
         return {
-          path: `/desktop/area/${parent.uid}`,
+          path: `/area/${parent.uid}`,
           state: { highlightTaskId: item.id },
         }
       }
 
       if (parent.type === "project") {
         return {
-          path: `/desktop/project/${parent.uid}`,
+          path: `/project/${parent.uid}`,
           state: { highlightTaskId: item.id },
         }
       }
@@ -61,7 +61,7 @@ export function getNavigationPath(
         const project = taskObjectMap.get(projectId)
         if (project && project.type === "project") {
           return {
-            path: `/desktop/project/${project.uid}`,
+            path: `/project/${project.uid}`,
             state: { highlightTaskId: item.id },
           }
         }
