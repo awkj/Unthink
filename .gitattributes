@@ -1,6 +1,10 @@
+# Application icon binaries are updated frequently; keep their revisions in Git LFS.
 public/favicon.ico filter=lfs diff=lfs merge=lfs -text
 fastlane/metadata/android/en-US/images/icon.png filter=lfs diff=lfs merge=lfs -text
 assets/*icon*.png filter=lfs diff=lfs merge=lfs -text
 android/app/src/main/res/mipmap-*/ic_launcher*.png filter=lfs diff=lfs merge=lfs -text
-src-tauri/icons/** filter=lfs diff=lfs merge=lfs -text
+src-tauri/icons/**/*.png filter=lfs diff=lfs merge=lfs -text
+src-tauri/icons/*.png filter=lfs diff=lfs merge=lfs -text
+src-tauri/icons/*.icns filter=lfs diff=lfs merge=lfs -text
 src-tauri/gen/android/app/src/main/res/mipmap-*/ic_launcher*.png filter=lfs diff=lfs merge=lfs -text
+src-tauri/icons/** filter=lfs diff=lfs merge=lfs -text
