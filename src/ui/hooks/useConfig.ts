@@ -1,6 +1,6 @@
-import { ConfigKey, IConfigService } from "@/services/config/configService.ts"
+import { ConfigKey, IConfigService, parseConfigValue } from "@/services/config/configService.ts"
+import { useStore } from "zustand"
 import { useService } from "./use-service"
-import { useWatchEvent } from "./use-watch-event"
 
 export function useConfig<T>(key: ConfigKey<T>): {
   value: T
@@ -8,18 +8,16 @@ export function useConfig<T>(key: ConfigKey<T>): {
   saveIfValid: (value: T) => void
 } {
   const config = useService(IConfigService)
-  useWatchEvent(config.onConfigChange, (event) => {
-    return event.key === key.key
-  })
+  const storedValue = useStore(config.store, (state) => state.values[key.key])
 
   return {
-    value: config.get<T>(key),
+    value: parseConfigValue(key, storedValue),
     setValue: (value: T) => {
-      config.save(key, value)
+      void config.save(key, value)
     },
     saveIfValid: (value: T) => {
       if (key.check(value)) {
-        config.save(key, value)
+        void config.save(key, value)
       }
     },
   }

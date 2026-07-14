@@ -7,11 +7,11 @@
 
 export function isStartOfDay(timestamp: number) {
   // 将秒转为毫秒构造 Date 对象
-  const date = new Date(timestamp);
+  const date = new Date(timestamp)
   return (
     date.getUTCHours() === 0 &&
     date.getUTCMinutes() === 0 &&
     date.getUTCSeconds() === 0 &&
     date.getUTCMilliseconds() === 0
-  );
+  )
 }

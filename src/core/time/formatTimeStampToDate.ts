@@ -1,7 +1,7 @@
-import { format } from 'date-fns';
+import { format } from "date-fns/format"
 
 export function formatTimeStampToDate(timestamp: number) {
-  return format(timestamp, 'yyyy-MM-dd');
+  return format(timestamp, "yyyy-MM-dd")
 }
 
 /**
@@ -9,6 +9,6 @@ export function formatTimeStampToDate(timestamp: number) {
  * 如果时间戳为空或 0，返回 null
  */
 export function formatOptionalTimeStampToDate(timestamp?: number | null): string | null {
-  if (!timestamp) return null;
-  return format(timestamp, 'yyyy-MM-dd');
+  if (!timestamp) return null
+  return format(timestamp, "yyyy-MM-dd")
 }

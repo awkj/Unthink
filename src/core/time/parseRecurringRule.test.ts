@@ -1,5 +1,5 @@
 import assert from "node:assert/strict"
-import test from "node:test"
+import { test } from "vitest"
 import { parseRecurringRule } from "./parseRecurringRule"
 
 test("recurring rules parse compound intervals and an optional origin", () => {

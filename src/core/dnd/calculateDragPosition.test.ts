@@ -1,5 +1,5 @@
 import assert from "node:assert/strict"
-import test from "node:test"
+import { test } from "vitest"
 import { calculateDragPosition } from "./calculateDragPosition"
 
 test("drag position uses the hovered item as the stable before/after anchor", () => {

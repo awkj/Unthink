@@ -1,5 +1,5 @@
 import assert from "node:assert/strict"
-import test from "node:test"
+import { test } from "vitest"
 import { getNavigationPathFromDeepLink, NavigationService } from "./navigationService"
 
 test("macOS App Intent and Widget deep links only allow known navigation routes", () => {

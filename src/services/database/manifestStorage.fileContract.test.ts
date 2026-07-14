@@ -2,7 +2,7 @@ import assert from "node:assert/strict"
 import { mkdtemp, readFile, rename, rm, unlink, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import path from "node:path"
-import test from "node:test"
+import { test } from "vitest"
 import { ManifestStorage, type StorageFileAdapter } from "./manifestStorage"
 
 async function fileAdapter(directory: string): Promise<StorageFileAdapter> {
