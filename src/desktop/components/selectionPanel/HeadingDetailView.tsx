@@ -32,7 +32,7 @@ export const HeadingDetailView: React.FC<HeadingDetailViewProps> = ({ heading, o
     {
       icon: <EllipsisVertical strokeWidth={ICON_STROKE_WIDTH} />,
       handleClick: handleMenuClick,
-      title: localize("common.more", "More"),
+      title: localize("common.more"),
       testId: TestIds.HeadingDetail.MenuButton,
     },
     ...(onClearSelection
@@ -40,7 +40,7 @@ export const HeadingDetailView: React.FC<HeadingDetailViewProps> = ({ heading, o
           {
             icon: <CloseIcon strokeWidth={ICON_STROKE_WIDTH} />,
             handleClick: () => onClearSelection(),
-            title: localize("common.close", "Close"),
+            title: localize("common.close"),
           },
         ]
       : []),
@@ -57,7 +57,7 @@ export const HeadingDetailView: React.FC<HeadingDetailViewProps> = ({ heading, o
           <HashIcon className={desktopStyles.DetailViewHeaderStatusBox} strokeWidth={ICON_STROKE_WIDTH} />
         )}
         title={heading.title}
-        placeholder={localize("heading.title_placeholder", "Add heading title...")}
+        placeholder={localize("heading.title_placeholder")}
         onSave={handleTitleSave}
         extraActions={headerActions}
       />
@@ -66,9 +66,7 @@ export const HeadingDetailView: React.FC<HeadingDetailViewProps> = ({ heading, o
         <div className={desktopStyles.DetailViewContentInner}>
           <TaskLocationField itemId={heading.id} />
           <div className={desktopStyles.DetailViewSubtaskHeader}>
-            <span className={desktopStyles.DetailViewSubtaskHeaderTitle}>
-              {localize("heading.task_progress", "Task Progress")}
-            </span>
+            <span className={desktopStyles.DetailViewSubtaskHeaderTitle}>{localize("heading.task_progress")}</span>
             <span
               className={desktopStyles.DetailViewSubtaskHeaderCount}
             >{`${completedTaskCount} / ${heading.tasks.length}`}</span>

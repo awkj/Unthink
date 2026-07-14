@@ -1,55 +1,17 @@
-const isPseudo =
-  typeof document !== 'undefined' && document.location && document.location.hash.indexOf('pseudo=true') >= 0;
+import { getCurrentLocale } from "@/locales/common/locale"
+import { i18n, resources, type TranslationKey, type TranslationValues } from "@/locales/i18n"
 
-/**
- * Localize a message.
- *
- * `message` can contain `{n}` notation where it is replaced by the nth value in `...args`
- * For example, `localize('sayHello', 'hello {0}', name)`
- */
-export function localize(
-  key: string,
-  message: string,
-  ...args: (string | number | boolean | undefined | null)[]
-): string;
-export function localize(
-  data: string,
-  message: string,
-  ...args: (string | number | boolean | undefined | null)[]
-): string {
-  const messages = globalThis.i18nMessages || {};
-  if (!messages[data]) {
-    return _format(message, args);
-  }
-  if (typeof messages[data] === 'string') {
-    return _format(messages[data] || message, args);
-  }
-  return _format(messages[data].content || message, args);
-}
+const unresolvedInterpolation = /{{[^{}]+}}/
 
-function _format(message: string, args: (string | number | boolean | undefined | null)[]): string {
-  let result: string;
-
-  if (args.length === 0) {
-    result = message;
-  } else {
-    result = message.replace(/\{(\d+)\}/g, (match, rest) => {
-      const index = rest[0];
-      const arg = args[index];
-      let result = match;
-      if (typeof arg === 'string') {
-        result = arg;
-      } else if (typeof arg === 'number' || typeof arg === 'boolean' || arg === void 0 || arg === null) {
-        result = String(arg);
-      }
-      return result;
-    });
+/** Translate a known message key. Missing keys and interpolation values are programming errors. */
+export function localize(key: TranslationKey, values?: TranslationValues): string {
+  if (!Object.hasOwn(resources[getCurrentLocale()].translation, key)) {
+    throw new Error(`Missing translation: ${key}`)
   }
 
-  if (isPseudo) {
-    // FF3B and FF3D is the Unicode zenkaku representation for [ and ]
-    result = '\uFF3B' + result.replace(/[aouei]/g, '$&$&') + '\uFF3D';
+  const result = values === undefined ? i18n.t(key) : i18n.t(key, values)
+  if (unresolvedInterpolation.test(result)) {
+    throw new Error(`Missing interpolation value for translation: ${key}`)
   }
-
-  return result;
+  return result
 }

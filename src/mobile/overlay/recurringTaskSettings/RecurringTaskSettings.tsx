@@ -26,23 +26,21 @@ export const RecurringTaskSettings: React.FC = () => {
 
   if (!controller) return null
 
-  const placeholder = localize("recurring_task.rule_placeholder", "e.g. 1w, 2m, 1y3d, due:1d, start:2d")
+  const placeholder = localize("recurring_task.rule_placeholder")
 
   return (
     <BaseDialog
       zIndex={controller.zIndex}
-      title={localize("recurring_task.settings_title", "Set Recurring Task Rules")}
-      cancelText={localize("common.cancel", "Cancel")}
-      confirmText={localize("common.save", "Save")}
+      title={localize("recurring_task.settings_title")}
+      cancelText={localize("common.cancel")}
+      confirmText={localize("common.save")}
       onCancel={() => controller.cancel()}
       onConfirm={() => controller.save()}
       confirmDisabled={!controller.isStartDateRuleValid || !controller.isDueDateRuleValid}
     >
       <div className={styles.dialogActionList}>
         <div>
-          <label className={styles.dialogFieldLabel}>
-            {localize("recurring_task.start_date_rule", "Start Date Rule")}
-          </label>
+          <label className={styles.dialogFieldLabel}>{localize("recurring_task.start_date_rule")}</label>
           <input
             ref={startDateInputRef}
             type="text"
@@ -56,13 +54,13 @@ export const RecurringTaskSettings: React.FC = () => {
           )}
           {controller.getStartDateCalculation() && (
             <div className={styles.dialogFieldAccent}>
-              {localize("recurring_task.next_date", "Next date: {0}", controller.getStartDateCalculation())}
+              {localize("recurring_task.next_date", { 0: controller.getStartDateCalculation() })}
             </div>
           )}
         </div>
 
         <div>
-          <label className={styles.dialogFieldLabel}>{localize("recurring_task.due_date_rule", "Due Date Rule")}</label>
+          <label className={styles.dialogFieldLabel}>{localize("recurring_task.due_date_rule")}</label>
           <input
             type="text"
             className={classNames(styles.dialogInput, styles.dialogInputLightBorder, styles.dialogInputPlaceholder)}
@@ -75,7 +73,7 @@ export const RecurringTaskSettings: React.FC = () => {
           )}
           {controller.getDueDateCalculation() && (
             <div className={styles.dialogFieldAccent}>
-              {localize("recurring_task.next_date", "Next date: {0}", controller.getDueDateCalculation())}
+              {localize("recurring_task.next_date", { 0: controller.getDueDateCalculation() })}
             </div>
           )}
         </div>

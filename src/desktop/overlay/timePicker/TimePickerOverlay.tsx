@@ -199,10 +199,10 @@ export const TimePickerOverlay: React.FC = () => {
 
       <div className={desktopStyles.TimePickerOverlayFooter}>
         <button className={desktopStyles.TimePickerOverlayCancelButton} onClick={() => controller.dispose()}>
-          {localize("time_picker.cancel", "Cancel")}
+          {localize("time_picker.cancel")}
         </button>
         <button className={desktopStyles.TimePickerOverlayConfirmButton} onClick={handleConfirm}>
-          {localize("time_picker.confirm", "Confirm")}
+          {localize("time_picker.confirm")}
         </button>
       </div>
     </OverlayContainer>

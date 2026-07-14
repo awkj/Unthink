@@ -15,7 +15,7 @@ export const TagFilterBar: React.FC<TagFilterBarProps> = ({ filter, onOpen, onCl
     return null
   }
 
-  const label = filter.type === "tag" ? filter.value : localize("project.tagFilter.untagged", "No Tags")
+  const label = filter.type === "tag" ? filter.value : localize("project.tagFilter.untagged")
 
   return (
     <div className={styles.tagFilterBarRoot}>

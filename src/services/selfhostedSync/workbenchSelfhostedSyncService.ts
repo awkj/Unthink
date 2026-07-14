@@ -31,6 +31,10 @@ function hasVersionBeyond(current: Record<string, number>, known: Record<string,
   return Object.entries(current).some(([peer, version]) => version > (known[peer] ?? 0))
 }
 
+function isTransientEventStreamDisconnect(error: unknown): boolean {
+  return error instanceof TypeError || (error instanceof Error && error.name === "TypeError")
+}
+
 function getPayloadVersion(payloads: Uint8Array[]): Record<string, number> {
   if (payloads.length === 0) return {}
   const doc = new LoroDoc()
@@ -398,7 +402,12 @@ export class WorkbenchSelfhostedSyncService implements ISelfhostedSyncService {
         )
       } catch (error) {
         if (signal.aborted) return
-        console.warn("Self-hosted sync event stream disconnected:", error)
+        // WebKit reports ordinary network interruptions as `TypeError: Load failed`.
+        // The stream retries with backoff and periodic sync remains active, so this
+        // expected disconnect should not surface as a warning in the app console.
+        if (!isTransientEventStreamDisconnect(error)) {
+          console.warn("Self-hosted sync event stream disconnected:", error)
+        }
       }
       if (signal.aborted) return
       const delay = Math.min(1_000 * 2 ** retryAttempt, MAX_EVENT_RECONNECT_DELAY_MS)

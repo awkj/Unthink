@@ -28,7 +28,7 @@ const ViewItemContent: React.FC<{ name: string }> = ({ name }) => (
             name ? styles.homeProjectItemTitleNormal : styles.homeProjectItemTitlePlaceholder,
           )}
         >
-          {name || localize("view.detail.untitled", "Untitled view")}
+          {name || localize("view.detail.untitled")}
         </span>
       </div>
     </div>
@@ -130,7 +130,7 @@ export const MobileHomeViewsSection = () => {
   return (
     <div className={classNames(styles.screenEdgePadding, "mt-6")}>
       <div className={classNames(styles.areaDetailSectionHeader, styles.areaDetailSectionHeaderIndent)}>
-        <span className={styles.areaDetailSectionTitle}>{localize("view.sidebar.title", "Views")}</span>
+        <span className={styles.areaDetailSectionTitle}>{localize("view.sidebar.title")}</span>
       </div>
       <div>
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>

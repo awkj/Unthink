@@ -89,13 +89,13 @@ export const CreateTaskActionSheet: React.FC = () => {
       icon: <TextAlignStart className={styles.createTaskAttrIcon} />,
       content: taskManager.notes,
       onChange: (v) => taskManager.updateNotes(v),
-      placeholder: localize("create_sask_action_sheet.task_notes_placeholder", "Add Notes..."),
+      placeholder: localize("create_sask_action_sheet.task_notes_placeholder"),
     },
     {
       type: "label",
       key: "startDate",
       icon: <CalendarIcon className={styles.createTaskAttrIcon} />,
-      placeholder: localize("create_task_page.add_start_date", "Set Start Date"),
+      placeholder: localize("create_task_page.add_start_date"),
       value: taskManager.startDate ? { title: formatDate(taskManager.startDate) } : undefined,
       onClick: () => {
         mobileDatepicker.showDatePicker({
@@ -109,11 +109,11 @@ export const CreateTaskActionSheet: React.FC = () => {
       type: "label",
       key: "dueDate",
       icon: <FlagIcon className={styles.createTaskAttrIcon} />,
-      placeholder: localize("create_task_page.add_due_date", "Set Due Date"),
+      placeholder: localize("create_task_page.add_due_date"),
       testId: MobileTestIds.CreateTask.DueDateRow,
       value: taskManager.dueDate
         ? {
-            title: localize("create_task_page.due_date", "Due Date") + ": " + formatDate(taskManager.dueDate),
+            title: localize("create_task_page.due_date") + ": " + formatDate(taskManager.dueDate),
             subtitle: formatRemainingDays(taskManager.dueDate),
             titleType: isPastOrToday(taskManager.dueDate) ? "danger" : undefined,
           }
@@ -130,7 +130,7 @@ export const CreateTaskActionSheet: React.FC = () => {
       type: "tags",
       key: "tags",
       icon: <TagIcon className={styles.createTaskAttrIcon} />,
-      placeholder: localize("create_task_page.add_tags", "Add Tags"),
+      placeholder: localize("create_task_page.add_tags"),
       tags: taskManager.tags,
       testId: MobileTestIds.CreateTask.TagsRow,
       onClick: () => {
@@ -180,7 +180,7 @@ export const CreateTaskActionSheet: React.FC = () => {
           </SortableContext>
         </DndContext>
       ),
-      addButtonLabel: localize("create_task_page.add_subtask", "+ Add Subtask"),
+      addButtonLabel: localize("create_task_page.add_subtask"),
       onAdd: () => taskManager.createSubtask(),
       addButtonTestId: MobileTestIds.CreateTask.AddSubtaskButton,
     },
@@ -188,7 +188,7 @@ export const CreateTaskActionSheet: React.FC = () => {
       type: "interactive",
       key: "reminders",
       icon: <BellIcon className={styles.createTaskAttrIcon} />,
-      placeholder: localize("create_task_page.add_reminder", "+ Add Reminder"),
+      placeholder: localize("create_task_page.add_reminder"),
       testId: MobileTestIds.CreateTask.RemindersRow,
       items: taskManager.reminders.map((r) => {
         const { date, time } = formatReminderTime(r.time)
@@ -212,7 +212,7 @@ export const CreateTaskActionSheet: React.FC = () => {
           taskManager.deleteReminder(reminder.id)
         }
       },
-      addButtonLabel: localize("create_task_page.add_reminder", "+ Add Reminder"),
+      addButtonLabel: localize("create_task_page.add_reminder"),
       onAdd: () => {
         mobileDatepicker.showDatePicker({
           initialDate: Date.now(),
@@ -229,7 +229,7 @@ export const CreateTaskActionSheet: React.FC = () => {
   return (
     <div className={styles.createTaskPageStyle}>
       <PageHeader
-        title={localize("create_task_page.title", "New Task")}
+        title={localize("create_task_page.title")}
         showBack
         actions={[
           {
@@ -247,7 +247,7 @@ export const CreateTaskActionSheet: React.FC = () => {
               autoFocus
               value={taskManager.title}
               onChange={(e) => taskManager.updateTitle(e.target.value)}
-              placeholder={localize("create_sask_action_sheet.task_title_placeholder", "Task Title")}
+              placeholder={localize("create_sask_action_sheet.task_title_placeholder")}
               className={styles.createTaskTitleInput}
               autoComplete="new-password"
               data-testid={MobileTestIds.CreateTask.TitleInput}

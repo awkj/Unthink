@@ -59,12 +59,12 @@ function getOverlayAreas(todoService: ITodoService, searchText: string): Overlay
   const { filteredAreas } = getAllProject(todoService.modelState, searchText)
   return filteredAreas.map((area) => ({
     id: area.id,
-    title: area.title || localize("area.untitled", "New Area"),
+    title: area.title || localize("area.untitled"),
     projects: area.projectList.map((project) => ({
       id: project.id,
-      title: project.title || localize("project.untitled", "New Project"),
+      title: project.title || localize("project.untitled"),
       path: project.areaTitle
-        ? `${project.areaTitle} / ${project.title || localize("project.untitled", "New Project")}`
+        ? `${project.areaTitle} / ${project.title || localize("project.untitled")}`
         : project.title,
       progress: project.progress,
       status: project.status,
@@ -76,7 +76,7 @@ function getOverlayRootProjects(todoService: ITodoService, searchText: string): 
   const { filteredProjects } = getAllProject(todoService.modelState, searchText)
   return filteredProjects.map((project) => ({
     id: project.id,
-    title: project.title || localize("project.untitled", "New Project"),
+    title: project.title || localize("project.untitled"),
     progress: project.progress,
     status: project.status,
   }))
@@ -197,7 +197,7 @@ const TreeSelectContent: React.FC<TreeSelectContentProps> = ({ controller }) => 
               type="text"
               value={searchText}
               onChange={(event) => setSearchText(event.target.value)}
-              placeholder={localize("task_attr.search_project", "Search projects")}
+              placeholder={localize("task_attr.search_project")}
               autoFocus
             />
           </div>
@@ -222,7 +222,7 @@ const TreeSelectContent: React.FC<TreeSelectContentProps> = ({ controller }) => 
                   <InboxIcon className={desktopStyles.TreeSelectOverlayItemIcon} />
                 </span>
                 <span className={desktopStyles.TreeSelectOverlayProjectLabel}>
-                  {localize("task_attr.move_to_inbox", "Move to Inbox")}
+                  {localize("task_attr.move_to_inbox")}
                 </span>
               </button>
               {(areas.length > 0 || rootProjects.length > 0) && (
@@ -241,7 +241,7 @@ const TreeSelectContent: React.FC<TreeSelectContentProps> = ({ controller }) => 
                   <ArrowUpToLineIcon className={desktopStyles.TreeSelectOverlayItemIcon} />
                 </span>
                 <span className={desktopStyles.TreeSelectOverlayAreaItemLabel}>
-                  {localize("project_area_selector.move_to_root", "Move to root")}
+                  {localize("project_area_selector.move_to_root")}
                 </span>
               </button>
               {areas.length > 0 && <div className={desktopStyles.TreeSelectOverlayDivider} />}
@@ -250,7 +250,7 @@ const TreeSelectContent: React.FC<TreeSelectContentProps> = ({ controller }) => 
 
           {variant === "project" ? (
             areas.length === 0 ? (
-              <div className={desktopStyles.TreeSelectOverlayEmpty}>{localize("task_attr.no_areas", "No areas")}</div>
+              <div className={desktopStyles.TreeSelectOverlayEmpty}>{localize("task_attr.no_areas")}</div>
             ) : (
               areas.map((area) => (
                 <button
@@ -269,9 +269,7 @@ const TreeSelectContent: React.FC<TreeSelectContentProps> = ({ controller }) => 
             )
           ) : isSearching ? (
             searchResults.length === 0 ? (
-              <div className={desktopStyles.TreeSelectOverlayEmpty}>
-                {localize("task_attr.no_matching_location", "No matching locations")}
-              </div>
+              <div className={desktopStyles.TreeSelectOverlayEmpty}>{localize("task_attr.no_matching_location")}</div>
             ) : (
               searchResults.map((result) => (
                 <button
@@ -297,9 +295,7 @@ const TreeSelectContent: React.FC<TreeSelectContentProps> = ({ controller }) => 
               ))
             )
           ) : areas.length === 0 && rootProjects.length === 0 ? (
-            <div className={desktopStyles.TreeSelectOverlayEmpty}>
-              {localize("task_attr.no_location", "No locations")}
-            </div>
+            <div className={desktopStyles.TreeSelectOverlayEmpty}>{localize("task_attr.no_location")}</div>
           ) : (
             <>
               {rootProjects.map((project) => (

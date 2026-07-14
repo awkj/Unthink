@@ -67,8 +67,8 @@ export const TagsField: React.FC<ITagsFieldProps> = ({ itemId }) => {
     return (
       <TaskDetailAttributeRow
         icon={<TagIcon className={desktopStyles.TaskDetailAttributeIcon} />}
-        label={localize("tasks.tags", "Tags")}
-        content={localize("tasks.add.tags", "Not set")}
+        label={localize("tasks.tags")}
+        content={localize("tasks.add.tags")}
         placeholder={true}
         onClick={handleTagsClick}
       />
@@ -78,7 +78,7 @@ export const TagsField: React.FC<ITagsFieldProps> = ({ itemId }) => {
   return (
     <TaskDetailAttributeRow
       icon={<TagIcon className={desktopStyles.TaskDetailAttributeIcon} />}
-      label={localize("tasks.tags", "Tags")}
+      label={localize("tasks.tags")}
       onClick={handleTagsClick}
       overrideClassName={{
         label: "mt-0.75",

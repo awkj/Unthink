@@ -30,14 +30,14 @@ export const ExportSettings = () => {
       header={{
         showBack: true,
         id: "export",
-        title: localize("settings.export", "Export"),
+        title: localize("settings.export"),
         renderIcon: (className: string) => <SettingsIcon className={className} />,
       }}
     >
       <ListItemGroup
         items={[
           {
-            title: localize("settings.export", "Export"),
+            title: localize("settings.export"),
             mode: {
               type: "button",
               theme: "primary",
@@ -46,10 +46,7 @@ export const ExportSettings = () => {
             onClick: handleExport,
           },
         ]}
-        subtitle={localize(
-          "settings.export.description",
-          "Export your database to back up your data or transfer it to another device.",
-        )}
+        subtitle={localize("settings.export.description")}
       />
     </PageLayout>
   )

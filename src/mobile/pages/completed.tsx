@@ -40,16 +40,14 @@ export const MobileCompleted = () => {
       header={{
         showBack: true,
         id: "completed_tasks",
-        title: localize("completed_tasks.title", "Completed"),
+        title: localize("completed_tasks.title"),
         renderIcon: (className: string) => <LogIcon className={className} />,
         actions: [tagFilter.headerAction],
       }}
     >
       {tagFilter.filterBar}
       {completedTaskGroups.groups.length === 0 ? (
-        <div className={styles.pageEmptyState}>
-          {localize("completed_tasks.noCompletedTasks", "No completed tasks or projects yet")}
-        </div>
+        <div className={styles.pageEmptyState}>{localize("completed_tasks.noCompletedTasks")}</div>
       ) : (
         <>
           {completedTaskGroups.groups.map((group) => (

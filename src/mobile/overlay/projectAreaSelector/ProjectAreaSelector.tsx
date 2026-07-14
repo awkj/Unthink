@@ -36,7 +36,7 @@ const ProjectAreaSelectorImpl: React.FC<{ controller: ProjectAreaSelectorControl
             type="text"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            placeholder={localize("project_area_selector.search", "Search projects and areas...")}
+            placeholder={localize("project_area_selector.search")}
             className={styles.projectAreaSelectorInput}
           />
         </div>
@@ -45,7 +45,7 @@ const ProjectAreaSelectorImpl: React.FC<{ controller: ProjectAreaSelectorControl
           {canMoveToRoot && (
             <div className={styles.projectAreaSelectorContentGap}>
               <button className={styles.projectAreaSelectorItem} onClick={() => handleConfirmSelection(null)}>
-                <span>{localize("project_area_selector.move_to_root", "Move to root")}</span>
+                <span>{localize("project_area_selector.move_to_root")}</span>
               </button>
             </div>
           )}

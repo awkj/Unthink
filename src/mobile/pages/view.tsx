@@ -81,12 +81,9 @@ export const ViewPage = () => {
   const handleDelete = () => {
     if (!viewUid || !view) return
     dialog({
-      title: localize("view.delete.title", "Delete view"),
-      description: localize(
-        "view.delete.description",
-        "Are you sure you want to delete this view? This cannot be undone.",
-      ),
-      confirmText: localize("view.menu.delete", "Delete view"),
+      title: localize("view.delete.title"),
+      description: localize("view.delete.description"),
+      confirmText: localize("view.menu.delete"),
       onConfirm: () => {
         if (!getView(todoService.modelState, viewUid)) return
         todoService.deleteView(viewUid)
@@ -104,7 +101,7 @@ export const ViewPage = () => {
           items: [
             {
               icon: <DeleteIcon />,
-              name: localize("view.menu.delete", "Delete view"),
+              name: localize("view.menu.delete"),
               danger: true,
               onClick: handleDelete,
             },
@@ -141,22 +138,15 @@ export const ViewPage = () => {
 
   let body: React.ReactNode
   if (!view) {
-    body = <div className={styles.pageEmptyState}>{localize("view.notFound", "View not found")}</div>
+    body = <div className={styles.pageEmptyState}>{localize("view.notFound")}</div>
   } else if (unsupportedVersion) {
-    body = (
-      <div className={styles.pageEmptyState}>
-        {localize(
-          "view.unsupported.body",
-          "This view was created with a newer version of the app. Please update the app to open it.",
-        )}
-      </div>
-    )
+    body = <div className={styles.pageEmptyState}>{localize("view.unsupported.body")}</div>
   } else if (ruleIsEmpty || hasError) {
     // The meta already shows the rule editor (with inline error + starters +
     // AI assist), so an extra empty-state message here would be redundant.
     body = null
   } else if (viewItems.items.length === 0) {
-    body = <div className={styles.pageEmptyState}>{localize("view.detail.empty", "No tasks match this view.")}</div>
+    body = <div className={styles.pageEmptyState}>{localize("view.detail.empty")}</div>
   } else {
     const willDisappearObjectIdSet = viewItems.willDisappearObjectIdSet
     body = viewItems.groups.map((group) => (

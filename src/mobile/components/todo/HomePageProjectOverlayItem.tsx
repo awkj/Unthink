@@ -35,7 +35,7 @@ export const HomePageProjectOverlayItem: React.FC<HomePageProjectOverlayItemProp
                     : styles.homeProjectItemTitlePlaceholder,
             )}
           >
-            {projectInfo.title || localize("project.untitled", "New Project")}
+            {projectInfo.title || localize("project.untitled")}
           </span>
         </div>
       </div>

@@ -39,7 +39,7 @@ export const useArea = (areaId?: TreeID) => {
   const handleCreateProject = () => {
     if (!areaDetail) return
     const project = todoService.addProject({
-      title: localize("area.new_project", "New Project"),
+      title: localize("area.new_project"),
       position: {
         type: "firstElement",
         parentId: areaDetail.id,
@@ -70,12 +70,9 @@ export const useArea = (areaId?: TreeID) => {
   const handleDeleteArea = () => {
     if (!areaDetail) return
     dialog({
-      title: localize("area.delete", "Delete Area"),
-      description: localize(
-        "area.delete_description",
-        "Are you sure you want to delete this area? This action cannot be undone.",
-      ),
-      confirmText: localize("area.delete_confirm", "Delete"),
+      title: localize("area.delete"),
+      description: localize("area.delete_description"),
+      confirmText: localize("area.delete_confirm"),
       onConfirm: () => {
         todoService.deleteItem(areaDetail.id)
         back()
@@ -91,12 +88,12 @@ export const useArea = (areaId?: TreeID) => {
           items: [
             {
               icon: <MobileProjectCheckbox progress={60} status={"created"} size="large" />,
-              name: localize("area.create_project", "Add Project"),
+              name: localize("area.create_project"),
               onClick: handleCreateProject,
             },
             {
               icon: <TagsIcon />,
-              name: localize("project.edit_tags", "Edit Tags"),
+              name: localize("project.edit_tags"),
               onClick: handleEditTag,
             },
           ] as PopupActionItem[],
@@ -105,7 +102,7 @@ export const useArea = (areaId?: TreeID) => {
           items: [
             {
               icon: <DeleteIcon />,
-              name: localize("area.delete", "Delete Area"),
+              name: localize("area.delete"),
               danger: true,
               onClick: handleDeleteArea,
             },

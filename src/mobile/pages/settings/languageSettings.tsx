@@ -1,10 +1,11 @@
 import { ListItemGroup } from "@/mobile/components/listItem/listItem"
+import { getCurrentLocale } from "@/locales/common/locale"
 import { SettingsIcon } from "@/ui/components/icons"
 import { localize } from "../../../nls"
 import { PageLayout } from "../../components/PageLayout"
 
 export const LanguageSettings = () => {
-  const currentLanguage = globalThis.language
+  const currentLanguage = getCurrentLocale()
 
   const changeLanguage = (lang: string) => {
     localStorage.setItem("language", lang)
@@ -16,14 +17,14 @@ export const LanguageSettings = () => {
       header={{
         showBack: true,
         id: "language",
-        title: localize("settings.language", "Language"),
+        title: localize("settings.language"),
         renderIcon: (className: string) => <SettingsIcon className={className} />,
       }}
     >
       <ListItemGroup
         items={[
           {
-            title: localize("settings.language.english", "English"),
+            title: localize("settings.language.english"),
             mode: {
               type: "check",
               checked: currentLanguage === "en-US",

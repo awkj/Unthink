@@ -31,12 +31,8 @@ export const useDesktopProjectMenu = (taskId: TreeID) => {
     }
 
     dialog({
-      title: localize("project.cancel_project", "Cancel project"),
-      description: localize(
-        "project.toggle_status_description",
-        "There are {0} tasks left, what do you want to do?",
-        leftProject,
-      ),
+      title: localize("project.cancel_project"),
+      description: localize("project.toggle_status_description", { 0: leftProject }),
       hideFooter: true,
       actions: [
         {
@@ -45,7 +41,7 @@ export const useDesktopProjectMenu = (taskId: TreeID) => {
           size: "medium",
           variant: "solid",
           color: "primary",
-          label: localize("tasks.mark_as_completed", "Mark as Completed"),
+          label: localize("tasks.mark_as_completed"),
           onclick: async () => {
             todoService.transitionProjectState({
               projectId: taskId,
@@ -58,7 +54,7 @@ export const useDesktopProjectMenu = (taskId: TreeID) => {
           type: "button",
           key: "as_canceled",
           size: "medium",
-          label: localize("tasks.mark_as_canceled", "Mark as Canceled"),
+          label: localize("tasks.mark_as_canceled"),
           onclick: async () => {
             todoService.transitionProjectState({
               projectId: taskId,
@@ -71,7 +67,7 @@ export const useDesktopProjectMenu = (taskId: TreeID) => {
           type: "button",
           key: "cancel",
           size: "medium",
-          label: localize("common.cancel", "Cancel"),
+          label: localize("common.cancel"),
           onclick: async () => {},
         },
       ],
@@ -84,11 +80,8 @@ export const useDesktopProjectMenu = (taskId: TreeID) => {
 
   const handleDeleteProject = () => {
     dialog({
-      title: localize("task.delete_project_confirm_title", "Delete Project"),
-      description: localize(
-        "task.delete_project_confirm_description",
-        "Are you sure you want to delete this project? This action cannot be undone.",
-      ),
+      title: localize("task.delete_project_confirm_title"),
+      description: localize("task.delete_project_confirm_description"),
       onConfirm: () => {
         todoService.deleteItem(taskId)
         navigate("/desktop/inbox")
@@ -100,14 +93,14 @@ export const useDesktopProjectMenu = (taskId: TreeID) => {
     const project = getProject(todoService.modelState, taskId)
     return [
       {
-        label: localize("project.add_heading", "Add Heading"),
+        label: localize("project.add_heading"),
         testId: TestIds.ProjectDetailPanel.AddHeadingMenuItem,
         onSelect: handleAddHeading,
         icon: "heading",
         shortcut: "H",
       },
       {
-        label: localize("project.cancel_project", "Cancel project"),
+        label: localize("project.cancel_project"),
         testId: TestIds.ProjectDetailPanel.CancelProjectMenuItem,
         onSelect: handleCancelProject,
         icon: "x-circle",
@@ -115,7 +108,7 @@ export const useDesktopProjectMenu = (taskId: TreeID) => {
         dividerAbove: true,
       },
       {
-        label: localize("task.delete_project", "Delete project"),
+        label: localize("task.delete_project"),
         onSelect: handleDeleteProject,
         icon: "trash",
         dividerAbove: true,

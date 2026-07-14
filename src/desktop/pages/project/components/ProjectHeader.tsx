@@ -49,12 +49,8 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
       return
     }
     dialog({
-      title: localize("project.status.toggle", "Toggle Project Status"),
-      description: localize(
-        "project.toggle_status_description",
-        "There are {0} tasks left, what do you want to do?",
-        leftProject,
-      ),
+      title: localize("project.status.toggle"),
+      description: localize("project.toggle_status_description", { 0: leftProject }),
       hideFooter: true,
       actions: [
         {
@@ -63,7 +59,7 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
           size: "medium",
           variant: "solid",
           color: "primary",
-          label: localize("tasks.mark_as_completed", "Mark as Completed"),
+          label: localize("tasks.mark_as_completed"),
           onclick: async () => {
             todoService.transitionProjectState({
               projectId: project.id,
@@ -76,7 +72,7 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
           type: "button",
           key: "as_canceled",
           size: "medium",
-          label: localize("tasks.mark_as_canceled", "Mark as Canceled"),
+          label: localize("tasks.mark_as_canceled"),
           onclick: async () => {
             todoService.transitionProjectState({
               projectId: project.id,
@@ -89,7 +85,7 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
           type: "button",
           key: "cancel",
           size: "medium",
-          label: localize("common.cancel", "Cancel"),
+          label: localize("common.cancel"),
           onclick: async () => {},
         },
       ],
@@ -131,12 +127,12 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
       renderIcon={() => <ProjectIcon progress={project.progress} status={project.status} size="md" />}
       onIconClick={handleToggleProjectStatus}
       title={project.title}
-      placeholder={localize("project.untitled", "New Project")}
+      placeholder={localize("project.untitled")}
       extraActions={[
         {
           icon: <Funnel strokeWidth={1.5} />,
           handleClick: onToggleFilter,
-          title: localize("tasks.filterByTag", "Filter by Tag"),
+          title: localize("tasks.filterByTag"),
           testId: TestIds.EntityHeader.FilterToggleButton,
           isActive: isFilterOpen || tagFilter.type !== "all",
         },

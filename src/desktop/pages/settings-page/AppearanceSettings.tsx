@@ -4,6 +4,7 @@ import { ItemGroup } from "@/desktop/components/settings/ItemGroup"
 import { SettingsContent } from "@/desktop/components/settings/SettingsContent/SettingsContent"
 import { SettingsItem } from "@/desktop/components/settings/SettingsItem"
 import { SettingsSection } from "@/desktop/components/settings/SettingsSection"
+import { getCurrentLocale } from "@/locales/common/locale"
 import { useConfig } from "@/ui/hooks/useConfig"
 import { useGlobalTaskDisplaySettings } from "@/ui/hooks/useGlobalTaskDisplaySettings"
 import { localize } from "@/nls"
@@ -18,7 +19,7 @@ import React, { useState } from "react"
 
 export const AppearanceSettings: React.FC = () => {
   const [currentTheme, setCurrentTheme] = useState(localStorage.getItem("theme") || "auto")
-  const [currentLanguage] = useState(globalThis.language || "en-US")
+  const [currentLanguage] = useState(getCurrentLocale())
   const {
     showFutureTasks,
     showCompletedTasks,
@@ -59,29 +60,29 @@ export const AppearanceSettings: React.FC = () => {
   }
 
   return (
-    <SettingsContent title={localize("settings.appearance", "Appearance")}>
+    <SettingsContent title={localize("settings.appearance")}>
       <ItemGroup>
         <SettingsItem
-          title={localize("settings.theme", "Theme")}
-          description={localize("settings.theme.description", "Select your preferred theme.")}
+          title={localize("settings.theme")}
+          description={localize("settings.theme.description")}
           action={{
             type: "select",
             options: [
-              { value: "light", label: localize("settings.theme.light", "Light") },
-              { value: "dark", label: localize("settings.theme.dark", "Dark") },
-              { value: "auto", label: localize("settings.theme.auto", "Auto (System)") },
+              { value: "light", label: localize("settings.theme.light") },
+              { value: "dark", label: localize("settings.theme.dark") },
+              { value: "auto", label: localize("settings.theme.auto") },
             ],
             currentValue: currentTheme,
             onChange: changeTheme,
           }}
         />
         <SettingsItem
-          title={localize("settings.language", "Language")}
-          description={localize("settings.language.description", "Select your preferred language.")}
+          title={localize("settings.language")}
+          description={localize("settings.language.description")}
           action={{
             type: "select",
             options: [
-              { value: "en", label: localize("settings.language.english", "English") },
+              { value: "en", label: localize("settings.language.english") },
               { value: "zh", label: "简体中文" },
             ],
             currentValue: getLanguageValue(currentLanguage),
@@ -89,14 +90,11 @@ export const AppearanceSettings: React.FC = () => {
           }}
         />
       </ItemGroup>
-      <SettingsSection title={localize("settings.notes", "Notes")}>
+      <SettingsSection title={localize("settings.notes")}>
         <ItemGroup>
           <SettingsItem
-            title={localize("settings.render_markdown", "Render Markdown")}
-            description={localize(
-              "settings.render_markdown.description",
-              "Render notes as markdown in task and project details.",
-            )}
+            title={localize("settings.render_markdown")}
+            description={localize("settings.render_markdown.description")}
             action={{
               type: "switch",
               currentValue: notesMarkdownRender,
@@ -107,14 +105,11 @@ export const AppearanceSettings: React.FC = () => {
           ></SettingsItem>
         </ItemGroup>
       </SettingsSection>
-      <SettingsSection title={localize("settings.calendar", "Calendar")}>
+      <SettingsSection title={localize("settings.calendar")}>
         <ItemGroup>
           <SettingsItem
-            title={localize("settings.calendar_week_start_day", "Week starts on")}
-            description={localize(
-              "settings.calendar_week_start_day.description",
-              "Choose the first day of the week in date pickers.",
-            )}
+            title={localize("settings.calendar_week_start_day")}
+            description={localize("settings.calendar_week_start_day.description")}
             action={{
               type: "select",
               options: getCalendarWeekStartOptions().map((option) => ({
@@ -127,22 +122,22 @@ export const AppearanceSettings: React.FC = () => {
           />
         </ItemGroup>
       </SettingsSection>
-      <SettingsSection title={localize("settings.dock_badge", "Dock Badge")}>
+      <SettingsSection title={localize("settings.dock_badge")}>
         <ItemGroup>
           <SettingsItem
-            title={localize("settings.dock_badge.count_type", "Badge Count Type")}
+            title={localize("settings.dock_badge.count_type")}
             action={{
               type: "select",
               options: [
-                { value: "none", label: localize("settings.dock_badge.count_type.none", "None") },
-                { value: "overdue", label: localize("settings.dock_badge.count_type.overdue", "Overdue") },
+                { value: "none", label: localize("settings.dock_badge.count_type.none") },
+                { value: "overdue", label: localize("settings.dock_badge.count_type.overdue") },
                 {
                   value: "overdue_and_today",
-                  label: localize("settings.dock_badge.count_type.overdue_and_today", "Overdue + Today"),
+                  label: localize("settings.dock_badge.count_type.overdue_and_today"),
                 },
                 {
                   value: "overdue_today_and_inbox",
-                  label: localize("settings.dock_badge.count_type.overdue_today_and_inbox", "Overdue + Today + Inbox"),
+                  label: localize("settings.dock_badge.count_type.overdue_today_and_inbox"),
                 },
               ],
               currentValue: dockBadgeCountType,
@@ -151,14 +146,11 @@ export const AppearanceSettings: React.FC = () => {
           />
         </ItemGroup>
       </SettingsSection>
-      <SettingsSection title={localize("settings.today", "Today")}>
+      <SettingsSection title={localize("settings.today")}>
         <ItemGroup>
           <SettingsItem
-            title={localize("settings.today.group_by_area_project", "Group by Area / Project")}
-            description={localize(
-              "settings.today.group_by_area_project.description",
-              "Group projects by area and tasks by project on the Today page.",
-            )}
+            title={localize("settings.today.group_by_area_project")}
+            description={localize("settings.today.group_by_area_project.description")}
             action={{
               type: "switch",
               currentValue: groupTodayByAreaProject,

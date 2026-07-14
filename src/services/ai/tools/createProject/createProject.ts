@@ -58,7 +58,7 @@ export const createProjectToolConfig: ToolConfig = {
   name: "createProject",
   definition: CREATE_PROJECT_TOOL,
   type: "confirm",
-  displayName: localize("ai_chat.tool_createProject", "Create Project"),
+  displayName: localize("ai_chat.tool_createProject"),
   formatArguments: formatCreateProjectArguments,
   execute: (instantiationService, args: CreateProjectToolParams) => {
     executeCreateProject(instantiationService, args)

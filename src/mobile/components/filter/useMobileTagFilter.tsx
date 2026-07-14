@@ -53,13 +53,13 @@ export function useMobileTagFilter(): MobileTagFilter {
       onClick: () => selectTag(itemValue),
     })
     popupAction({
-      description: localize("tasks.filterByTag", "Filter by Tag"),
+      description: localize("tasks.filterByTag"),
       groups: [
         {
           items: [
-            makeItem(localize("project.tagFilter.all", "All"), TAG_FILTER_ALL),
+            makeItem(localize("project.tagFilter.all"), TAG_FILTER_ALL),
             ...tags.map((tag) => makeItem(tag, { type: "tag", value: tag })),
-            makeItem(localize("project.tagFilter.untagged", "No Tags"), TAG_FILTER_UNTAGGED),
+            makeItem(localize("project.tagFilter.untagged"), TAG_FILTER_UNTAGGED),
           ],
         },
       ],

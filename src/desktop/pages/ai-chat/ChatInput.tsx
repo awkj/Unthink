@@ -62,9 +62,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     return (
       <div className={desktopStyles.AIChatInputOuter}>
         <div className={`${desktopStyles.AIChatContentWidth} ${desktopStyles.AIChatInputNotice}`}>
-          {localize("ai_chat.not_configured", "Please configure your AI API settings first")}
+          {localize("ai_chat.not_configured")}
           <Link to="/desktop/settings/ai" className={desktopStyles.AIChatInputNoticeLink}>
-            {localize("ai_chat.go_to_settings", "Go to Settings")}
+            {localize("ai_chat.go_to_settings")}
           </Link>
         </div>
       </div>
@@ -85,7 +85,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           <div className={desktopStyles.AIChatInputLinkedRow}>
             <div className={desktopStyles.AIChatInputLinkedContent}>
               <span className={desktopStyles.AIChatInputLinkedLabel}>
-                {localize("ai_chat.replying_to_message", "Reply #{0}", linkedMessageIndex ?? linkedMessage.id)}
+                {localize("ai_chat.replying_to_message", { 0: linkedMessageIndex ?? linkedMessage.id })}
               </span>
               <span className={desktopStyles.AIChatInputLinkedText}>{linkedMessageText}</span>
             </div>
@@ -103,7 +103,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
               onChange={(event) => setInput(event.target.value)}
               onKeyDown={handleKeyDown}
               onInput={(event) => resizeTextArea(event.currentTarget)}
-              placeholder={localize("ai_chat.placeholder", "Type your message...")}
+              placeholder={localize("ai_chat.placeholder")}
               className={desktopStyles.AIChatInputTextarea}
               disabled={isLoading}
             />

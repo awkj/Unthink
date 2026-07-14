@@ -31,7 +31,7 @@ export const MobileHomeTopMenu = () => {
       <nav className={styles.statCardContainer}>
         <StatCard
           icon={<TodayIcon className={styles.statCardIcon} strokeWidth={1.5} />}
-          label={localize("today", "Today")}
+          label={localize("today")}
           variant="Today"
           count={todayItems.startDateItemsCount}
           overdueCount={todayItems.dueDateItemsCount}
@@ -39,20 +39,20 @@ export const MobileHomeTopMenu = () => {
         />
         <StatCard
           icon={<InboxIcon className={styles.statCardIcon} strokeWidth={1.5} />}
-          label={localize("inbox", "Inbox")}
+          label={localize("inbox")}
           variant="Inbox"
           count={uncompletedTasksCount}
           onClick={() => navigationService.navigate({ path: "/inbox" })}
         />
         <StatCard
           icon={<CalendarIcon className={styles.statCardIcon} strokeWidth={1.5} />}
-          label={localize("schedule", "Schedule")}
+          label={localize("schedule")}
           variant="Scheduled"
           onClick={() => navigate({ path: "/scheduled" })}
         />
         <StatCard
           icon={<CheckIcon className={styles.statCardIcon} strokeWidth={1.5} />}
-          label={localize("completed_tasks.title", "Completed")}
+          label={localize("completed_tasks.title")}
           variant="Completed"
           onClick={() => navigate({ path: "/completed" })}
         />

@@ -1,5 +1,4 @@
-import { PlusIcon, ThingsViewIcon } from "@/ui/components/icons"
-import { viewPageTitleInputId } from "@/ui/components/edit/inputId"
+import { ThingsViewIcon } from "@/ui/components/icons"
 import { getAllViews } from "@/core/state/views/getAllViews"
 import { desktopStyles } from "@/desktop/theme/main"
 import { useService } from "@/ui/hooks/use-service"
@@ -11,8 +10,7 @@ import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-
 import { CSS } from "@dnd-kit/utilities"
 import classNames from "classnames"
 import React from "react"
-import { flushSync } from "react-dom"
-import { Link, useLocation, useNavigate } from "react-router"
+import { Link, useLocation } from "react-router"
 
 interface ViewRowProps {
   uid: string
@@ -43,9 +41,7 @@ const ViewRow: React.FC<ViewRowProps> = ({ uid, name, active }) => {
       <span className={desktopStyles.SidebarMenuItemIcon}>
         <ThingsViewIcon className={desktopStyles.SidebarMenuItemIconSvg} />
       </span>
-      <span className={desktopStyles.SidebarMenuItemLabel}>
-        {name || localize("view.detail.untitled", "Untitled view")}
-      </span>
+      <span className={desktopStyles.SidebarMenuItemLabel}>{name || localize("view.detail.untitled")}</span>
     </Link>
   )
 }
@@ -53,7 +49,6 @@ const ViewRow: React.FC<ViewRowProps> = ({ uid, name, active }) => {
 export const SidebarViewsSection: React.FC = () => {
   const todoService = useService(ITodoService)
   useWatchEvent(todoService.onStateChange)
-  const navigate = useNavigate()
   const location = useLocation()
   const views = getAllViews(todoService.modelState)
   // Activation distance keeps single clicks from triggering drag; a drag
@@ -68,46 +63,19 @@ export const SidebarViewsSection: React.FC = () => {
     todoService.moveView(active.id as string, toIndex)
   }
 
-  const handleCreateView = () => {
-    const uid = flushSync(() => todoService.addView({ name: "", rule: "" }))
-    if (uid) {
-      navigate(`/desktop/views/${uid}`, {
-        state: { focusInput: viewPageTitleInputId(uid) },
-      })
-    }
-  }
+  if (views.length === 0) return null
 
   return (
     <div className={desktopStyles.SidebarViewsContainer}>
-      <div className={desktopStyles.SidebarViewsHeader}>
-        <span className={desktopStyles.SidebarViewsHeaderLabel}>{localize("view.sidebar.title", "Views")}</span>
-        <button
-          type="button"
-          className={desktopStyles.SidebarViewsHeaderAddButton}
-          onClick={handleCreateView}
-          aria-label={localize("view.sidebar.add", "Add view")}
-        >
-          <PlusIcon className={desktopStyles.SidebarViewsHeaderAddIcon} />
-        </button>
-      </div>
-      {views.length === 0 ? (
-        <div className={desktopStyles.SidebarViewsEmpty}>{localize("view.sidebar.empty", "No views yet")}</div>
-      ) : (
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-          <SortableContext items={views.map((v) => v.uid)} strategy={verticalListSortingStrategy}>
-            <div className={desktopStyles.SidebarMenuItemContainer}>
-              {views.map((v) => (
-                <ViewRow
-                  key={v.uid}
-                  uid={v.uid}
-                  name={v.name}
-                  active={location.pathname === `/desktop/views/${v.uid}`}
-                />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
-      )}
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <SortableContext items={views.map((v) => v.uid)} strategy={verticalListSortingStrategy}>
+          <div className={desktopStyles.SidebarMenuItemContainer}>
+            {views.map((v) => (
+              <ViewRow key={v.uid} uid={v.uid} name={v.name} active={location.pathname === `/desktop/views/${v.uid}`} />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
     </div>
   )
 }

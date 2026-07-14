@@ -2,6 +2,7 @@ import { getTheme } from "@/ui/browser/initializeTheme"
 import { taskDisplaySettingOptions } from "@/ui/settings/taskDisplaySettings"
 import { SettingsIcon } from "@/ui/components/icons"
 import { getCalendarWeekStartOptions } from "@/core/time/calendarWeekStart"
+import { getCurrentLocale } from "@/locales/common/locale"
 import { useConfig } from "@/ui/hooks/useConfig"
 import { useAbout } from "@/ui/hooks/use-about"
 import { useService } from "@/ui/hooks/use-service"
@@ -25,28 +26,28 @@ export const MobileSettings = () => {
       header={{
         showBack: true,
         id: "settings",
-        title: localize("settings.title", "Settings"),
+        title: localize("settings.title"),
         renderIcon: (className: string) => <SettingsIcon className={className} />,
       }}
     >
       <ListItemGroup
         items={[
           {
-            title: localize("settings.language", "Language"),
+            title: localize("settings.language"),
             onClick: () => navigate({ path: "/settings/language" }),
             mode: {
               type: "navigation",
             },
           },
           {
-            title: localize("settings.theme", "Theme"),
+            title: localize("settings.theme"),
             onClick: () => navigate({ path: "/settings/theme" }),
             mode: {
               type: "navigation",
             },
           },
           {
-            title: localize("settings.calendar", "Calendar"),
+            title: localize("settings.calendar"),
             onClick: () => navigate({ path: "/settings/calendar" }),
             mode: {
               type: "navigation",
@@ -61,14 +62,14 @@ export const MobileSettings = () => {
             },
           },
           {
-            title: localize("settings.export", "Export"),
+            title: localize("settings.export"),
             onClick: () => navigate({ path: "/settings/export" }),
             mode: {
               type: "navigation",
             },
           },
           {
-            title: localize("settings.import", "Import"),
+            title: localize("settings.import"),
             onClick: () => navigate({ path: "/settings/import" }),
             mode: {
               type: "navigation",
@@ -83,7 +84,7 @@ export const MobileSettings = () => {
           },
           {
             hidden: switchService.getLocalSwitch("showNativeAboutButton"),
-            title: localize("settings.about", "About"),
+            title: localize("settings.about"),
             onClick: () => navigate({ path: "/settings/about" }),
             mode: {
               type: "navigation",
@@ -91,8 +92,8 @@ export const MobileSettings = () => {
           },
           {
             hidden: !switchService.getLocalSwitch("showNativeAboutButton"),
-            title: localize("settings.about", "About"),
-            onClick: () => showAbout({ showICP: globalThis.language === "zh-CN", displayMode: getTheme() }),
+            title: localize("settings.about"),
+            onClick: () => showAbout({ showICP: getCurrentLocale() === "zh-CN", displayMode: getTheme() }),
             mode: {
               type: "navigation",
             },

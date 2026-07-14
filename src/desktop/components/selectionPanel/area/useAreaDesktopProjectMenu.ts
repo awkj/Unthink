@@ -13,11 +13,8 @@ export const useAreaDesktopProjectMenu = (areaId: TreeID) => {
 
   const handleDeleteArea = () => {
     dialog({
-      title: localize("area.delete_area_confirm_title", "Delete Area"),
-      description: localize(
-        "area.delete_area_confirm_description",
-        "Are you sure you want to delete this area? This action cannot be undone.",
-      ),
+      title: localize("area.delete_area_confirm_title"),
+      description: localize("area.delete_area_confirm_description"),
       onConfirm: () => {
         todoService.deleteItem(areaId)
       },
@@ -27,7 +24,7 @@ export const useAreaDesktopProjectMenu = (areaId: TreeID) => {
   function createMenuConfig(): IMenuConfig[] {
     return [
       {
-        label: localize("area.delete_area", "Delete Area"),
+        label: localize("area.delete_area"),
         onSelect: handleDeleteArea,
       },
     ]

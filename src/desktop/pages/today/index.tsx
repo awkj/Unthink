@@ -146,13 +146,13 @@ export const Today = () => {
             {
               icon: <Funnel strokeWidth={1.5} />,
               handleClick: tagFilter.clickFilter,
-              title: localize("tasks.filterByTag", "Filter by Tag"),
+              title: localize("tasks.filterByTag"),
               testId: TestIds.EntityHeader.FilterToggleButton,
               isActive: tagFilter.isFilterOpen || isTagFilterActive,
             },
           ]}
           internalActions={{ displaySettings: { onOpen: (right, bottom) => openTaskDisplaySettings(right, bottom) } }}
-          title={localize("today", "Today")}
+          title={localize("today")}
           titleDetail={
             tagFilter.isFilterOpen ? (
               <TagFilterBar tags={tagFilter.tags} selected={tagFilter.currentTag} onSelect={tagFilter.selectTag} />
@@ -164,20 +164,20 @@ export const Today = () => {
       {(projects.length > 0 || !isTagFilterActive) && (
         <>
           <div className={desktopStyles.TodaySectionHeading}>
-            <span className={desktopStyles.TodaySectionTitle}>{localize("today.projects", "Projects")}</span>
+            <span className={desktopStyles.TodaySectionTitle}>{localize("today.projects")}</span>
             <span className={desktopStyles.TodaySectionCount}>{projects.length}</span>
           </div>
           <div>
             <DesktopProjectList
               projects={projects}
-              emptyStateLabel={localize("today.noProjects", "No projects for today")}
+              emptyStateLabel={localize("today.noProjects")}
               useDateAssignedMove={true}
             />
           </div>
         </>
       )}
       <div className={desktopStyles.TodaySectionHeading}>
-        <span className={desktopStyles.TodaySectionTitle}>{localize("today.tasks", "Tasks")}</span>
+        <span className={desktopStyles.TodaySectionTitle}>{localize("today.tasks")}</span>
         <span className={desktopStyles.TodaySectionCount}>{tasks.length}</span>
       </div>
       <div>

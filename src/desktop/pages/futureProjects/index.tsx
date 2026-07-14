@@ -18,12 +18,9 @@ export const FutureProjects = () => {
   return (
     <div className={desktopStyles.FutureProjectsPageContainer}>
       <div className={desktopStyles.FutureProjectsPageWrapper}>
-        <EntityHeader renderIcon={() => <ThingsLaterIcon />} title={localize("futureProjects", "Future Projects")} />
+        <EntityHeader renderIcon={() => <ThingsLaterIcon />} title={localize("futureProjects")} />
         <div className={desktopStyles.FutureProjectsPageContent}>
-          <DesktopProjectList
-            projects={futureProjects}
-            emptyStateLabel={localize("futureProjects.empty", "No future projects")}
-          />
+          <DesktopProjectList projects={futureProjects} emptyStateLabel={localize("futureProjects.empty")} />
         </div>
       </div>
     </div>

@@ -129,7 +129,7 @@ export const MobileHome = () => {
       try {
         await thirdpartySyncService.sync()
         // toast success message
-        toast({ message: localize("sync.success", "Sync successful") })
+        toast({ message: localize("sync.success") })
       } catch (error) {
         toast({ message: (error as Error).message })
       }
@@ -208,22 +208,16 @@ export const MobileHome = () => {
               items: [
                 {
                   icon: <CreateTaskMenuIcon />,
-                  name: localize("create_popup.create_task", "Create Task"),
-                  description: localize(
-                    "create_popup.create_task_description",
-                    "Capture an action to complete, then check it off when it is done.",
-                  ),
+                  name: localize("create_popup.create_task"),
+                  description: localize("create_popup.create_task_description"),
                   onClick: () => {
                     navigationService.navigate({ path: "/create_task" })
                   },
                 },
                 {
                   icon: <CreateProjectMenuIcon />,
-                  name: localize("create_popup.create_project", "Create Project"),
-                  description: localize(
-                    "create_popup.create_project_description",
-                    "Define a goal, then complete its to-dos one by one.",
-                  ),
+                  name: localize("create_popup.create_project"),
+                  description: localize("create_popup.create_project_description"),
                   onClick: () => {
                     const id = todoService.addProject({ title: "" })
                     todoService.editItem(id)
@@ -231,11 +225,8 @@ export const MobileHome = () => {
                 },
                 {
                   icon: <CreateAreaMenuIcon />,
-                  name: localize("create_popup.create_area", "Create Area"),
-                  description: localize(
-                    "create_popup.create_area_description",
-                    "Organize projects and to-dos by responsibility, such as Home or Work.",
-                  ),
+                  name: localize("create_popup.create_area"),
+                  description: localize("create_popup.create_area_description"),
                   onClick: () => {
                     const id = todoService.addArea({ title: "" })
                     todoService.editItem(id)
@@ -243,11 +234,8 @@ export const MobileHome = () => {
                 },
                 {
                   icon: <CreateViewMenuIcon />,
-                  name: localize("create_popup.create_view", "Create View"),
-                  description: localize(
-                    "create_popup.create_view_description",
-                    "Bring related tasks together with filters in a focused view.",
-                  ),
+                  name: localize("create_popup.create_view"),
+                  description: localize("create_popup.create_view_description"),
                   onClick: () => {
                     const uid = todoService.addView({ name: "", rule: "" })
                     navigationService.navigate({ path: `/views/${uid}` })

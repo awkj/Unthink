@@ -33,7 +33,7 @@ export const AreaHeaderOverlayItem: React.FC<AreaHeaderOverlayItemProps> = ({ ar
             areaInfo.title ? styles.homeProjectItemTitleNormal : styles.homeProjectItemTitlePlaceholder,
           )}
         >
-          {areaInfo.title || localize("area.untitled", "New Area")}
+          {areaInfo.title || localize("area.untitled")}
         </span>
       </div>
       <span className={styles.areaHeaderArrowContainer}>

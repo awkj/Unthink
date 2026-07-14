@@ -7,6 +7,10 @@ export interface NavigateOptions {
   replace?: boolean
 }
 
+export function supportsNativeBackButton(userAgent: string): boolean {
+  return userAgent.toLowerCase().includes("android")
+}
+
 export function getNavigationPathFromDeepLink(value: string): string | null {
   const url = new URL(value)
   if (url.protocol !== "unthink:") return null
@@ -72,9 +76,11 @@ export class NavigationService implements INavigationService {
           await onOpenUrl(navigateFromDeepLink)
         })
         .catch((error: unknown) => console.error("Failed to register deep-link navigation:", error))
-      void import("@tauri-apps/api/app")
-        .then(({ onBackButtonPress }) => onBackButtonPress(() => this.dispatchBackButton()))
-        .catch((error: unknown) => console.error("Failed to register native back handler:", error))
+      if (supportsNativeBackButton(navigator.userAgent)) {
+        void import("@tauri-apps/api/app")
+          .then(({ onBackButtonPress }) => onBackButtonPress(() => this.dispatchBackButton()))
+          .catch((error: unknown) => console.error("Failed to register native back handler:", error))
+      }
       void import("@tauri-apps/api/event")
         .then(({ listen }) =>
           listen<string>("native-navigate", ({ payload }) => {

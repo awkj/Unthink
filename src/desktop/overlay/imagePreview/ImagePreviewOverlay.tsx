@@ -56,7 +56,7 @@ const ImagePreviewContent: React.FC<{ controller: ImagePreviewController }> = ({
           e.stopPropagation()
           handleDownload()
         }}
-        title={localize("attachments.download", "Download")}
+        title={localize("attachments.download")}
       >
         <DownloadIcon className={desktopStyles.ImagePreviewActionIcon} strokeWidth={1.75} />
       </button>
@@ -64,7 +64,7 @@ const ImagePreviewContent: React.FC<{ controller: ImagePreviewController }> = ({
         type="button"
         className={desktopStyles.ImagePreviewCloseButton}
         onClick={() => controller.close()}
-        title={localize("common.close", "Close")}
+        title={localize("common.close")}
       >
         <CloseIcon className={desktopStyles.ImagePreviewActionIcon} strokeWidth={1.75} />
       </button>

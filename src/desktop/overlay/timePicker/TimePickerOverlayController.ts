@@ -128,7 +128,7 @@ export class TimePickerOverlayController extends Disposable {
       if (isValid(parsedDate)) {
         this.onDateSelected(this._selectedDate?.valueOf())
       } else {
-        throw new Error(localize("invalid.date", "Invalid date format"))
+        throw new Error(localize("invalid.date"))
       }
     }
     this.dispose()

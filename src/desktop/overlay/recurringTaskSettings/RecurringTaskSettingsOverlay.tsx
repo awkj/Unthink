@@ -29,7 +29,7 @@ export const RecurringTaskSettingsOverlay: React.FC = () => {
 
   if (!controller) return null
 
-  const placeholder = localize("desktop.recurring_task.placeholder", "For example 1w, 2m, 1y3d, due:1d, start:2d")
+  const placeholder = localize("desktop.recurring_task.placeholder")
   const startDateRule = controller.startDateRule
   const dueDateRule = controller.dueDateRule
   const startDateHasValue = startDateRule.trim().length > 0
@@ -42,11 +42,8 @@ export const RecurringTaskSettingsOverlay: React.FC = () => {
     dueDateHasValue && dueDateIsValid ? explanationRecurringDate(parseRecurringRule(dueDateRule)) : ""
   const startDateNext = startDateIsValid ? controller.getStartDateCalculation() : ""
   const dueDateNext = dueDateIsValid ? controller.getDueDateCalculation() : ""
-  const invalidRuleText = localize("desktop.recurring_task.invalid_rule", "Couldn't parse this rule")
-  const syntaxHint = localize(
-    "desktop.recurring_task.syntax_hint",
-    "Format: number + d / w / m / y, optionally prefixed with start: or due:",
-  )
+  const invalidRuleText = localize("desktop.recurring_task.invalid_rule")
+  const syntaxHint = localize("desktop.recurring_task.syntax_hint")
   const confirmDisabled = !startDateIsValid || !dueDateIsValid
 
   return (
@@ -57,9 +54,7 @@ export const RecurringTaskSettingsOverlay: React.FC = () => {
         data-test-id={TestIds.RecurringTaskSettings.Overlay}
       >
         <div className={desktopStyles.RecurringTaskSettingsDialogHeader}>
-          <h3 className={desktopStyles.RecurringTaskSettingsDialogTitle}>
-            {localize("desktop.recurring_task.title", "Recurring Settings")}
-          </h3>
+          <h3 className={desktopStyles.RecurringTaskSettingsDialogTitle}>{localize("desktop.recurring_task.title")}</h3>
           <button
             type="button"
             onClick={() => controller.dispose()}
@@ -71,13 +66,13 @@ export const RecurringTaskSettingsOverlay: React.FC = () => {
 
         <div className={desktopStyles.RecurringTaskSettingsDialogBody}>
           <p className={desktopStyles.RecurringTaskSettingsDialogBodyHint}>
-            {localize("desktop.recurring_task.body_hint", "After completing this task, the next task will be on:")}
+            {localize("desktop.recurring_task.body_hint")}
           </p>
 
           <section className={desktopStyles.RecurringTaskSettingsDialogSection}>
             <div className={desktopStyles.RecurringTaskSettingsDialogSectionHeader}>
               <span className={desktopStyles.RecurringTaskSettingsDialogSectionTitle}>
-                {localize("desktop.task_detail.start_date", "Start Date")}
+                {localize("desktop.task_detail.start_date")}
               </span>
               {startDateIsValid ? (
                 <span className={desktopStyles.RecurringTaskSettingsDialogSectionHeaderResult}>
@@ -112,7 +107,7 @@ export const RecurringTaskSettingsOverlay: React.FC = () => {
           <section className={desktopStyles.RecurringTaskSettingsDialogSection}>
             <div className={desktopStyles.RecurringTaskSettingsDialogSectionHeader}>
               <span className={desktopStyles.RecurringTaskSettingsDialogSectionTitle}>
-                {localize("desktop.task_detail.due_date", "Due Date")}
+                {localize("desktop.task_detail.due_date")}
               </span>
               {dueDateIsValid ? (
                 <span className={desktopStyles.RecurringTaskSettingsDialogSectionHeaderResult}>
@@ -150,7 +145,7 @@ export const RecurringTaskSettingsOverlay: React.FC = () => {
             className={desktopStyles.RecurringTaskSettingsDialogCancelButton}
             onClick={() => controller.dispose()}
           >
-            {localize("common.cancel", "Cancel")}
+            {localize("common.cancel")}
           </button>
           <button
             type="button"
@@ -161,7 +156,7 @@ export const RecurringTaskSettingsOverlay: React.FC = () => {
             disabled={confirmDisabled}
             onClick={() => controller.save()}
           >
-            {localize("confirm", "Confirm")}
+            {localize("confirm")}
           </button>
         </div>
       </div>

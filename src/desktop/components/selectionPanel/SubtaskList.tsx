@@ -146,9 +146,7 @@ export const SubtaskList: React.FC<SubtaskListProps> = ({ task }) => {
         <span className={desktopStyles.SubtaskListCreateButtonIconContainer}>
           <PlusIcon className={desktopStyles.SubtaskListCreateButtonIcon} />
         </span>
-        <span className={desktopStyles.SubtaskListCreateButtonLabel}>
-          {localize("tasks.add_subtask", "Add subtask")}
-        </span>
+        <span className={desktopStyles.SubtaskListCreateButtonLabel}>{localize("tasks.add_subtask")}</span>
       </button>
     </div>
   )

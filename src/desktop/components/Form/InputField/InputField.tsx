@@ -36,9 +36,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 
   if (!canReveal) return input
 
-  const toggleLabel = isRevealed
-    ? localize("input.password.hide", "Hide password")
-    : localize("input.password.show", "Show password")
+  const toggleLabel = isRevealed ? localize("input.password.hide") : localize("input.password.show")
   const VisibilityIcon = isRevealed ? EyeOffIcon : EyeIcon
 
   return (

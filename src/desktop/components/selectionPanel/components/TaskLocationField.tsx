@@ -21,7 +21,7 @@ export const TaskLocationField: React.FC<TaskLocationFieldProps> = ({ itemId, la
   const todoService = useService(ITodoService)
   useTodoLocationSubscription(itemId)
   const treeSelect = useTreeSelect()
-  const resolvedLabel = label || localize("tasks.location", "Location")
+  const resolvedLabel = label || localize("tasks.location")
 
   const handleMoveClick = (e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -88,7 +88,7 @@ export const TaskLocationField: React.FC<TaskLocationFieldProps> = ({ itemId, la
       <TaskDetailAttributeRow
         icon={emptyIcon || <ProjectIcon status="created" progress={0} size="sm" />}
         label={resolvedLabel}
-        content={localize("tasks.location.empty", "Not set")}
+        content={localize("tasks.location.empty")}
         placeholder={true}
         onClick={handleMoveClick}
       />

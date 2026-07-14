@@ -135,7 +135,7 @@ const AttachmentRow: React.FC<{
           e.stopPropagation()
           onDelete()
         }}
-        title={localize("attachments.delete", "Delete")}
+        title={localize("attachments.delete")}
       >
         <CloseIcon className={desktopStyles.AttachmentRowDeleteIcon} strokeWidth={1.5} />
       </button>
@@ -165,24 +165,24 @@ const UploadRow: React.FC<{
         <FilenameText filename={upload.filename} className={desktopStyles.AttachmentRowFilename} />
         {isFailed ? (
           <span className={desktopStyles.AttachmentRowError}>
-            {upload.error ?? localize("attachments.uploadFailed", "Upload failed")}
+            {upload.error ?? localize("attachments.uploadFailed")}
           </span>
         ) : (
           <span className={desktopStyles.AttachmentRowSize}>
-            {localize("attachments.uploading", "Uploading")} {percent}% · {formatSize(upload.size)}
+            {localize("attachments.uploading")} {percent}% · {formatSize(upload.size)}
           </span>
         )}
       </div>
       {isFailed && (
         <button type="button" className={desktopStyles.AttachmentRowRetryButton} onClick={onRetry}>
-          {localize("attachments.retry", "Retry")}
+          {localize("attachments.retry")}
         </button>
       )}
       <button
         type="button"
         className={desktopStyles.AttachmentRowDeleteButton}
         onClick={onCancel}
-        title={localize("common.cancel", "Cancel")}
+        title={localize("common.cancel")}
       >
         <CloseIcon className={desktopStyles.AttachmentRowDeleteIcon} strokeWidth={1.5} />
       </button>
@@ -221,14 +221,10 @@ export const AttachmentSection: React.FC<AttachmentSectionProps> = ({ parentUid 
 
   const handleDelete = (attachment: AttachmentSchema) => {
     dialog({
-      title: localize("attachments.deleteConfirmTitle", "Delete attachment?"),
-      description: localize(
-        "attachments.deleteConfirmDescription",
-        'Are you sure you want to delete "{0}"? This only removes it from this task. The file in S3 will not be deleted.',
-        attachment.filename,
-      ),
-      confirmText: localize("attachments.delete", "Delete"),
-      cancelText: localize("common.cancel", "Cancel"),
+      title: localize("attachments.deleteConfirmTitle"),
+      description: localize("attachments.deleteConfirmDescription", { 0: attachment.filename }),
+      confirmText: localize("attachments.delete"),
+      cancelText: localize("common.cancel"),
       onConfirm: async () => {
         attachmentService.softDelete(attachment.id)
       },
@@ -240,10 +236,10 @@ export const AttachmentSection: React.FC<AttachmentSectionProps> = ({ parentUid 
   return (
     <div className={desktopStyles.AttachmentSectionContainer}>
       <div className={desktopStyles.AttachmentSectionHeader}>
-        <span className={desktopStyles.AttachmentSectionTitle}>{localize("attachments.heading", "Attachments")}</span>
+        <span className={desktopStyles.AttachmentSectionTitle}>{localize("attachments.heading")}</span>
         {totalCount > 0 && (
           <span className={desktopStyles.AttachmentSectionMeta}>
-            {hasConfig ? totalCount : `${totalCount} · ${localize("attachments.notConfiguredStatus", "unavailable")}`}
+            {hasConfig ? totalCount : `${totalCount} · ${localize("attachments.notConfiguredStatus")}`}
           </span>
         )}
       </div>
@@ -252,10 +248,10 @@ export const AttachmentSection: React.FC<AttachmentSectionProps> = ({ parentUid 
         <div className={desktopStyles.AttachmentSectionWarning}>
           <CloudSlashIcon className={desktopStyles.AttachmentSectionWarningIcon} strokeWidth={1.75} />
           <span className={desktopStyles.AttachmentSectionWarningText}>
-            {localize("attachments.notConfiguredWarning", "Storage not set up")}
+            {localize("attachments.notConfiguredWarning")}
           </span>
           <Link to="/desktop/settings/selfhosted-sync" className={desktopStyles.AttachmentSectionWarningLink}>
-            <span>{localize("attachments.configureAction", "Set up")}</span>
+            <span>{localize("attachments.configureAction")}</span>
             <RightArrowIcon className={desktopStyles.AttachmentSectionWarningLinkArrow} strokeWidth={1.75} />
           </Link>
         </div>
@@ -299,9 +295,7 @@ export const AttachmentSection: React.FC<AttachmentSectionProps> = ({ parentUid 
             <span className={desktopStyles.SubtaskListCreateButtonIconContainer}>
               <PlusIcon className={desktopStyles.SubtaskListCreateButtonIcon} />
             </span>
-            <span className={desktopStyles.SubtaskListCreateButtonLabel}>
-              {localize("attachments.add", "Add attachment")}
-            </span>
+            <span className={desktopStyles.SubtaskListCreateButtonLabel}>{localize("attachments.add")}</span>
           </button>
           <input
             ref={fileInputRef}

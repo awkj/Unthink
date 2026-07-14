@@ -159,12 +159,12 @@ export const Inbox = () => {
   const header = (
     <EntityHeader
       renderIcon={() => <InboxIcon className="text-module-inbox" strokeWidth={1.5} />}
-      title={localize("inbox", "Inbox")}
+      title={localize("inbox")}
       extraActions={[
         {
           icon: <Funnel strokeWidth={1.5} />,
           handleClick: tagFilter.clickFilter,
-          title: localize("tasks.filterByTag", "Filter by Tag"),
+          title: localize("tasks.filterByTag"),
           testId: TestIds.EntityHeader.FilterToggleButton,
           isActive: tagFilter.isFilterOpen || tagFilter.currentTag.type !== "all",
         },

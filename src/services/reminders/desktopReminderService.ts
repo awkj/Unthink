@@ -65,7 +65,7 @@ export class DesktopReminderService implements IReminderService {
         const taskItem = modelState.taskObjectMap.get(taskId)
         if (taskItem) {
           sendNotification({
-            title: localize("reminder.expired.title", "Task Reminder"),
+            title: localize("reminder.expired.title"),
             body: taskItem.title,
           })
         }
@@ -95,7 +95,7 @@ export class DesktopReminderService implements IReminderService {
       const taskItem = modelState.taskObjectMap.get(taskId)
       if (!taskItem) return
 
-      const title = localize("reminder.expired.title", "Task Reminder")
+      const title = localize("reminder.expired.title")
       const body = taskItem.title
 
       const notification = new Notification(title, {

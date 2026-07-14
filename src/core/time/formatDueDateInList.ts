@@ -9,7 +9,7 @@ export function formatDueDateInList(dueDate?: number) {
     throw new Error("dueDate is undefined or null")
   }
   if (isSomeday(dueDate)) {
-    return localize("date.someday", "Someday")
+    return localize("date.pending")
   }
   const currentDate = getTodayTimestampInUtc()
   const dueDateInUtc = getDateFromUTCTimeStamp(dueDate)
@@ -18,12 +18,12 @@ export function formatDueDateInList(dueDate?: number) {
   const diffInDays = differenceInDays(dueDateInUtc, currentDateInUtc)
 
   if (diffInDays === 0) {
-    return localize("tasks.today", "Today")
+    return localize("tasks.today")
   }
 
   if (diffInDays > 0) {
     if (diffInDays < 30) {
-      return localize("tasks.daysLeft", "{0} days left", diffInDays)
+      return localize("tasks.daysLeft", { 0: diffInDays })
     }
     if (diffInDays < 90 || isSameYear(dueDateInUtc, currentDateInUtc)) {
       return format(dueDateInUtc, "MM/dd")
@@ -32,9 +32,9 @@ export function formatDueDateInList(dueDate?: number) {
   } else {
     if (-diffInDays < 30) {
       if (-diffInDays === 1) {
-        return localize("tasks.oneDayAgo", "1 day ago")
+        return localize("tasks.oneDayAgo")
       }
-      return localize("tasks.daysAgo", "{0} days ago", -diffInDays)
+      return localize("tasks.daysAgo", { 0: -diffInDays })
     }
     if (-diffInDays < 90 || isSameYear(dueDateInUtc, currentDateInUtc)) {
       return format(dueDateInUtc, "MM/dd")

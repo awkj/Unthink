@@ -19,10 +19,10 @@ export function formatRemainingDays(date?: number, currentDate?: number) {
   const current = getDateFromUTCTimeStamp(currentDate)
   const dayLeft = differenceInDays(targetDate, current)
   if (dayLeft > 0) {
-    return localize("daysLeft", "{0} days left", dayLeft)
+    return localize("daysLeft", { 0: dayLeft })
   }
   if (dayLeft === 0) {
-    return localize("today", "Today")
+    return localize("today")
   }
-  return localize("daysAgo", "{0} days ago", -dayLeft)
+  return localize("daysAgo", { 0: -dayLeft })
 }

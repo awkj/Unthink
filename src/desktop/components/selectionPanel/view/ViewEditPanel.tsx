@@ -37,11 +37,8 @@ export const ViewEditPanel: React.FC<ViewEditPanelProps> = ({ viewUid }) => {
 
   const handleDelete = () => {
     dialog({
-      title: localize("view.delete.title", "Delete view"),
-      description: localize(
-        "view.delete.description",
-        "Are you sure you want to delete this view? This cannot be undone.",
-      ),
+      title: localize("view.delete.title"),
+      description: localize("view.delete.description"),
       onConfirm: () => {
         todoService.deleteView(viewUid)
         navigate("/desktop/inbox")
@@ -55,7 +52,7 @@ export const ViewEditPanel: React.FC<ViewEditPanelProps> = ({ viewUid }) => {
       {
         menuConfig: [
           {
-            label: localize("view.menu.delete", "Delete view"),
+            label: localize("view.menu.delete"),
             onSelect: handleDelete,
             icon: "trash",
             danger: true,
@@ -72,7 +69,7 @@ export const ViewEditPanel: React.FC<ViewEditPanelProps> = ({ viewUid }) => {
     {
       icon: <EllipsisVertical />,
       handleClick: handleMenuClick,
-      title: localize("common.more", "More"),
+      title: localize("common.more"),
     },
   ]
 
@@ -91,7 +88,7 @@ export const ViewEditPanel: React.FC<ViewEditPanelProps> = ({ viewUid }) => {
           editable={false}
           renderIcon={() => <ViewIcon />}
           title={view.name}
-          placeholder={localize("view.detail.untitled", "Untitled view")}
+          placeholder={localize("view.detail.untitled")}
           extraActions={headerActions}
         />
       </div>
@@ -107,7 +104,7 @@ export const ViewEditPanel: React.FC<ViewEditPanelProps> = ({ viewUid }) => {
         inputKey={`view-name:${viewUid}`}
         renderIcon={() => <ViewIcon />}
         title={view.name}
-        placeholder={localize("view.detail.untitled", "Untitled view")}
+        placeholder={localize("view.detail.untitled")}
         onSave={(value) => todoService.updateView(viewUid, { name: value.trim() })}
         extraActions={headerActions}
       />
@@ -117,19 +114,19 @@ export const ViewEditPanel: React.FC<ViewEditPanelProps> = ({ viewUid }) => {
           <NotesField
             value={view.desc}
             onSave={(value) => todoService.updateView(viewUid, { desc: value })}
-            placeholder={localize("view.field.descPlaceholder", "Add description...")}
+            placeholder={localize("view.field.descPlaceholder")}
             className={desktopStyles.DetailViewNotesTextarea}
           />
 
           <div className={desktopStyles.DetailViewDivider} />
 
           <div className={desktopStyles.ViewRuleHeader}>
-            <span className={desktopStyles.ViewRuleHeaderTitle}>{localize("view.field.rule", "Rule")}</span>
+            <span className={desktopStyles.ViewRuleHeaderTitle}>{localize("view.field.rule")}</span>
           </div>
           <NotesField
             value={view.rule}
             onSave={(value) => todoService.updateView(viewUid, { rule: value })}
-            placeholder={localize("view.field.rulePlaceholder", "Write an expression, or pick a starter on the left")}
+            placeholder={localize("view.field.rulePlaceholder")}
             className={desktopStyles.ViewFieldRuleInput}
           />
           {ruleError && <pre className={desktopStyles.ViewRuleError}>{ruleError}</pre>}

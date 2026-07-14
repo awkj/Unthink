@@ -10,8 +10,9 @@
   "scripts": {
     "env:generate": "node tooling/generate-env.ts",
     "lint": "eslint src --no-warn-ignored",
+    "check:i18n": "tsx --tsconfig tsconfig.app.json tooling/check-i18n.ts",
     "check:types": "tsc -b",
-    "check": "pnpm check:types && npm run lint",
+    "check": "pnpm check:i18n && pnpm check:types && npm run lint",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -135,6 +136,8 @@
     "@tauri-apps/plugin-fs": "^2.5.1",
     "@tauri-apps/plugin-notification": "^2.3.3",
     "@tauri-apps/plugin-opener": "^2.5.4",
+    "i18next": "^26.3.6",
+    "react-i18next": "^17.0.9",
     "use-sync-external-store": "1.6.0",
     "zustand": "^5.0.14"
   }

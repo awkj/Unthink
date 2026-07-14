@@ -146,7 +146,7 @@ export const SubtaskItem: React.FC<SubtaskItemProps> = ({ subtask, subList, clas
           onSelect={handleInputSelect}
           onSave={handleInputSave}
           className={inputClassName}
-          placeholder={localize("subtask.placeholder", "Add subtask...")}
+          placeholder={localize("subtask.placeholder")}
         />
       </div>
 

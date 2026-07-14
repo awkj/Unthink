@@ -112,7 +112,7 @@ export const SubtaskItem: React.FC<SubtaskItemProps> = ({
               ? styles.subtaskItemInputCompleted
               : styles.subtaskItemInputNormal,
         )}
-        placeholder={localize("mobile.subtask.placeholder", "Subtask")}
+        placeholder={localize("mobile.subtask.placeholder")}
         ref={inputRef}
         data-testid={inputTestId}
         data-edit-subtask-id={inputDataId}

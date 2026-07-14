@@ -97,7 +97,7 @@ const ProjectMeta: React.FC<{ project: ProjectInfoState }> = ({ project }) => {
           >
             <Textarea
               autoSize={{ minRows: 2, maxRows: 4 }}
-              placeholder={localize("project.notes", "Notes")}
+              placeholder={localize("project.notes")}
               value={notes ?? ""}
               onChange={(e) => setNotes(e.target.value)}
               onBlur={() => handleUpdateNotes(notes)}

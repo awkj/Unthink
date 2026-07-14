@@ -27,7 +27,7 @@ export const InboxDropZone = () => {
       )}
     >
       <InboxIcon size={20} />
-      {isOver && <span className={styles.inboxDropZoneLabel}>{localize("inbox.hoverMessage", "Create Task")}</span>}
+      {isOver && <span className={styles.inboxDropZoneLabel}>{localize("inbox.hoverMessage")}</span>}
     </div>
   )
 }

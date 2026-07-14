@@ -103,11 +103,8 @@ export const GroupToday = () => {
           // pressing Backspace meaning "delete one task / step back" is a
           // common reflex we don't want to honour against a project.
           dialog({
-            title: localize("task.delete_project_confirm_title", "Delete Project"),
-            description: localize(
-              "task.delete_project_confirm_description",
-              "Are you sure you want to delete this project? This action cannot be undone.",
-            ),
+            title: localize("task.delete_project_confirm_title"),
+            description: localize("task.delete_project_confirm_description"),
             onConfirm: () => {
               flushSync(() => {
                 todoService.deleteItem(event.id)
@@ -216,13 +213,13 @@ export const GroupToday = () => {
             {
               icon: <Funnel strokeWidth={1.5} />,
               handleClick: tagFilter.clickFilter,
-              title: localize("tasks.filterByTag", "Filter by Tag"),
+              title: localize("tasks.filterByTag"),
               testId: TestIds.EntityHeader.FilterToggleButton,
               isActive: tagFilter.isFilterOpen || isTagFilterActive,
             },
           ]}
           internalActions={{ displaySettings: { onOpen: (right, bottom) => openTaskDisplaySettings(right, bottom) } }}
-          title={localize("today", "Today")}
+          title={localize("today")}
           titleDetail={
             tagFilter.isFilterOpen ? (
               <TagFilterBar tags={tagFilter.tags} selected={tagFilter.currentTag} onSelect={tagFilter.selectTag} />

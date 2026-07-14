@@ -20,7 +20,7 @@ export const FutureProjectsPage = () => {
     <PageLayout
       header={{
         showBack: true,
-        title: localize("futureProjects", "Future Projects"),
+        title: localize("futureProjects"),
         renderIcon: (className) => <LaterProjectsIcon className={className} />,
         id: "future-projects",
       }}

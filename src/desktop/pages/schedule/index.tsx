@@ -51,12 +51,12 @@ export const Schedule = () => {
       <div className={desktopStyles.SchedulePageLayout}>
         <EntityHeader
           renderIcon={() => <ScheduledIcon className="text-module-scheduled" strokeWidth={1.5} />}
-          title={localize("schedule", "Schedule")}
+          title={localize("schedule")}
           extraActions={[
             {
               icon: <Funnel strokeWidth={1.5} />,
               handleClick: tagFilter.clickFilter,
-              title: localize("tasks.filterByTag", "Filter by Tag"),
+              title: localize("tasks.filterByTag"),
               testId: TestIds.EntityHeader.FilterToggleButton,
               isActive: tagFilter.isFilterOpen || tagFilter.currentTag.type !== "all",
             },
@@ -100,9 +100,7 @@ export const Schedule = () => {
 
             {scheduledGroups.length === 0 && (
               <div className={desktopStyles.SchedulePageEmptyState}>
-                <p className={desktopStyles.SchedulePageEmptyText}>
-                  {localize("schedule.empty", "No scheduled tasks")}
-                </p>
+                <p className={desktopStyles.SchedulePageEmptyText}>{localize("schedule.empty")}</p>
               </div>
             )}
           </div>

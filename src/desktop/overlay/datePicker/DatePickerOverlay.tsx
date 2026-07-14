@@ -1,12 +1,4 @@
-import {
-  CalendarXIcon,
-  CircleSmallIcon,
-  LaterProjectsIcon,
-  LeftIcon,
-  RightIcon,
-  ScheduledIcon,
-  TodayIcon,
-} from "@/ui/components/icons"
+import { CalendarXIcon, CircleSmallIcon, LeftIcon, RightIcon, ScheduledIcon, TodayIcon } from "@/ui/components/icons"
 import { formatCalendarMonth } from "@/core/time/formatCalendarMonth"
 import { isTimestampToday } from "@/core/time/isTimestampToday"
 import { WeekdayHeader } from "@/desktop/components/DatePickerCalendar/WeekdayHeader"
@@ -109,22 +101,18 @@ export const DatePickerOverlay: React.FC = () => {
       <div className={desktopStyles.DatePickerOverlayQuickActionsContainer}>
         <button onClick={() => controller.selectToday()} className={desktopStyles.DatePickerOverlayQuickActionButton}>
           <TodayIcon className={desktopStyles.DatePickerOverlayQuickActionIcon} />
-          {localize("date_picker.today_button", "Today")}
+          {localize("date_picker.today_button")}
         </button>
         <button
           onClick={() => controller.selectTomorrow()}
           className={desktopStyles.DatePickerOverlayQuickActionButton}
         >
           <ScheduledIcon className={desktopStyles.DatePickerOverlayQuickActionIcon} />
-          {localize("date_picker.tomorrow", "Tomorrow")}
-        </button>
-        <button onClick={() => controller.selectSomeday()} className={desktopStyles.DatePickerOverlayQuickActionButton}>
-          <LaterProjectsIcon className={desktopStyles.DatePickerOverlayQuickActionIcon} />
-          {localize("date_picker.someday", "Someday")}
+          {localize("date_picker.tomorrow")}
         </button>
         <button onClick={() => controller.selectNoDate()} className={desktopStyles.DatePickerOverlayQuickActionButton}>
           <CalendarXIcon className={desktopStyles.DatePickerOverlayQuickActionIcon} />
-          {localize("date_picker.no_date", "No date")}
+          {localize("date_picker.no_date")}
         </button>
       </div>
       <div className={desktopStyles.DatePickerOverlayDivider} />
@@ -140,7 +128,7 @@ export const DatePickerOverlay: React.FC = () => {
           <button
             onClick={() => setVisibleMonth(startOfMonth(new Date()))}
             className={desktopStyles.DatePickerCalendarNavButton}
-            title={localize("date_picker.go_to_today", "Go to today")}
+            title={localize("date_picker.go_to_today")}
           >
             <CircleSmallIcon className={desktopStyles.DatePickerCalendarNavIcon} />
           </button>

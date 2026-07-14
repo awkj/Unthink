@@ -5,7 +5,7 @@ import { isSomeday } from "./someday"
 
 export function formatStartDateInList(startDate: number) {
   if (isSomeday(startDate)) {
-    return localize("date.someday", "Someday")
+    return localize("date.pending")
   }
   return format(getDateFromUTCTimeStamp(startDate), "MM/dd")
 }

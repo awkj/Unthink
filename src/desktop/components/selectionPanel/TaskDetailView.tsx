@@ -50,7 +50,7 @@ export const TaskDetailView: React.FC<TaskDetailViewProps> = ({ task, onClearSel
     {
       icon: <EllipsisVertical />,
       handleClick: handleMenuClick,
-      title: localize("common.more", "More"),
+      title: localize("common.more"),
       testId: TestIds.TaskDetail.MenuButton,
     },
     ...(onClearSelection
@@ -58,7 +58,7 @@ export const TaskDetailView: React.FC<TaskDetailViewProps> = ({ task, onClearSel
           {
             icon: <CloseIcon />,
             handleClick: () => onClearSelection(),
-            title: localize("common.close", "Close"),
+            title: localize("common.close"),
           },
         ]
       : []),
@@ -73,7 +73,7 @@ export const TaskDetailView: React.FC<TaskDetailViewProps> = ({ task, onClearSel
         inputKey={taskTitleInputKey(task.id)}
         renderIcon={() => <TaskIcon status={task.status} className={desktopStyles.DetailViewHeaderStatusIconColor} />}
         title={task.title}
-        placeholder={localize("tasks.title_placeholder", "Add title...")}
+        placeholder={localize("tasks.title_placeholder")}
         onSave={handleTitleSave}
         extraActions={headerActions}
       />
@@ -83,21 +83,21 @@ export const TaskDetailView: React.FC<TaskDetailViewProps> = ({ task, onClearSel
             value={task.notes || ""}
             onSave={handleNotesSave}
             className={desktopStyles.DetailViewNotesTextarea}
-            placeholder={localize("desktop.task_detail.notes_placeholder", "Add notes...")}
+            placeholder={localize("desktop.task_detail.notes_placeholder")}
           />
           <div className={desktopStyles.DetailViewDivider} />
           <TaskLocationField itemId={task.id} />
           <TaskDateField
-            label={localize("desktop.task_detail.start_date", "Start Date")}
-            placeholder={localize("desktop.task_detail.unset", "Not set")}
+            label={localize("desktop.task_detail.start_date")}
+            placeholder={localize("desktop.task_detail.unset")}
             icon={<ScheduledIcon />}
             date={task.startDate}
             onDateClick={handleStartDateClick}
             testId={TestIds.TaskDetail.StartDateField}
           />
           <TaskDateField
-            label={localize("desktop.task_detail.due_date", "Due Date")}
-            placeholder={localize("desktop.task_detail.unset", "Not set")}
+            label={localize("desktop.task_detail.due_date")}
+            placeholder={localize("desktop.task_detail.unset")}
             icon={<FlagIcon />}
             date={task.dueDate}
             onDateClick={handleDueDateClick}
@@ -115,7 +115,7 @@ export const TaskDetailView: React.FC<TaskDetailViewProps> = ({ task, onClearSel
           />
           <div className={desktopStyles.DetailViewSubtaskHeader}>
             <span className={desktopStyles.DetailViewSubtaskHeaderTitle}>
-              {localize("desktop.task_detail.subtasks", "Subtasks")}
+              {localize("desktop.task_detail.subtasks")}
             </span>
             <span
               className={desktopStyles.DetailViewSubtaskHeaderCount}

@@ -5,7 +5,6 @@ import {
   ChevronRightIcon,
   CircleIcon,
   CopyIcon,
-  LaterProjectsIcon,
   TagIcon,
   TodayIcon,
 } from "@/ui/components/icons"
@@ -38,7 +37,6 @@ function shortenRule(rule: string): string {
 const constants: { name: string; meaning: string }[] = [
   { name: "TODAY", meaning: "Today's UTC midnight timestamp" },
   { name: "DAY", meaning: "Milliseconds in a day (86,400,000)" },
-  { name: "SOMEDAY", meaning: 'Sentinel for "Someday" (Dec 31, 2999 UTC)' },
 ]
 
 const fields: { name: string; type: string }[] = [
@@ -80,45 +78,40 @@ export const RuleDocs: React.FC<RuleDocsProps> = ({ viewUid }) => {
       window.setTimeout(() => setCopied(false), 2000)
       desktopMessage({
         type: "success",
-        message: localize("view.docs.ai.copySuccess", "AI prompt copied to clipboard"),
+        message: localize("view.docs.ai.copySuccess"),
       })
     } catch {
       desktopMessage({
         type: "error",
-        message: localize("view.docs.ai.copyFailed", "Failed to fetch AI prompt"),
+        message: localize("view.docs.ai.copyFailed"),
       })
     }
   }
 
   const starters: Starter[] = [
     {
-      label: localize("view.docs.starter.notCompleted", "Not completed"),
+      label: localize("view.docs.starter.notCompleted"),
       rule: "item.status === 'created'",
       icon: CircleIcon,
     },
     {
-      label: localize("view.docs.starter.overdue", "Overdue"),
+      label: localize("view.docs.starter.overdue"),
       rule: "item.dueDate !== null && item.dueDate < TODAY",
       icon: AlarmIcon,
       danger: true,
     },
     {
-      label: localize("view.docs.starter.dueIn7Days", "Due in next 7 days"),
+      label: localize("view.docs.starter.dueIn7Days"),
       rule: "item.dueDate !== null && item.dueDate < TODAY + 7 * DAY",
       icon: CalendarRangeIcon,
     },
     {
-      label: localize("view.docs.starter.anytime", "Anytime"),
-      rule: "item.status === 'created' && (item.startDate === null || item.startDate <= TODAY)",
+      label: localize("view.docs.starter.pending"),
+      rule: "item.status === 'created' && item.startDate === null",
       icon: TodayIcon,
     },
     {
-      label: localize("view.docs.starter.someday", "Someday"),
-      rule: "item.startDate === SOMEDAY",
-      icon: LaterProjectsIcon,
-    },
-    {
-      label: localize("view.docs.starter.taggedWork", "Tagged 'work'"),
+      label: localize("view.docs.starter.taggedWork"),
       rule: "item.tags.includes('work')",
       icon: TagIcon,
     },
@@ -131,19 +124,12 @@ export const RuleDocs: React.FC<RuleDocsProps> = ({ viewUid }) => {
   return (
     <div className={desktopStyles.RuleDocsContainer}>
       <div>
-        <div className={desktopStyles.RuleDocsIntroTitle}>
-          {localize("view.docs.introTitle", "Set a filter rule for this view")}
-        </div>
-        <div className={desktopStyles.RuleDocsIntroBody}>
-          {localize(
-            "view.docs.introBody",
-            "Pick a starter below, or write your own expression in the Rule editor on the right.",
-          )}
-        </div>
+        <div className={desktopStyles.RuleDocsIntroTitle}>{localize("view.docs.introTitle")}</div>
+        <div className={desktopStyles.RuleDocsIntroBody}>{localize("view.docs.introBody")}</div>
       </div>
 
       <section>
-        <div className={desktopStyles.RuleDocsSectionHeading}>{localize("view.docs.starters", "Starters")}</div>
+        <div className={desktopStyles.RuleDocsSectionHeading}>{localize("view.docs.starters")}</div>
         <div className={desktopStyles.RuleDocsStarterGrid}>
           {starters.map((s) => {
             const Icon = s.icon
@@ -168,13 +154,8 @@ export const RuleDocs: React.FC<RuleDocsProps> = ({ viewUid }) => {
       </section>
 
       <section>
-        <div className={desktopStyles.RuleDocsSectionHeading}>{localize("view.docs.ai.title", "AI assist")}</div>
-        <div className={desktopStyles.RuleDocsAiDesc}>
-          {localize(
-            "view.docs.ai.desc",
-            'Copy the prompt below and send it to ChatGPT, Claude, or another AI along with your request (e.g. "show my work tasks for this week"). Paste the rule it returns into the Rule box on the right.',
-          )}
-        </div>
+        <div className={desktopStyles.RuleDocsSectionHeading}>{localize("view.docs.ai.title")}</div>
+        <div className={desktopStyles.RuleDocsAiDesc}>{localize("view.docs.ai.desc")}</div>
 
         <div className={desktopStyles.RuleDocsAiActions}>
           <button type="button" className={desktopStyles.RuleDocsAiCopyButton} onClick={handleCopyAiPrompt}>
@@ -183,11 +164,7 @@ export const RuleDocs: React.FC<RuleDocsProps> = ({ viewUid }) => {
             ) : (
               <CopyIcon className={desktopStyles.RuleDocsAiCopyIcon} />
             )}
-            <span>
-              {copied
-                ? localize("view.docs.ai.copied", "Copied")
-                : localize("view.docs.ai.copyButton", "Copy AI prompt")}
-            </span>
+            <span>{copied ? localize("view.docs.ai.copied") : localize("view.docs.ai.copyButton")}</span>
           </button>
           <a
             href={AI_PROMPT_URL}
@@ -195,7 +172,7 @@ export const RuleDocs: React.FC<RuleDocsProps> = ({ viewUid }) => {
             rel="noopener noreferrer"
             className={desktopStyles.RuleDocsAiViewLink}
           >
-            {localize("view.docs.ai.viewSource", "View source")}
+            {localize("view.docs.ai.viewSource")}
           </a>
         </div>
       </section>
@@ -211,13 +188,13 @@ export const RuleDocs: React.FC<RuleDocsProps> = ({ viewUid }) => {
               referenceOpen ? desktopStyles.RuleDocsReferenceChevronOpen : desktopStyles.RuleDocsReferenceChevron
             }
           />
-          <span>{localize("view.docs.referenceToggle", "Reference (fields / constants / operators)")}</span>
+          <span>{localize("view.docs.referenceToggle")}</span>
         </button>
 
         {referenceOpen && (
           <div className={desktopStyles.RuleDocsReferenceBody}>
             <div>
-              <div className={desktopStyles.RuleDocsSectionHeading}>{localize("view.docs.fields", "Fields")}</div>
+              <div className={desktopStyles.RuleDocsSectionHeading}>{localize("view.docs.fields")}</div>
               <div className={desktopStyles.RuleDocsList}>
                 {fields.map((f) => (
                   <div key={f.name} className={desktopStyles.RuleDocsRow}>
@@ -229,7 +206,7 @@ export const RuleDocs: React.FC<RuleDocsProps> = ({ viewUid }) => {
             </div>
 
             <div>
-              <div className={desktopStyles.RuleDocsSectionHeading}>{localize("view.docs.constants", "Constants")}</div>
+              <div className={desktopStyles.RuleDocsSectionHeading}>{localize("view.docs.constants")}</div>
               <div className={desktopStyles.RuleDocsList}>
                 {constants.map((c) => (
                   <div key={c.name} className={desktopStyles.RuleDocsRow}>
@@ -241,7 +218,7 @@ export const RuleDocs: React.FC<RuleDocsProps> = ({ viewUid }) => {
             </div>
 
             <div>
-              <div className={desktopStyles.RuleDocsSectionHeading}>{localize("view.docs.operators", "Operators")}</div>
+              <div className={desktopStyles.RuleDocsSectionHeading}>{localize("view.docs.operators")}</div>
               <div className={desktopStyles.RuleDocsList}>
                 {operators.map((o) => (
                   <div key={o.op} className={desktopStyles.RuleDocsRow}>

@@ -2,22 +2,22 @@ import { localize } from "@/nls"
 import { RecurringDateRule } from "./parseRecurringRule"
 
 const labels = {
-  due: localize("recurring_task.due_prefix", "From due date:"),
-  start: localize("recurring_task.start_prefix", "From start date:"),
-  completion: localize("recurring_task.base_prefix", "From completion date:"),
-  nextYearJan1: localize("recurringDate.nextYearJan1", "Next year January 1st"),
-  nextMonth1st: localize("recurringDate.nextMonth1st", "Next month 1st"),
-  nextMonday: localize("recurringDate.nextMonday", "Next Monday"),
-  years: localize("recurringDate.years", "years"),
-  year: localize("recurringDate.year", "year"),
-  months: localize("recurringDate.months", "months"),
-  month: localize("recurringDate.month", "month"),
-  weeks: localize("recurringDate.weeks", "weeks"),
-  week: localize("recurringDate.week", "week"),
-  days: localize("recurringDate.days", "days"),
-  day: localize("recurringDate.day", "day"),
-  then: localize("recurringDate.then", "→"),
-  tomorrow: localize("recurringDate.tomorrow", "Tomorrow"),
+  due: localize("recurring_task.due_prefix"),
+  start: localize("recurring_task.start_prefix"),
+  completion: localize("recurring_task.base_prefix"),
+  nextYearJan1: localize("recurringDate.nextYearJan1"),
+  nextMonth1st: localize("recurringDate.nextMonth1st"),
+  nextMonday: localize("recurringDate.nextMonday"),
+  years: localize("recurringDate.years"),
+  year: localize("recurringDate.year"),
+  months: localize("recurringDate.months"),
+  month: localize("recurringDate.month"),
+  weeks: localize("recurringDate.weeks"),
+  week: localize("recurringDate.week"),
+  days: localize("recurringDate.days"),
+  day: localize("recurringDate.day"),
+  then: localize("recurringDate.then"),
+  tomorrow: localize("recurringDate.tomorrow"),
 }
 
 function formatDay(num: number): string {
@@ -44,7 +44,7 @@ function formatYear(num: number): string {
  */
 export function explanationRecurringDate(rule: RecurringDateRule): string {
   if (!rule.valid) {
-    return localize("recurring_task.invalid_rule", "Invalid rule")
+    return localize("recurring_task.invalid_rule")
   }
   const { years = 0, months = 0, weeks = 0, days = 0 } = rule
   const parts: string[] = []

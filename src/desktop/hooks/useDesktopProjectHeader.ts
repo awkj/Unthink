@@ -33,18 +33,18 @@ export const useDesktopProjectHeader = (options: IUseDesktopProjectHeaderOptions
     return [
       {
         label: projectHeadingInfo.isArchived
-          ? localize("project_heading.unarchive", "Unarchive Heading")
-          : localize("project_heading.archive", "Archive Heading"),
+          ? localize("project_heading.unarchive")
+          : localize("project_heading.archive"),
         onSelect: handleArchiveHeading,
         icon: "archive",
       },
       {
-        label: localize("project_heading.convert_to_project", "Convert to Project"),
+        label: localize("project_heading.convert_to_project"),
         onSelect: handleConvertToProject,
         icon: "plus-circle",
       },
       {
-        label: localize("project_heading.delete_heading", "Delete Heading"),
+        label: localize("project_heading.delete_heading"),
         onSelect: handleDeleteHeading,
         icon: "trash",
         dividerAbove: true,

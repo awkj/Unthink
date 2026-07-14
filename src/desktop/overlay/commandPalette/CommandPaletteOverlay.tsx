@@ -161,7 +161,7 @@ const CommandPaletteContent: React.FC<CommandPaletteContentProps> = ({ controlle
             ref={inputRef}
             type="text"
             className={desktopStyles.CommandPaletteInput}
-            placeholder={localize("search.placeholder", "Search tasks, projects, areas...")}
+            placeholder={localize("search.placeholder")}
             value={controller.searchQuery}
             onChange={handleInputChange}
             onBlur={handleInputBlur}
@@ -176,7 +176,7 @@ const CommandPaletteContent: React.FC<CommandPaletteContentProps> = ({ controlle
           >
             {searchResults.length === 0 && (
               <div className={desktopStyles.CommandPaletteResultsEmpty} data-test-id={TestIds.CommandPalette.NoResults}>
-                {localize("search.no_results", "No results found")}
+                {localize("search.no_results")}
               </div>
             )}
             {searchResults.map((result, index) => {

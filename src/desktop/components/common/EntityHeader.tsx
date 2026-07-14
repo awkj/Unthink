@@ -80,7 +80,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
     renderIcon(),
     classNames(desktopStyles.EntityHeaderIconSvg, isDetail && desktopStyles.EntityHeaderIconSvgDetail),
   )
-  const fallbackTitle = placeholder || localize("common.untitled", "Untitled")
+  const fallbackTitle = placeholder || localize("common.untitled")
   const displayTitle = title || fallbackTitle
 
   useWatchEvent(editService.onInputChange, (e) => {
@@ -140,7 +140,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
               const rect = e.currentTarget.getBoundingClientRect()
               displaySettings.onOpen(rect.right, rect.bottom + 4)
             },
-            title: localize("inbox.taskDisplaySettings", "Task Display Settings"),
+            title: localize("inbox.taskDisplaySettings"),
             testId: TestIds.EntityHeader.DisplaySettingsButton,
           },
         ]
@@ -182,7 +182,9 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
               )}
             />
           ) : (
-            <h1 className={classNames(desktopStyles.EntityHeaderTitle, isDetail && desktopStyles.EntityHeaderTitleDetail)}>
+            <h1
+              className={classNames(desktopStyles.EntityHeaderTitle, isDetail && desktopStyles.EntityHeaderTitleDetail)}
+            >
               {displayTitle}
             </h1>
           )}

@@ -232,7 +232,7 @@ export const getDataToolConfig: ToolConfig = {
   name: "getData",
   definition: GET_DATA_TOOL,
   type: "auto",
-  displayName: localize("ai_chat.tool_getData", "Get Data"),
+  displayName: localize("ai_chat.tool_getData"),
   formatArguments: formatGetDataArguments,
   execute: async (instantiationService, args: GetDataToolParams) => {
     const result = executeGetData(instantiationService, args)

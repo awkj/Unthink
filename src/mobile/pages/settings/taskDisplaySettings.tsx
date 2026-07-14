@@ -56,14 +56,11 @@ export const TaskDisplaySettings = () => {
           ]}
         />
         <ListItemGroup
-          title={localize("settings.today", "Today")}
+          title={localize("settings.today")}
           items={[
             {
-              title: localize("settings.today.group_by_area_project", "Group by Area / Project"),
-              description: localize(
-                "settings.today.group_by_area_project.description",
-                "Group projects by area and tasks by project on the Today page.",
-              ),
+              title: localize("settings.today.group_by_area_project"),
+              description: localize("settings.today.group_by_area_project.description"),
               mode: {
                 type: "switch",
                 checked: groupTodayByAreaProject,

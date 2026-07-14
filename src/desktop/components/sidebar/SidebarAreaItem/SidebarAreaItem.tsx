@@ -72,7 +72,7 @@ export const SidebarAreaItem: React.FC<SidebarAreaItemProps> = ({ areaInfo }) =>
           <ThingsAreaIcon className={desktopStyles.SidebarMenuItemIconSvg} />
         </div>
         <span className={classNames(desktopStyles.SidebarMenuItemLabel)}>
-          {areaInfo.title || localize("area.untitled", "New Area")}
+          {areaInfo.title || localize("area.untitled")}
         </span>
         <button onClick={handleToggle} onPointerDown={(e) => e.stopPropagation()} className={areaExpandedIconClass}>
           <AreaExpandedIcon strokeWidth={ICON_STROKE_WIDTH} />

@@ -81,27 +81,24 @@ export const ImportExportSettings: React.FC = () => {
   }
 
   return (
-    <SettingsContent title={localize("settings.import_export", "Import & Export")}>
+    <SettingsContent title={localize("settings.import_export")}>
       <ItemGroup>
         <SettingsItem
-          title={localize("settings.export", "Export")}
-          description={localize(
-            "settings.export.description",
-            "Export your database to back up your data or transfer it to another device.",
-          )}
+          title={localize("settings.export")}
+          description={localize("settings.export.description")}
           action={{
             type: "button",
-            label: exporting ? localize("common.exporting", "Exporting...") : localize("settings.export", "Export"),
+            label: exporting ? localize("common.exporting") : localize("settings.export"),
             onClick: handleExport,
             disabled: exporting,
           }}
         />
         <SettingsItem
-          title={localize("settings.import", "Import")}
-          description={localize("settings.import.description", "Import your tasks from a backup file")}
+          title={localize("settings.import")}
+          description={localize("settings.import.description")}
           action={{
             type: "button",
-            label: importing ? localize("common.importing", "Importing...") : localize("settings.import", "Import"),
+            label: importing ? localize("common.importing") : localize("settings.import"),
             onClick: handleImport,
             disabled: importing,
           }}

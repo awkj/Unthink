@@ -5,7 +5,6 @@ import {
   CircleIcon,
   CodeIcon,
   CopyIcon,
-  LaterProjectsIcon,
   TextAlignStart,
   TagIcon,
   TodayIcon,
@@ -44,32 +43,27 @@ interface Starter {
 
 const starters: Starter[] = [
   {
-    label: localize("view.docs.starter.notCompleted", "Not completed"),
+    label: localize("view.docs.starter.notCompleted"),
     rule: "item.status === 'created'",
     icon: CircleIcon,
   },
   {
-    label: localize("view.docs.starter.overdue", "Overdue"),
+    label: localize("view.docs.starter.overdue"),
     rule: "item.dueDate !== null && item.dueDate < TODAY",
     icon: AlarmIcon,
   },
   {
-    label: localize("view.docs.starter.dueIn7Days", "Due in next 7 days"),
+    label: localize("view.docs.starter.dueIn7Days"),
     rule: "item.dueDate !== null && item.dueDate < TODAY + 7 * DAY",
     icon: CalendarRangeIcon,
   },
   {
-    label: localize("view.docs.starter.anytime", "Anytime"),
-    rule: "item.status === 'created' && (item.startDate === null || item.startDate <= TODAY)",
+    label: localize("view.docs.starter.pending"),
+    rule: "item.status === 'created' && item.startDate === null",
     icon: TodayIcon,
   },
   {
-    label: localize("view.docs.starter.someday", "Someday"),
-    rule: "item.startDate === SOMEDAY",
-    icon: LaterProjectsIcon,
-  },
-  {
-    label: localize("view.docs.starter.taggedWork", "Tagged 'work'"),
+    label: localize("view.docs.starter.taggedWork"),
     rule: "item.tags.includes('work')",
     icon: TagIcon,
   },
@@ -109,9 +103,9 @@ const ViewMeta: React.FC<{ view: TaskViewSchema }> = ({ view }) => {
       await navigator.clipboard.writeText(text)
       setCopied(true)
       window.setTimeout(() => setCopied(false), 2000)
-      toast({ message: localize("view.docs.ai.copySuccess", "AI prompt copied to clipboard") })
+      toast({ message: localize("view.docs.ai.copySuccess") })
     } catch {
-      toast({ message: localize("view.docs.ai.copyFailed", "Failed to fetch AI prompt") })
+      toast({ message: localize("view.docs.ai.copyFailed") })
     }
   }
 
@@ -125,7 +119,7 @@ const ViewMeta: React.FC<{ view: TaskViewSchema }> = ({ view }) => {
           <Textarea
             className={styles.projectInfoTitle}
             autoSize={{ minRows: 1 }}
-            placeholder={localize("view.detail.untitled", "Untitled view")}
+            placeholder={localize("view.detail.untitled")}
             value={name}
             onChange={(e) => setName(e.target.value)}
             onBlur={() => todoService.updateView(viewUid, { name: name.trim() })}
@@ -137,7 +131,7 @@ const ViewMeta: React.FC<{ view: TaskViewSchema }> = ({ view }) => {
           >
             <Textarea
               autoSize={{ minRows: 1, maxRows: 4 }}
-              placeholder={localize("view.field.descPlaceholder", "Add description...")}
+              placeholder={localize("view.field.descPlaceholder")}
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
               onBlur={() => todoService.updateView(viewUid, { desc })}
@@ -154,7 +148,7 @@ const ViewMeta: React.FC<{ view: TaskViewSchema }> = ({ view }) => {
           >
             <Textarea
               autoSize={{ minRows: 1, maxRows: 6 }}
-              placeholder={localize("view.field.rulePlaceholderMobile", "Write an expression, or pick a starter below")}
+              placeholder={localize("view.field.rulePlaceholderMobile")}
               value={rule}
               onChange={(e) => setRule(e.target.value)}
               onBlur={() => todoService.updateView(viewUid, { rule })}
@@ -174,7 +168,7 @@ const ViewMeta: React.FC<{ view: TaskViewSchema }> = ({ view }) => {
               same line — so the text aligns with the header, not the card edge. */}
           <div className="flex flex-col gap-2">
             <span className={classNames(styles.areaDetailSectionTitle, styles.areaDetailSectionHeaderIndent)}>
-              {localize("view.docs.starters", "Starters")}
+              {localize("view.docs.starters")}
             </span>
             <div className="grid grid-cols-2 gap-2">
               {starters.map((s) => {
@@ -196,15 +190,10 @@ const ViewMeta: React.FC<{ view: TaskViewSchema }> = ({ view }) => {
 
           <div className="flex flex-col gap-2">
             <span className={classNames(styles.areaDetailSectionTitle, styles.areaDetailSectionHeaderIndent)}>
-              {localize("view.docs.ai.title", "AI assist")}
+              {localize("view.docs.ai.title")}
             </span>
             <div className="bg-bg1 rounded-2xl p-4 flex flex-col gap-3">
-              <p className="text-xs text-t3 leading-5">
-                {localize(
-                  "view.docs.ai.descMobile",
-                  'Copy the prompt below and send it to ChatGPT, Claude, or another AI along with your request (e.g. "show my work tasks for this week"). Paste the rule it returns into the Rule box above.',
-                )}
-              </p>
+              <p className="text-xs text-t3 leading-5">{localize("view.docs.ai.descMobile")}</p>
               <div className="flex items-center gap-4">
                 <button
                   type="button"
@@ -212,14 +201,10 @@ const ViewMeta: React.FC<{ view: TaskViewSchema }> = ({ view }) => {
                   className="flex items-center gap-2 px-3 py-2 rounded-lg bg-bg3 text-sm text-t1"
                 >
                   {copied ? <CheckIcon className="w-4 h-4 shrink-0" /> : <CopyIcon className="w-4 h-4 shrink-0" />}
-                  <span>
-                    {copied
-                      ? localize("view.docs.ai.copied", "Copied")
-                      : localize("view.docs.ai.copyButton", "Copy AI prompt")}
-                  </span>
+                  <span>{copied ? localize("view.docs.ai.copied") : localize("view.docs.ai.copyButton")}</span>
                 </button>
                 <a href={AI_PROMPT_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-brand">
-                  {localize("view.docs.ai.viewSource", "View source")}
+                  {localize("view.docs.ai.viewSource")}
                 </a>
               </div>
             </div>

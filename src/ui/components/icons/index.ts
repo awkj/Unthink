@@ -96,6 +96,7 @@ export const ScheduledIcon = Calendar
 export const RightArrowIcon = ArrowRight
 export const SwitchDatabaseIcon = ArrowRightLeft
 export const SettingsIcon = Settings
+export const PreferencesIcon = SlidersHorizontal
 export const TagIcon = Tags
 export const DragHandleIcon = GripVertical
 export const SubtaskIcon = ListChecks
@@ -171,11 +172,14 @@ export const PaperclipIcon = Paperclip
 
 export {
   ThingsAIIcon,
+  ThingsAnytimeIcon,
   ThingsAreaIcon,
+  ThingsDeletedIcon,
   ThingsInboxIcon,
   ThingsLaterIcon,
   ThingsLogbookIcon,
   ThingsScheduleIcon,
+  ThingsSomedayIcon,
   ThingsTodayIcon,
   ThingsViewIcon,
 } from "./ThingsIcons"

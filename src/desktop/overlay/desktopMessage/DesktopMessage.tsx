@@ -77,7 +77,7 @@ const DesktopMessageContent: React.FC<{ controller: DesktopMessageController }> 
         </div>
         {controller.showUndo && (
           <div className={desktopStyles.DesktopMessageUndo} onClick={handleUndo}>
-            {localize("message.undo", "Undo")}
+            {localize("message.undo")}
           </div>
         )}
       </div>

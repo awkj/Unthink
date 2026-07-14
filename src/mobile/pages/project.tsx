@@ -233,10 +233,10 @@ export const ProjectPage = () => {
           showBack: true,
           id: "",
           renderIcon: () => null,
-          title: localize("project.notFound", "Project not found"),
+          title: localize("project.notFound"),
         }}
       >
-        <div className={styles.pageEmptyState}>{localize("project.notFound", "Project not found")}</div>
+        <div className={styles.pageEmptyState}>{localize("project.notFound")}</div>
       </PageLayout>
     )
   }

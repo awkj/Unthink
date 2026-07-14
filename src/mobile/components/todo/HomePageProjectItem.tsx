@@ -66,7 +66,7 @@ export const HomePageProjectItem: React.FC<HomePageProjectItemProps> = ({ projec
               : styles.homeProjectItemTitlePlaceholder,
       )}
     >
-      {projectInfo.title || localize("project.untitled", "New Project")}
+      {projectInfo.title || localize("project.untitled")}
     </span>
   )
 

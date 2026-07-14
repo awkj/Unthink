@@ -87,11 +87,11 @@ const AreaSections: React.FC<AreaSectionsProps> = ({
       {showProjectsSection && (
         <>
           <div className={classNames(styles.areaDetailSectionHeader, styles.areaDetailSectionHeaderIndent)}>
-            <span className={styles.areaDetailSectionTitle}>{localize("area.projects", "Projects")}</span>
+            <span className={styles.areaDetailSectionTitle}>{localize("area.projects")}</span>
           </div>
           <div>
             {projects.length === 0 ? (
-              <div className={emptyStateClassName}>{localize("area.noProjects", "No projects")}</div>
+              <div className={emptyStateClassName}>{localize("area.noProjects")}</div>
             ) : (
               projects.map((project) => (
                 <HomeProjectItem
@@ -110,11 +110,11 @@ const AreaSections: React.FC<AreaSectionsProps> = ({
         </>
       )}
       <div className={classNames(styles.areaDetailSectionHeader, styles.areaDetailSectionHeaderIndent)}>
-        <span className={styles.areaDetailSectionTitle}>{localize("area.tasks", "Tasks")}</span>
+        <span className={styles.areaDetailSectionTitle}>{localize("area.tasks")}</span>
       </div>
       <div>
         {tasks.length === 0 ? (
-          <div className={emptyStateClassName}>{localize("area.noTasks", "No tasks")}</div>
+          <div className={emptyStateClassName}>{localize("area.noTasks")}</div>
         ) : (
           tasks.map((task) => (
             <TaskItemWrapper key={task.id} willDisappear={willDisappearObjectIdSet.has(task.id)} id={task.id}>
@@ -177,13 +177,13 @@ export const AreaPage = () => {
       onClick: () => tagFilter.selectTag(value),
     })
     popupAction({
-      description: localize("tasks.filterByTag", "Filter by Tag"),
+      description: localize("tasks.filterByTag"),
       groups: [
         {
           items: [
-            makeItem(localize("project.tagFilter.all", "All"), TAG_FILTER_ALL),
+            makeItem(localize("project.tagFilter.all"), TAG_FILTER_ALL),
             ...tagFilter.tags.map((tag) => makeItem(tag, { type: "tag", value: tag })),
-            makeItem(localize("project.tagFilter.untagged", "No Tags"), TAG_FILTER_UNTAGGED),
+            makeItem(localize("project.tagFilter.untagged"), TAG_FILTER_UNTAGGED),
           ],
         },
       ],

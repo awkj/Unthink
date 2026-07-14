@@ -1,103 +1,103 @@
-import { ItemStatus } from '@/core/type';
-import { localize } from '@/nls';
-import { TreeID } from 'loro-crdt';
-import { getProject } from './getProject';
-import { getTaskInfo } from './getTaskInfo';
-import { ITaskModelData } from './type';
+import { ItemStatus } from "@/core/type"
+import { localize } from "@/nls"
+import { TreeID } from "loro-crdt"
+import { getProject } from "./getProject"
+import { getTaskInfo } from "./getTaskInfo"
+import { ITaskModelData } from "./type"
 
 export interface ParentDisplay {
   icon:
     | {
-        type: 'project';
-        progress: number;
-        status: ItemStatus;
-        color: string;
+        type: "project"
+        progress: number
+        status: ItemStatus
+        color: string
       }
     | {
-        type: 'area';
-      };
-  title: string;
+        type: "area"
+      }
+  title: string
 }
 
 export function getParentDisplay(modelState: ITaskModelData, itemId: TreeID): ParentDisplay | null {
-  const item = modelState.taskObjectMap.get(itemId);
-  if (!item) return null;
+  const item = modelState.taskObjectMap.get(itemId)
+  if (!item) return null
 
-  if (item.type === 'task') {
+  if (item.type === "task") {
     if (!item.parentId) {
-      return null;
+      return null
     }
-    const taskInfo = getTaskInfo(modelState, itemId);
+    const taskInfo = getTaskInfo(modelState, itemId)
     if (taskInfo.parentId) {
-      const parentObject = modelState.taskObjectMap.get(taskInfo.parentId);
-      if (parentObject?.type === 'area') {
+      const parentObject = modelState.taskObjectMap.get(taskInfo.parentId)
+      if (parentObject?.type === "area") {
         return {
           icon: {
-            type: 'area',
+            type: "area",
           },
-          title: parentObject.title || localize('area.untitled', 'New Area'),
-        };
+          title: parentObject.title || localize("area.untitled"),
+        }
       }
-      if (parentObject?.type === 'project') {
-        const projectInfo = getProject(modelState, parentObject.id);
+      if (parentObject?.type === "project") {
+        const projectInfo = getProject(modelState, parentObject.id)
         return {
           icon: {
-            type: 'project',
+            type: "project",
             progress: projectInfo.progress,
             status: projectInfo.status,
-            color: 't3',
+            color: "t3",
           },
-          title: parentObject.title || localize('project.untitled', 'New Project'),
-        };
+          title: parentObject.title || localize("project.untitled"),
+        }
       }
-      if (parentObject?.type === 'projectHeading') {
-        const projectInfo = getProject(modelState, parentObject.parentId);
+      if (parentObject?.type === "projectHeading") {
+        const projectInfo = getProject(modelState, parentObject.parentId)
         return {
           icon: {
-            type: 'project',
+            type: "project",
             progress: projectInfo.progress,
             status: projectInfo.status,
-            color: 't3',
+            color: "t3",
           },
-          title: projectInfo.title || localize('project.untitled', 'New Project'),
-        };
+          title: projectInfo.title || localize("project.untitled"),
+        }
       }
     }
   }
 
-  if (item.type === 'project') {
+  if (item.type === "project") {
     if (!item.parentId) {
-      return null;
+      return null
     }
 
-    const parentObject = modelState.taskObjectMap.get(item.parentId);
-    if (parentObject?.type === 'area') {
+    const parentObject = modelState.taskObjectMap.get(item.parentId)
+    if (parentObject?.type === "area") {
       return {
         icon: {
-          type: 'area',
+          type: "area",
         },
         title: parentObject.title,
-      };
+      }
     }
   }
-  if (item.type === 'projectHeading') {
+  if (item.type === "projectHeading") {
     if (!item.parentId) {
-      return null;
+      return null
     }
-    const parentObject = modelState.taskObjectMap.get(item.parentId);
-    if (parentObject?.type === 'project') {
-      const projectInfo = getProject(modelState, item.parentId);
+    const parentObject = modelState.taskObjectMap.get(item.parentId)
+    if (parentObject?.type === "project") {
+      const projectInfo = getProject(modelState, item.parentId)
       return {
         icon: {
-          type: 'project',
+          type: "project",
           progress: projectInfo.progress,
           status: projectInfo.status,
-          color: 't3',
+          color: "t3",
         },
-        title: parentObject.title || localize('project.untitled', 'New Project'),
-      };
+        title: parentObject.title || localize("project.untitled"),
+      }
     }
   }
 
-  return null;
+  return null
 }

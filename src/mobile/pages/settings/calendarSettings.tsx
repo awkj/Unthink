@@ -14,16 +14,13 @@ export const CalendarSettings = () => {
       header={{
         showBack: true,
         id: "calendarSettings",
-        title: localize("settings.calendar", "Calendar"),
+        title: localize("settings.calendar"),
         renderIcon: (className: string) => <SettingsIcon className={className} />,
       }}
     >
       <ListItemGroup
-        title={localize("settings.calendar_week_start_day", "Week starts on")}
-        subtitle={localize(
-          "settings.calendar_week_start_day.description",
-          "Choose the first day of the week in date pickers.",
-        )}
+        title={localize("settings.calendar_week_start_day")}
+        subtitle={localize("settings.calendar_week_start_day.description")}
         items={getCalendarWeekStartOptions().map((option) => ({
           title: option.label,
           mode: {

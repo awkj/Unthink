@@ -14,8 +14,8 @@ export const ImportPage = () => {
   const toast = useToast()
 
   const Messages = {
-    importedSuccessfully: localize("settings.import.importedSuccessfully", "Imported successfully"),
-    fileReadingFailed: localize("settings.import.fileReadingFailed", "File reading failed"),
+    importedSuccessfully: localize("settings.import.importedSuccessfully"),
+    fileReadingFailed: localize("settings.import.fileReadingFailed"),
   }
 
   const handleImport = async () => {
@@ -70,7 +70,7 @@ export const ImportPage = () => {
       header={{
         showBack: true,
         id: "import",
-        title: localize("settings.import", "Import"),
+        title: localize("settings.import"),
         renderIcon: (className: string) => <SettingsIcon className={className} />,
       }}
     >
@@ -78,7 +78,7 @@ export const ImportPage = () => {
         items={[
           {
             testId: "import-button",
-            title: localize("settings.import", "Import"),
+            title: localize("settings.import"),
             mode: {
               type: "button",
               theme: "primary",
@@ -87,7 +87,7 @@ export const ImportPage = () => {
             onClick: importing ? undefined : handleImport,
           },
         ]}
-        subtitle={localize("settings.import.description", "Import your tasks from a backup file")}
+        subtitle={localize("settings.import.description")}
       />
     </PageLayout>
   )

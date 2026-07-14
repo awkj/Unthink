@@ -106,9 +106,7 @@ export const TagEditorActionSheet: React.FC = () => {
 
   if (!controller) return null
 
-  const tagInputPlaceholder = controller.hasTags
-    ? ""
-    : localize("tag_editor.input_placeholder", "Search or create a tag")
+  const tagInputPlaceholder = controller.hasTags ? "" : localize("tag_editor.input_placeholder")
 
   return (
     <ActionSheet zIndex={controller.zIndex} onClose={handleClose}>
@@ -134,7 +132,7 @@ export const TagEditorActionSheet: React.FC = () => {
         <div className={classNames(styles.tagEditorList, styles.tagEditorSmallGap)}>
           {controller.searchText && !controller.selectedTags.includes(controller.searchText) && (
             <button className={createTagButtonStyle} {...tagProps(controller.searchText)}>
-              {localize("tag_editor.create_new_tag", 'Create tag "#{0}"', controller.searchText)}
+              {localize("tag_editor.create_new_tag", { 0: controller.searchText })}
             </button>
           )}
           {controller.displayTags.length > 0 && (

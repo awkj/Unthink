@@ -1,18 +1,18 @@
-import { styles } from '@/mobile/theme';
-import { localize } from '@/nls';
-import classNames from 'classnames';
-import React from 'react';
+import { styles } from "@/mobile/theme"
+import { localize } from "@/nls"
+import classNames from "classnames"
+import React from "react"
 
 export interface BaseDialogProps {
-  zIndex: number;
-  title: string;
-  cancelText?: string;
-  confirmText?: string;
-  onCancel?: () => void;
-  onConfirm?: () => void;
-  hideFooter?: boolean;
-  confirmDisabled?: boolean;
-  children: React.ReactNode;
+  zIndex: number
+  title: string
+  cancelText?: string
+  confirmText?: string
+  onCancel?: () => void
+  onConfirm?: () => void
+  hideFooter?: boolean
+  confirmDisabled?: boolean
+  children: React.ReactNode
 }
 
 export const BaseDialog: React.FC<BaseDialogProps> = ({
@@ -26,7 +26,7 @@ export const BaseDialog: React.FC<BaseDialogProps> = ({
   confirmDisabled,
   children,
 }) => {
-  const showFooter = (onCancel || onConfirm) && !hideFooter;
+  const showFooter = (onCancel || onConfirm) && !hideFooter
 
   return (
     <div
@@ -49,13 +49,13 @@ export const BaseDialog: React.FC<BaseDialogProps> = ({
         </div>
 
         {showFooter && (
-          <div className={styles.dialogFooter} style={{ height: '44px' }}>
+          <div className={styles.dialogFooter} style={{ height: "44px" }}>
             <div className={styles.dialogFooterInner}>
               <button
                 className={classNames(styles.dialogFooterButton, styles.dialogFooterCancelButton)}
                 onClick={onCancel}
               >
-                {cancelText || localize('cancel', 'Cancel')}
+                {cancelText || localize("cancel")}
               </button>
 
               <button
@@ -66,12 +66,12 @@ export const BaseDialog: React.FC<BaseDialogProps> = ({
                 onClick={onConfirm}
                 disabled={confirmDisabled}
               >
-                {confirmText || localize('confirm', 'Confirm')}
+                {confirmText || localize("confirm")}
               </button>
             </div>
           </div>
         )}
       </div>
     </div>
-  );
-};
+  )
+}

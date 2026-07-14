@@ -74,7 +74,7 @@ const ToolStatus: React.FC<{ toolCall: UIToolCallInfo }> = ({ toolCall }) => {
     return (
       <span className={getToolStatusClassName("neutral")}>
         <LoaderCircle className={desktopStyles.AIChatToolStatusLoadingIcon} />
-        {localize("ai_chat.executing", "Executing...")}
+        {localize("ai_chat.executing")}
       </span>
     )
   }
@@ -84,7 +84,7 @@ const ToolStatus: React.FC<{ toolCall: UIToolCallInfo }> = ({ toolCall }) => {
       return (
         <span className={getToolStatusClassName("success")}>
           <LogIcon className={desktopStyles.AIChatToolStatusIcon} />
-          {localize("ai_chat.success", "Success")}
+          {localize("ai_chat.success")}
         </span>
       )
     }
@@ -93,7 +93,7 @@ const ToolStatus: React.FC<{ toolCall: UIToolCallInfo }> = ({ toolCall }) => {
       return (
         <span className={getToolStatusClassName("neutral")}>
           <CloseIcon className={desktopStyles.AIChatToolStatusIcon} />
-          {localize("ai_chat.canceled", "Canceled")}
+          {localize("ai_chat.canceled")}
         </span>
       )
     }
@@ -101,7 +101,7 @@ const ToolStatus: React.FC<{ toolCall: UIToolCallInfo }> = ({ toolCall }) => {
     return (
       <span className={getToolStatusClassName("warning")}>
         <CircleQuestionMark className={desktopStyles.AIChatToolStatusIcon} />
-        {localize("ai_chat.awaiting_confirm", "Awaiting")}
+        {localize("ai_chat.awaiting_confirm")}
       </span>
     )
   }
@@ -110,7 +110,7 @@ const ToolStatus: React.FC<{ toolCall: UIToolCallInfo }> = ({ toolCall }) => {
     return (
       <span className={getToolStatusClassName("neutral")}>
         <LoaderCircle className={desktopStyles.AIChatToolStatusLoadingIcon} />
-        {localize("ai_chat.executing", "Executing...")}
+        {localize("ai_chat.executing")}
       </span>
     )
   }
@@ -119,7 +119,7 @@ const ToolStatus: React.FC<{ toolCall: UIToolCallInfo }> = ({ toolCall }) => {
     return (
       <span className={getToolStatusClassName("success")}>
         <LogIcon className={desktopStyles.AIChatToolStatusIcon} />
-        {localize("ai_chat.success", "Success")}
+        {localize("ai_chat.success")}
       </span>
     )
   }
@@ -127,7 +127,7 @@ const ToolStatus: React.FC<{ toolCall: UIToolCallInfo }> = ({ toolCall }) => {
   return (
     <span className={getToolStatusClassName("danger")}>
       <CircleXIcon className={desktopStyles.AIChatToolStatusIcon} />
-      {localize("ai_chat.failed", "Failed")}
+      {localize("ai_chat.failed")}
     </span>
   )
 }
@@ -179,14 +179,14 @@ export const UnifiedToolCard: React.FC<UnifiedToolCardProps> = ({ toolCall, onCo
       </div>
       <div className={desktopStyles.AIChatToolCardBody}>
         <ToolSection
-          title={localize("ai_chat.parameters", "Parameters")}
+          title={localize("ai_chat.parameters")}
           content={formatArguments(toolCall)}
           expanded={expandedSections.params}
           onToggle={() => toggleSection("params")}
         />
         {showResultSection(toolCall) && resultText && (
           <ToolSection
-            title={localize("ai_chat.result", "Result")}
+            title={localize("ai_chat.result")}
             content={resultText}
             expanded={expandedSections.result}
             onToggle={() => toggleSection("result")}
@@ -195,10 +195,10 @@ export const UnifiedToolCard: React.FC<UnifiedToolCardProps> = ({ toolCall, onCo
         {toolCall.type === "confirm" && toolCall.status === "pending" && onConfirm && onReject && (
           <div className={desktopStyles.AIChatToolCardActions}>
             <button onClick={onConfirm} className={desktopStyles.AIChatToolCardConfirmButton}>
-              {localize("ai_chat.confirm", "Confirm")}
+              {localize("ai_chat.confirm")}
             </button>
             <button onClick={onReject} className={desktopStyles.AIChatToolCardCancelButton}>
-              {localize("ai_chat.cancel", "Cancel")}
+              {localize("ai_chat.cancel")}
             </button>
           </div>
         )}

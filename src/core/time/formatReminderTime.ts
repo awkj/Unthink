@@ -86,7 +86,7 @@ export function formatReminderTime(timestamp?: number, currentDate?: number): Se
       }
     } else {
       return {
-        date: localize("time.today", "Today"),
+        date: localize("time.today"),
         time: timeStr,
       }
     }
@@ -102,7 +102,7 @@ export function formatReminderTime(timestamp?: number, currentDate?: number): Se
       }
     } else {
       return {
-        date: localize("time.tomorrow", "Tomorrow"),
+        date: localize("time.tomorrow"),
         time: timeStr,
       }
     }

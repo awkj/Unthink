@@ -1,6 +1,6 @@
 import { getTodayTimestampInUtc } from "@/core/time/getTodayTimestampInUtc"
 import { areaPageTitleInputId, projectPageTitleInputId, viewPageTitleInputId } from "@/ui/components/edit/inputId"
-import { PlusIcon, SearchIcon, SettingsIcon, SyncIcon } from "@/ui/components/icons"
+import { PlusIcon, PreferencesIcon, SearchIcon, SyncIcon, ThingsAIIcon } from "@/ui/components/icons"
 import { FlattenedResult } from "@/core/state/home/flattenedItemsToResult"
 import { flattenRootCollections } from "@/core/state/home/getFlattenRootCollections"
 import { getFutureProjects } from "@/core/state/home/getFutureProjects"
@@ -12,7 +12,7 @@ import { useWatchEvent } from "@/ui/hooks/use-watch-event"
 import { useConfig } from "@/ui/hooks/useConfig"
 import { useDragSensors } from "@/ui/hooks/useDragSensors"
 import { localize } from "@/nls"
-import { toggleAreaConfigKey } from "@/services/config/config"
+import { showAIEntryConfigKey, toggleAreaConfigKey } from "@/services/config/config"
 import { ISelfhostedSyncService } from "@/services/selfhostedSync/selfhostedSyncService.ts"
 import { ITodoService } from "@/services/todo/todoService"
 import { DragDropElements } from "@/core/dnd/dragDropCollision"
@@ -86,6 +86,7 @@ export const SidebarContent: React.FC = () => {
   useWatchEvent(todoService.onStateChange)
   useWatchEvent(selfhostedSyncService.onStateChange)
   const { value: config, setValue } = useConfig(toggleAreaConfigKey())
+  const { value: showAIEntry } = useConfig(showAIEntryConfigKey())
   const sensors = useDragSensors()
   const desktopMessage = useDesktopMessage()
 
@@ -95,7 +96,7 @@ export const SidebarContent: React.FC = () => {
         await selfhostedSyncService.sync()
         desktopMessage({
           type: "success",
-          message: localize("sync.sync_success", "Sync completed successfully."),
+          message: localize("sync.sync_success"),
         })
       } catch (error) {
         desktopMessage({
@@ -148,11 +149,8 @@ export const SidebarContent: React.FC = () => {
       {
         menuConfig: [
           {
-            label: localize("create_popup.create_task", "Create Task"),
-            description: localize(
-              "create_popup.create_task_description",
-              "Capture an action to complete, then check it off when it is done.",
-            ),
+            label: localize("create_popup.create_task"),
+            description: localize("create_popup.create_task_description"),
             icon: <CreateTaskMenuIcon />,
             onSelect: () => {
               const taskId = flushSync(() => todoService.addTask({ title: "" }))
@@ -162,11 +160,8 @@ export const SidebarContent: React.FC = () => {
             },
           },
           {
-            label: localize("create_popup.create_project", "Create Project"),
-            description: localize(
-              "create_popup.create_project_description",
-              "Define a goal, then complete its to-dos one by one.",
-            ),
+            label: localize("create_popup.create_project"),
+            description: localize("create_popup.create_project_description"),
             icon: <CreateProjectMenuIcon />,
             onSelect: () => {
               const projectId = flushSync(() => {
@@ -186,11 +181,8 @@ export const SidebarContent: React.FC = () => {
             },
           },
           {
-            label: localize("create_popup.create_area", "Create Area"),
-            description: localize(
-              "create_popup.create_area_description",
-              "Organize projects and to-dos by responsibility, such as Home or Work.",
-            ),
+            label: localize("create_popup.create_area"),
+            description: localize("create_popup.create_area_description"),
             icon: <CreateAreaMenuIcon />,
             onSelect: () => {
               const areaId = flushSync(() => {
@@ -210,11 +202,8 @@ export const SidebarContent: React.FC = () => {
             },
           },
           {
-            label: localize("create_popup.create_view", "Create View"),
-            description: localize(
-              "create_popup.create_view_description",
-              "Bring related tasks together with filters in a focused view.",
-            ),
+            label: localize("create_popup.create_view"),
+            description: localize("create_popup.create_view_description"),
             icon: <CreateViewMenuIcon />,
             onSelect: () => {
               const uid = flushSync(() => todoService.addView({ name: "", rule: "" }))
@@ -235,20 +224,12 @@ export const SidebarContent: React.FC = () => {
   }
 
   const futureProjects = getFutureProjects(todoService.modelState, getTodayTimestampInUtc())
-  const sidebarProjectAreaListNoTopPadding =
-    rootCollections.flattenedItems && rootCollections.flattenedItems[0]?.type === "header"
-
   return (
     <div className={classNames(desktopStyles.sidebarBackground, desktopStyles.sidebarContainerStyle)}>
       <MacTopBar />
       <SidebarMenu />
       <SidebarViewsSection />
-      <div className={desktopStyles.SidebarProjectsHeader}>{localize("sidebar.projects.title", "Projects")}</div>
-      <div
-        className={classNames(desktopStyles.SidebarProjectAreaList, {
-          [desktopStyles.SidebarProjectAreaListNoTopPadding]: sidebarProjectAreaListNoTopPadding,
-        })}
-      >
+      <div className={desktopStyles.SidebarProjectAreaList}>
         <DndContext
           sensors={sensors}
           collisionDetection={getFlattenedItemsCollisionDetectionStrategy(rootCollections)}
@@ -271,17 +252,25 @@ export const SidebarContent: React.FC = () => {
           data-test-id={TestIds.Sidebar.CreateMenuButton}
         >
           <PlusIcon className={desktopStyles.SidebarBottomCreateIcon} />
-          <span className={desktopStyles.SidebarBottomCreateLabel}>
-            {localize("sidebar.create_menu", "Create New")}
-          </span>
+          <span className={desktopStyles.SidebarBottomCreateLabel}>{localize("sidebar.create_menu")}</span>
         </button>
         <div className={desktopStyles.SidebarBottomActions}>
+          {showAIEntry && (
+            <Link
+              to="/desktop/ai-chat"
+              className={desktopStyles.SidebarBottomIconButton}
+              aria-label={localize("ai_chat")}
+            >
+              <ThingsAIIcon className={desktopStyles.SidebarBottomIcon} />
+            </Link>
+          )}
           {selfhostedSyncService.showSyncIcon && (
             <button
               type="button"
-              onClick={handleSync}
+              onClick={() => void handleSync()}
+              disabled={selfhostedSyncService.syncing}
               className={desktopStyles.SidebarBottomIconButton}
-              aria-label={localize("sync.title", "Sync")}
+              aria-label={localize("sync.syncNow")}
             >
               <SyncIcon
                 className={`${desktopStyles.SidebarBottomIcon} ${selfhostedSyncService.syncing ? "animate-spin" : ""}`}
@@ -293,16 +282,16 @@ export const SidebarContent: React.FC = () => {
             data-test-id={TestIds.CommandPalette.SidebarTrigger}
             onClick={() => CommandPaletteController.create(instantiationService)}
             className={desktopStyles.SidebarBottomIconButton}
-            aria-label={localize("search.title", "Search")}
+            aria-label={localize("search.title")}
           >
             <SearchIcon className={desktopStyles.SidebarBottomIcon} />
           </button>
           <Link
             to="/desktop/settings"
             className={desktopStyles.SidebarBottomIconButton}
-            aria-label={localize("settings.title", "Settings")}
+            aria-label={localize("settings.title")}
           >
-            <SettingsIcon className={desktopStyles.SidebarBottomIcon} />
+            <PreferencesIcon className={desktopStyles.SidebarBottomIcon} strokeWidth={1.5} />
           </Link>
         </div>
       </div>

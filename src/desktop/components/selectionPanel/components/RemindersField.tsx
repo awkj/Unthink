@@ -91,12 +91,12 @@ export const RemindersField: React.FC<RemindersFieldProps> = ({ reminders, itemI
     <div className={desktopStyles.RemindersFieldAnchor} ref={anchorRef}>
       <TaskDetailAttributeRow
         icon={<BellIcon className={desktopStyles.TaskDetailAttributeIcon} />}
-        label={localize("desktop.task_detail.reminders", "Reminders")}
+        label={localize("desktop.task_detail.reminders")}
         placeholder={reminders.length === 0}
         onClick={() => setIsOpen((value) => !value)}
         content={
           reminders.length === 0 ? (
-            localize("desktop.task_detail.unset", "Not set")
+            localize("desktop.task_detail.unset")
           ) : (
             <div className={desktopStyles.TaskDetailAttributeTagList}>
               {sortReminders(reminders).map((reminder) => {
@@ -120,7 +120,7 @@ export const RemindersField: React.FC<RemindersFieldProps> = ({ reminders, itemI
         <div className={desktopStyles.RemindersFieldPopover} ref={popoverRef} data-test-id={TestIds.Reminders.Popover}>
           {reminders.length === 0 && (
             <div className={desktopStyles.RemindersFieldPopoverEmpty}>
-              {localize("desktop.task_detail.reminders_empty", "No reminders")}
+              {localize("desktop.task_detail.reminders_empty")}
             </div>
           )}
           {sortReminders(reminders).map((reminder) => {
@@ -151,7 +151,7 @@ export const RemindersField: React.FC<RemindersFieldProps> = ({ reminders, itemI
           <div className={desktopStyles.RemindersFieldPopoverDivider} />
           <div className={desktopStyles.RemindersFieldPopoverAddRow} onClick={handleAddReminderClick}>
             <PlusIcon className={desktopStyles.RemindersFieldPopoverAddIcon} />
-            <span>{localize("desktop.task_detail.add_reminder", "Add reminder")}</span>
+            <span>{localize("desktop.task_detail.add_reminder")}</span>
           </div>
         </div>
       )}

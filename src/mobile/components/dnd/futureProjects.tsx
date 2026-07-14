@@ -43,7 +43,7 @@ export const FutureProjects: React.FC<FutureProjectsProps> = ({
         <LaterProjectsIcon className={styles.areaHeaderIconSize}></LaterProjectsIcon>
       </div>
       <span className={classNames(styles.homeProjectItemTitle, styles.homeProjectItemTitleNormal)}>
-        {unstartedProjects.length} {localize("home.futureProjects", "Future Projects")}
+        {unstartedProjects.length} {localize("home.futureProjects")}
       </span>
     </div>
   )

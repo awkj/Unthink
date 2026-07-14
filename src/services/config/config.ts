@@ -148,9 +148,9 @@ export function aiModelNameConfigKey(): ConfigKey<string> {
   }
 }
 
-export function hideAIEntryConfigKey(): ConfigKey<boolean> {
+export function showAIEntryConfigKey(): ConfigKey<boolean> {
   return {
-    key: "hideAIEntry",
+    key: "showAIEntry",
     default: false,
     check: (value: boolean) => typeof value === "boolean",
   }

@@ -20,12 +20,12 @@ export const useTaskMenu = (taskId: TreeID) => {
   function createMenuConfig(): IMenuConfig[] {
     return [
       {
-        label: localize("task.convert_to_project", "Convert to Project"),
+        label: localize("task.convert_to_project"),
         icon: "plus-circle",
         onSelect: handleConvertToProject,
       },
       {
-        label: localize("task.delete_task", "Delete Task"),
+        label: localize("task.delete_task"),
         icon: "trash",
         danger: true,
         dividerAbove: true,

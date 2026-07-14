@@ -12,7 +12,7 @@ export interface IDatabaseMeta {
 export const LocalDatabaseMeta: IDatabaseMeta = {
   account: "",
   id: "local",
-  name: localize("localDatabaseName", "Local Database"),
+  name: localize("localDatabaseName"),
   salt: "",
   accessKey: "",
   encryptionKey: "",

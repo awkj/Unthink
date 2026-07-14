@@ -56,7 +56,7 @@ export const batchEditToolConfig: ToolConfig = {
   name: "batchEdit",
   definition: BATCH_EDIT_TOOL,
   type: "confirm",
-  displayName: localize("ai_chat.tool_batchEdit", "Batch Edit"),
+  displayName: localize("ai_chat.tool_batchEdit"),
   formatArguments: (args: BatchEditToolParams, instantiationService) => {
     let modelState
     if (instantiationService) {

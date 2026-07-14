@@ -44,7 +44,7 @@ export const InboxTaskInput: React.FC = () => {
         <button
           type="button"
           onClick={handleCreateTask}
-          aria-label={localize("addTask", "Add Task")}
+          aria-label={localize("addTask")}
           className={desktopStyles.InboxTaskInputButton}
         >
           <PlusIcon className={desktopStyles.InboxTaskInputIcon} />
@@ -54,7 +54,7 @@ export const InboxTaskInput: React.FC = () => {
           value={controller.inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          placeholder={localize("addTask", "Add Task")}
+          placeholder={localize("addTask")}
           className={desktopStyles.InboxTaskInputField}
         />
       </div>

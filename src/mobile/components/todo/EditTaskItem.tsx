@@ -158,14 +158,14 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
           items: [
             {
               icon: <SubtaskIcon />,
-              name: localize("edit_task_item.add_subtask", "Add Subtask"),
+              name: localize("edit_task_item.add_subtask"),
               onClick: () => {
                 taskActions.createSubtask()
               },
             },
             {
               icon: <AlarmIcon />,
-              name: localize("edit_task_item.set_reminder", "Set Reminder"),
+              name: localize("edit_task_item.set_reminder"),
               onClick: () => {
                 mobileDatepicker.showDatePicker({
                   initialDate: Date.now(),
@@ -179,7 +179,7 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
             },
             {
               icon: <RepeatIcon />,
-              name: localize("task.recurring_settings", "Recurring Settings"),
+              name: localize("task.recurring_settings"),
               onClick: () => {
                 openRecurringTaskSettings(taskInfo.recurringRule || {}, (settings) => {
                   todoService.updateTask(taskInfo.id, { recurringRule: settings })
@@ -188,7 +188,7 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
             },
             {
               icon: <TagIcon />,
-              name: localize("edit_task_item.set_tags", "Set Tags"),
+              name: localize("edit_task_item.set_tags"),
               onClick: () => {
                 TagEditorActionSheetController.create(
                   taskInfo.tags,
@@ -201,7 +201,7 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
             },
             {
               icon: <MoveIcon />,
-              name: localize("task.move", "Move Task"),
+              name: localize("task.move"),
               onClick: handleMoveTask,
             },
           ],
@@ -210,7 +210,7 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
           items: [
             {
               icon: <DeleteIcon />,
-              name: localize("edit_task_item.delete", "Delete Task"),
+              name: localize("edit_task_item.delete"),
               danger: true,
               onClick: () => {
                 todoService.deleteItem(taskInfo.id)
@@ -248,7 +248,7 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
             {
               condition: taskInfo.status !== "created",
               icon: <TaskCheckbox status={"created"} />,
-              name: localize("tasks.mark_as_created", "Mark as Created"),
+              name: localize("tasks.mark_as_created"),
               onClick: () => {
                 todoService.updateTask(taskInfo.id, { status: "created" })
               },
@@ -256,7 +256,7 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
             {
               condition: taskInfo.status !== "completed",
               icon: <TaskCheckbox status={"completed"} />,
-              name: localize("tasks.mark_as_completed", "Mark as Completed"),
+              name: localize("tasks.mark_as_completed"),
               onClick: () => {
                 todoService.updateTask(taskInfo.id, { status: "completed" })
               },
@@ -264,7 +264,7 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
             {
               condition: taskInfo.status !== "canceled",
               icon: <TaskCheckbox status={"canceled"} />,
-              name: localize("tasks.mark_as_canceled", "Mark as Canceled"),
+              name: localize("tasks.mark_as_canceled"),
               onClick: () => {
                 todoService.updateTask(taskInfo.id, { status: "canceled" })
               },
@@ -280,7 +280,7 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
       type: "label",
       key: "startDate",
       icon: <CalendarIcon className={styles.editTaskAttrIcon} />,
-      placeholder: localize("edit_task_item.set_start_date", "Set Start Date"),
+      placeholder: localize("edit_task_item.set_start_date"),
       value: taskInfo.startDate ? { title: formatDateISO(taskInfo.startDate) } : undefined,
       onClick: handleStartDateClick,
       testId: "edit-task-start-date",
@@ -290,7 +290,7 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
       type: "label",
       key: "dueDate",
       icon: <FlagIcon className={styles.editTaskAttrIcon} />,
-      placeholder: localize("edit_task_item.set_due_date", "Set Due Date"),
+      placeholder: localize("edit_task_item.set_due_date"),
       value: taskInfo.dueDate ? { title: formatDateISO(taskInfo.dueDate) } : undefined,
       onClick: handleDueDateClick,
       testId: "edit-task-due-date",
@@ -302,7 +302,7 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
             type: "tags" as const,
             key: "tags",
             icon: <TagIcon className={styles.editTaskAttrIcon} />,
-            placeholder: localize("edit_task_item.set_tags", "Set Tags"),
+            placeholder: localize("edit_task_item.set_tags"),
             tags: taskInfo.tags,
             onClick: () => {
               TagEditorActionSheetController.create(
@@ -369,7 +369,7 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
       type: "interactive" as const,
       key: "reminders",
       icon: <BellIcon className={styles.editTaskAttrIcon} />,
-      placeholder: localize("edit_task_item.set_reminder", "Set Reminder"),
+      placeholder: localize("edit_task_item.set_reminder"),
       items: [...taskInfo.reminders]
         .sort((a, b) => a.time - b.time)
         .map((reminder) => {
@@ -413,14 +413,14 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
       if (taskInfo.recurringRule?.startDate) {
         recurringItems.push({
           type: "startDate",
-          title: localize("tasks.start_date_label", "Start Date"),
+          title: localize("tasks.start_date_label"),
           subtitle: recurringToString(taskInfo.recurringRule.startDate),
         })
       }
       if (taskInfo.recurringRule?.dueDate) {
         recurringItems.push({
           type: "dueDate",
-          title: localize("tasks.due_date_label", "Due Date"),
+          title: localize("tasks.due_date_label"),
           subtitle: recurringToString(taskInfo.recurringRule.dueDate),
         })
       }
@@ -429,7 +429,7 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
         type: "interactive" as const,
         key: "recurring",
         icon: <Repeat2Icon className={styles.editTaskAttrIcon} />,
-        placeholder: localize("task.recurring_settings", "Recurring Settings"),
+        placeholder: localize("task.recurring_settings"),
         items: recurringItems.map(({ title, subtitle }) => ({ title, subtitle })),
         testId: "edit-task-recurring",
         onLabelClick: (index: number) => {
@@ -523,7 +523,7 @@ export const EditTaskItem: React.FC<EditTaskItemProps> = ({ taskInfo: taskInfoPr
                   }}
                   className={styles.createTaskNotesTextarea}
                   autoSize={{ minRows: 2, maxRows: 4 }}
-                  placeholder={localize("edit_task_item.task_notes_placeholder", "Add Notes")}
+                  placeholder={localize("edit_task_item.task_notes_placeholder")}
                 />
               </AttrContainer>
               <AttrList items={attrRows} />

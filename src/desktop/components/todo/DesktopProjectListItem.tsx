@@ -82,7 +82,7 @@ export const DesktopProjectListItem: React.FC<DesktopProjectListItemProps> = ({
       >
         <div className={desktopStyles.TaskListItemTitleRow}>
           <h3 className={desktopStyles.DesktopProjectListItemTitle} data-testid={TestIds.ProjectListItem.Title}>
-            {project.title || localize("project.untitled", "New Project")}
+            {project.title || localize("project.untitled")}
           </h3>
           {project.notes && <TextAlignStart className={desktopStyles.TaskListItemIcon} />}
         </div>

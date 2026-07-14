@@ -3,7 +3,7 @@ import { localize } from "@/nls"
 
 export function formatCompletionAt(completionAt: number) {
   if (isSameDay(completionAt, Date.now())) {
-    return localize("date.today", "Today")
+    return localize("date.today")
   }
   return format(completionAt, "MM/dd")
 }

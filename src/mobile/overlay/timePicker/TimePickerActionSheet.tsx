@@ -144,7 +144,7 @@ export const TimePickerActionSheet: React.FC = () => {
         </div>
 
         <div className={styles.timePickerPresetSection}>
-          <div className={styles.timePickerPresetTitle}>{localize("time-picker.presets", "Presets")}</div>
+          <div className={styles.timePickerPresetTitle}>{localize("time-picker.presets")}</div>
           <div className={styles.timePickerPresetList}>
             {PRESET_TIMES.map((preset) => (
               <button
@@ -164,7 +164,7 @@ export const TimePickerActionSheet: React.FC = () => {
           onClick={() => controller.selectTime()}
           data-testid={MobileTestIds.TimePicker.DoneButton}
         >
-          {localize("time-picker.done", "Done")}
+          {localize("time-picker.done")}
         </MobileButton>
       </div>
     </ActionSheet>

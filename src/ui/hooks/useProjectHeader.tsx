@@ -24,12 +24,9 @@ export const useProjectHeader = (options: IUseProjectHeaderOptions) => {
 
   function handleDeleteHeading() {
     dialog({
-      title: localize("project_heading.delete_heading", "Delete Heading"),
-      description: localize(
-        "project_heading.delete_heading_description",
-        "Are you sure you want to delete this heading?",
-      ),
-      confirmText: localize("project_heading.delete", "Delete"),
+      title: localize("project_heading.delete_heading"),
+      description: localize("project_heading.delete_heading_description"),
+      confirmText: localize("project_heading.delete"),
       onConfirm: () => {
         todoService.deleteItem(projectHeadingInfo.id)
       },
@@ -39,12 +36,9 @@ export const useProjectHeader = (options: IUseProjectHeaderOptions) => {
 
   function handleConvertToProject() {
     dialog({
-      title: localize("project_heading.convert_to_project", "Convert to Project"),
-      description: localize(
-        "project_heading.convert_to_project_description",
-        "Are you sure you want to convert this heading to a project?",
-      ),
-      confirmText: localize("project_heading.convert", "Convert"),
+      title: localize("project_heading.convert_to_project"),
+      description: localize("project_heading.convert_to_project_description"),
+      confirmText: localize("project_heading.convert"),
       onConfirm: () => {
         todoService.covertToProject(projectHeadingInfo.id)
       },
@@ -63,7 +57,7 @@ export const useProjectHeader = (options: IUseProjectHeaderOptions) => {
           position: { parentId: id, type: "firstElement" },
         })
         toast({
-          message: localize("move_success", "Moved successfully"),
+          message: localize("move_success"),
         })
       },
     })
@@ -83,26 +77,26 @@ export const useProjectHeader = (options: IUseProjectHeaderOptions) => {
           items: [
             {
               icon: <EditIcon />,
-              name: localize("project_heading.edit_title", "Edit Title"),
+              name: localize("project_heading.edit_title"),
               onClick: () => {
                 todoService.editItem(projectHeadingInfo.id)
               },
             },
             {
               icon: <MobileProjectCheckbox progress={60} status={"created"} size="large" />,
-              name: localize("project_heading.convert_to_project", "Convert to Project"),
+              name: localize("project_heading.convert_to_project"),
               onClick: handleConvertToProject,
             },
             {
               icon: <MoveIcon />,
-              name: localize("project_heading.move", "Move Heading"),
+              name: localize("project_heading.move"),
               onClick: handleMoveToProject,
             },
             {
               icon: <ArchiveIcon />,
               name: projectHeadingInfo.isArchived
-                ? localize("project_heading.unarchive", "Unarchive Heading")
-                : localize("project_heading.archive", "Archive Heading"),
+                ? localize("project_heading.unarchive")
+                : localize("project_heading.archive"),
               onClick: handleArchiveHeading,
             },
           ],
@@ -111,7 +105,7 @@ export const useProjectHeader = (options: IUseProjectHeaderOptions) => {
           items: [
             {
               icon: <DeleteIcon />,
-              name: localize("project_heading.delete_heading", "Delete Heading"),
+              name: localize("project_heading.delete_heading"),
               danger: true,
               onClick: handleDeleteHeading,
             },

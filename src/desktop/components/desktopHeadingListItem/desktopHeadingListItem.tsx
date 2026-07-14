@@ -144,7 +144,7 @@ export const DesktopHeadingListItem: React.FC<DesktopHeadingListItemProps> = ({
             todoService.updateProjectHeading(projectHeadingInfo.id, { title })
           }}
           className={desktopStyles.DesktopHeadingListItemInput}
-          placeholder={localize("project_heading.placeholder", "New Heading")}
+          placeholder={localize("project_heading.placeholder")}
         />
       </div>
     </div>

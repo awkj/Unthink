@@ -166,12 +166,12 @@ const AreaPageContent: React.FC<AreaPageContentProps> = ({ area, areaId }) => {
           inputId={areaPageTitleInputId(areaId)}
           renderIcon={() => <ThingsAreaIcon />}
           title={area.title}
-          placeholder={localize("area.untitled", "New Area")}
+          placeholder={localize("area.untitled")}
           extraActions={[
             {
               icon: <Funnel strokeWidth={1.5} />,
               handleClick: tagFilter.clickFilter,
-              title: localize("tasks.filterByTag", "Filter by Tag"),
+              title: localize("tasks.filterByTag"),
               testId: TestIds.EntityHeader.FilterToggleButton,
               isActive: tagFilter.isFilterOpen || isTagFilterActive,
             },
@@ -191,19 +191,15 @@ const AreaPageContent: React.FC<AreaPageContentProps> = ({ area, areaId }) => {
       {(projects.length > 0 || !isTagFilterActive) && (
         <>
           <div className={desktopStyles.TodaySectionHeading}>
-            <h2 className={desktopStyles.TodaySectionTitle}>{localize("area.projects", "Projects")}</h2>
+            <h2 className={desktopStyles.TodaySectionTitle}>{localize("area.projects")}</h2>
           </div>
           <div>
-            <DesktopProjectList
-              projects={projects}
-              hideProjectTitle
-              emptyStateLabel={localize("area.noProjects", "No projects")}
-            />
+            <DesktopProjectList projects={projects} hideProjectTitle emptyStateLabel={localize("area.noProjects")} />
           </div>
         </>
       )}
       <div className={desktopStyles.TodaySectionHeading}>
-        <h2 className={desktopStyles.TodaySectionTitle}>{localize("area.tasks", "Tasks")}</h2>
+        <h2 className={desktopStyles.TodaySectionTitle}>{localize("area.tasks")}</h2>
       </div>
       <div>
         <InboxTaskInput />
@@ -229,7 +225,7 @@ export const AreaPage = () => {
   if (!area) {
     return (
       <div className={desktopStyles.EntityPageNotFoundContainer}>
-        <div className={desktopStyles.EntityPageNotFoundText}>{localize("area.notFound", "Area not found")}</div>
+        <div className={desktopStyles.EntityPageNotFoundText}>{localize("area.notFound")}</div>
       </div>
     )
   }

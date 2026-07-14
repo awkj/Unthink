@@ -59,7 +59,7 @@ export const TagEditorOverlay: React.FC = () => {
       dataTestId={TestIds.TagEditor.Overlay}
       filter={{
         value: controller.searchText,
-        placeholder: localize("tag_editor.input_placeholder", "Search or create a tag"),
+        placeholder: localize("tag_editor.input_placeholder"),
         onChange: (value) => controller.updateSearchText(value),
         autoFocus: true,
         disposeWhenBlur: true,
@@ -79,13 +79,11 @@ export const TagEditorOverlay: React.FC = () => {
               onClick={() => handleTagClick(controller.searchText)}
             >
               <PlusIcon className={desktopStyles.TagEditorOverlayCreateButtonIcon} />
-              {localize("desktop.tag_editor.create_new_tag", 'Create "{0}"', controller.searchText)}
+              {localize("desktop.tag_editor.create_new_tag", { 0: controller.searchText })}
             </button>
           )}
           {controller.totalTags === 0 && !controller.showCreateButton && (
-            <div className={desktopStyles.TagEditorOverlayEmptyHint}>
-              {localize("tag_editor.empty_hint", "No matching tags")}
-            </div>
+            <div className={desktopStyles.TagEditorOverlayEmptyHint}>{localize("tag_editor.empty_hint")}</div>
           )}
           {controller.displayTags.map((tag, index) => {
             const isSelected = controller.selectedTags.includes(tag)

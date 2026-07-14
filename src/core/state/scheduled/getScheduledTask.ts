@@ -1,6 +1,8 @@
 import { ModelTypes } from "@/core/enum"
 import { getDateFromUTCTimeStamp } from "@/core/time/getDateFromUTCTimeStamp"
+import { isSomeday } from "@/core/time/someday"
 import { TaskObjectSchema } from "@/core/type"
+import { getCurrentLocale } from "@/locales/common/locale"
 import { localize } from "@/nls"
 import {
   addDays,
@@ -46,7 +48,7 @@ const formats = {
       return format(e, "EEEE")
     },
     month: "MMMM",
-    tomorrow: localize("scheduled.tomorrow", "Tomorrow"),
+    tomorrow: localize("scheduled.tomorrow"),
     laterYear: "yyyy",
   },
   "zh-CN": {
@@ -74,7 +76,7 @@ export function getScheduledTasks(
   modelData: ITaskModelData,
   options: GetScheduledTasksOptions,
 ): GetScheduledTasksResult {
-  const timeFormat = formats[(options.language ?? globalThis.language) as keyof typeof formats] ?? formats["en-US"]
+  const timeFormat = formats[(options.language ?? getCurrentLocale()) as keyof typeof formats] ?? formats["en-US"]
 
   const recentModifiedObjectIds = new Set<string>(options.recentModifiedObjectIds ?? [])
   const willDisappearObjectIds: string[] = []
@@ -93,13 +95,13 @@ export function getScheduledTasks(
   const scheduledItems: (TaskInfo | ProjectInfoState)[] = modelData.taskList
     .map((task: TaskObjectSchema) => {
       if (task.type === ModelTypes.project) {
-        if (!task.startDate || task.startDate < options.currentDate) {
+        if (!task.startDate || isSomeday(task.startDate) || task.startDate < options.currentDate) {
           return null
         }
         return getProject(modelData, task.id)
       }
       if (task.type === ModelTypes.task) {
-        if (!task.startDate || task.startDate < options.currentDate) {
+        if (!task.startDate || isSomeday(task.startDate) || task.startDate < options.currentDate) {
           return null
         }
         const taskData = getTaskInfo(modelData, task.id)

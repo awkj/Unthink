@@ -134,13 +134,13 @@ export const ViewDetailPage: React.FC = () => {
           inputId={viewPageTitleInputId(viewUid)}
           renderIcon={() => <ThingsViewIcon />}
           title={view.name}
-          placeholder={localize("view.detail.untitled", "Untitled view")}
+          placeholder={localize("view.detail.untitled")}
           onSave={(value) => todoService.updateView(viewUid, { name: value })}
           extraActions={[
             {
               icon: <Funnel strokeWidth={1.5} />,
               handleClick: tagFilter.clickFilter,
-              title: localize("tasks.filterByTag", "Filter by Tag"),
+              title: localize("tasks.filterByTag"),
               testId: TestIds.EntityHeader.FilterToggleButton,
               isActive: tagFilter.isFilterOpen || isTagFilterActive,
             },
@@ -158,24 +158,15 @@ export const ViewDetailPage: React.FC = () => {
     >
       {unsupportedVersion && (
         <div className={desktopStyles.ViewUnsupportedContainer}>
-          <div className={desktopStyles.ViewUnsupportedTitle}>
-            {localize("view.unsupported.title", "Update the app to view this")}
-          </div>
-          <div className={desktopStyles.ViewUnsupportedBody}>
-            {localize(
-              "view.unsupported.body",
-              "This view was created with a newer version of the app. Please update the app to open it.",
-            )}
-          </div>
+          <div className={desktopStyles.ViewUnsupportedTitle}>{localize("view.unsupported.title")}</div>
+          <div className={desktopStyles.ViewUnsupportedBody}>{localize("view.unsupported.body")}</div>
         </div>
       )}
 
       {!unsupportedVersion && (ruleIsEmpty || hasError) && <RuleDocs viewUid={viewUid} />}
 
       {!unsupportedVersion && !ruleIsEmpty && !hasError && tasks.length === 0 && (
-        <div className={desktopStyles.ViewDetailEmpty}>
-          {localize("view.detail.empty", "No tasks match this view.")}
-        </div>
+        <div className={desktopStyles.ViewDetailEmpty}>{localize("view.detail.empty")}</div>
       )}
 
       {!unsupportedVersion && !ruleIsEmpty && !hasError && tasks.length > 0 && mainListReady && (

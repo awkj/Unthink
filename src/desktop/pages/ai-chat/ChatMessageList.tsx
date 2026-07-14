@@ -21,11 +21,7 @@ export const ChatMessageList: React.FC<ChatMessageListProps> = ({
   onRejectToolCall,
 }) => {
   if (messages.length === 0) {
-    return (
-      <div className={desktopStyles.AIChatMessageListEmpty}>
-        {localize("ai_chat.empty", "Start a conversation with AI")}
-      </div>
-    )
+    return <div className={desktopStyles.AIChatMessageListEmpty}>{localize("ai_chat.empty")}</div>
   }
 
   return (
@@ -70,7 +66,7 @@ const ThinkingBlock: React.FC<{ text: string; isStreaming?: boolean }> = ({ text
           <ChevronRightIcon className={desktopStyles.AIChatThinkingIcon} />
         )}
         <BrainIcon className={desktopStyles.AIChatThinkingIcon} />
-        <span className={desktopStyles.AIChatThinkingLabel}>{localize("ai_chat.thinking", "Thinking")}</span>
+        <span className={desktopStyles.AIChatThinkingLabel}>{localize("ai_chat.thinking")}</span>
         {isStreaming && <SyncIcon className={desktopStyles.AIChatThinkingStreamingIcon} />}
       </button>
       {isExpanded && <pre className={desktopStyles.AIChatThinkingContent}>{text}</pre>}
@@ -111,7 +107,7 @@ const MessageFooter: React.FC<{
     return (
       <span className={desktopStyles.AIChatMessageFooterStatus}>
         <LoaderCircle className={desktopStyles.AIChatMessageFooterLoadingIcon} />
-        {localize("ai_chat.status_responding", "Generating...")}
+        {localize("ai_chat.status_responding")}
       </span>
     )
   }
@@ -120,7 +116,7 @@ const MessageFooter: React.FC<{
     return (
       <span className={desktopStyles.AIChatMessageFooterStatus}>
         <StopIcon className={desktopStyles.AIChatMessageFooterStoppedIcon} />
-        {localize("ai_chat.status_stopped", "Stopped")}
+        {localize("ai_chat.status_stopped")}
       </span>
     )
   }
@@ -143,7 +139,7 @@ const MessageFooter: React.FC<{
       onClick={handleLink}
       onKeyDown={handleKeyDown}
       className={desktopStyles.AIChatMessageReplyButton}
-      title={localize("ai_chat.reply_to_this", "Reply to this")}
+      title={localize("ai_chat.reply_to_this")}
     >
       #{messageIndex}
     </span>

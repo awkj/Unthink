@@ -1,44 +1,44 @@
-import { getAllProject } from './getAllProject.ts';
-import { AreaInfoState, ITaskModelData, ProjectInfoState } from './type.ts';
-import { TreeID } from 'loro-crdt';
-import { localize } from '@/nls';
+import { getAllProject } from "./getAllProject.ts"
+import { AreaInfoState, ITaskModelData, ProjectInfoState } from "./type.ts"
+import { TreeID } from "loro-crdt"
+import { localize } from "@/nls"
 
 export interface FilteredProjectInfo extends ProjectInfoState {
-  isPlaceholder: boolean;
-  displayTitle: string;
+  isPlaceholder: boolean
+  displayTitle: string
 }
 
 export interface FilteredAreaInfo extends AreaInfoState {
-  isPlaceholder: boolean;
-  displayTitle: string;
-  isDisabled?: boolean;
-  projectList: FilteredProjectInfo[];
+  isPlaceholder: boolean
+  displayTitle: string
+  isDisabled?: boolean
+  projectList: FilteredProjectInfo[]
 }
 
 export interface FilteredProjectsAndAreas {
-  canMoveToRoot: boolean;
-  filteredProjects: FilteredProjectInfo[];
-  filteredAreas: FilteredAreaInfo[];
+  canMoveToRoot: boolean
+  filteredProjects: FilteredProjectInfo[]
+  filteredAreas: FilteredAreaInfo[]
 }
 
 export function getFilteredProjectsAndAreas(
   modelData: ITaskModelData,
   searchText: string,
-  itemId: TreeID
+  itemId: TreeID,
 ): FilteredProjectsAndAreas {
-  const { filteredProjects, filteredAreas } = getAllProject(modelData, searchText);
+  const { filteredProjects, filteredAreas } = getAllProject(modelData, searchText)
 
-  const currentItem = itemId ? modelData.taskObjectMap.get(itemId) : null;
-  const isCurrentItemProject = currentItem?.type === 'project';
-  const isCurrentItemHeading = currentItem?.type === 'projectHeading';
+  const currentItem = itemId ? modelData.taskObjectMap.get(itemId) : null
+  const isCurrentItemProject = currentItem?.type === "project"
+  const isCurrentItemHeading = currentItem?.type === "projectHeading"
 
-  const placeholderTitle = localize('project.untitled', 'New Project');
+  const placeholderTitle = localize("project.untitled")
 
   const projectsWithMetadata: FilteredProjectInfo[] = filteredProjects.map((project) => ({
     ...project,
     isPlaceholder: !project.title,
     displayTitle: project.title || placeholderTitle,
-  }));
+  }))
 
   const areasWithMetadata: FilteredAreaInfo[] = filteredAreas.map((area) => ({
     ...area,
@@ -50,14 +50,14 @@ export function getFilteredProjectsAndAreas(
       isPlaceholder: !project.title,
       displayTitle: project.title || placeholderTitle,
     })),
-  }));
+  }))
 
   if (isCurrentItemHeading) {
     return {
       canMoveToRoot: true,
       filteredProjects: projectsWithMetadata,
       filteredAreas: areasWithMetadata,
-    };
+    }
   } else if (isCurrentItemProject) {
     return {
       canMoveToRoot: true,
@@ -66,12 +66,12 @@ export function getFilteredProjectsAndAreas(
         ...area,
         projectList: [],
       })),
-    };
+    }
   } else {
     return {
       canMoveToRoot: true,
       filteredProjects: projectsWithMetadata,
       filteredAreas: areasWithMetadata,
-    };
+    }
   }
 }

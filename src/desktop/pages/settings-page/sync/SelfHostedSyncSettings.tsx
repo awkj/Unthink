@@ -43,13 +43,10 @@ export const SelfHostedSyncSettings: React.FC = () => {
       // The desktop settings page uses an inline dialog to stay pixel-aligned with ui-pc.
     },
   })
-  const emptyStateTitle = localize("sync.selfHostedServer", "Selfhosted Server")
-  const emptyStateDescription = localize(
-    "sync.selfHostedNoConfigDescription",
-    "No server configured yet. Add one to sync tasks across devices.",
-  )
-  const addServerButtonLabel = localize("sync.addServer", "Add Server")
-  const addServerDialogTitle = localize("sync.selfHosted.add", "Add Selfhosted Server")
+  const emptyStateTitle = localize("sync.selfHostedServer")
+  const emptyStateDescription = localize("sync.selfHostedNoConfigDescription")
+  const addServerButtonLabel = localize("sync.addServer")
+  const addServerDialogTitle = localize("sync.selfHosted.add")
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search])
   const isAddServerDialogVisible = searchParams.get("dialog") === "add-server"
   const isEndpointValid = useMemo(() => {
@@ -83,7 +80,7 @@ export const SelfHostedSyncSettings: React.FC = () => {
       })
       showMessage({
         type: "success",
-        message: localize("sync.addServerSuccess", "Server added successfully"),
+        message: localize("sync.addServerSuccess"),
       })
       setEndpoint("")
       setAuthToken("")
@@ -109,16 +106,14 @@ export const SelfHostedSyncSettings: React.FC = () => {
               <InfoItem label={formItemsLabel.endpoint} value={config.entrypoint} />
               <InfoItem label={formItemsLabel.folderName} value={config.folder} />
               <InfoItem
-                label={localize("sync.status", "Sync Status")}
+                label={localize("sync.status")}
                 value={
                   selfhostedSyncService.lastError ??
                   (selfhostedSyncService.lastSyncedAt
-                    ? localize(
-                        "sync.lastSyncedAt",
-                        "Last synced: {0}",
-                        new Date(selfhostedSyncService.lastSyncedAt).toLocaleString(),
-                      )
-                    : localize("sync.notSyncedYet", "Not synced yet"))
+                    ? localize("sync.lastSyncedAt", {
+                        0: new Date(selfhostedSyncService.lastSyncedAt).toLocaleString(),
+                      })
+                    : localize("sync.notSyncedYet"))
                 }
               />
             </ItemGroup>
@@ -138,10 +133,7 @@ export const SelfHostedSyncSettings: React.FC = () => {
                 <div className={desktopStyles.SettingsItemContentWrapper}>
                   <span className={desktopStyles.SettingsItemTitle}>{deleteButtonLabel}</span>
                   <span className={desktopStyles.SettingsItemDescription}>
-                    {localize(
-                      "sync.deleteServer.description",
-                      "Stop syncing this device with the server. This only removes the connection settings from this device and does not delete local or server data.",
-                    )}
+                    {localize("sync.deleteServer.description")}
                   </span>
                 </div>
                 <div className={desktopStyles.SettingsItemActionWrapper}>
@@ -194,7 +186,7 @@ export const SelfHostedSyncSettings: React.FC = () => {
                 type="button"
                 className={desktopStyles.SettingsDialogCloseButton}
                 onClick={closeAddServerDialog}
-                aria-label={localize("common.close", "Close")}
+                aria-label={localize("common.close")}
               >
                 <CloseIcon className={desktopStyles.SettingsDialogCloseIcon} strokeWidth={1.75} />
               </button>
@@ -224,7 +216,7 @@ export const SelfHostedSyncSettings: React.FC = () => {
                     value={authToken}
                     onChange={(e) => setAuthToken(e.target.value)}
                     className={desktopStyles.SettingsDialogInput}
-                    placeholder={localize("sync.authTokenPlaceholder", "Enter your authentication token")}
+                    placeholder={localize("sync.authTokenPlaceholder")}
                   />
                 </div>
                 <div className={desktopStyles.SettingsDialogField}>
@@ -237,14 +229,14 @@ export const SelfHostedSyncSettings: React.FC = () => {
                     value={folder}
                     onChange={(e) => setFolder(e.target.value)}
                     className={desktopStyles.SettingsDialogInput}
-                    placeholder={localize("sync.folderNamePlaceholder", "tasks")}
+                    placeholder={localize("sync.folderNamePlaceholder")}
                   />
                 </div>
               </div>
             </div>
             <div className={desktopStyles.SettingsDialogFooter}>
               <button type="button" className={desktopStyles.SettingsDialogCancelButton} onClick={closeAddServerDialog}>
-                {localize("common.cancel", "Cancel")}
+                {localize("common.cancel")}
               </button>
               <button
                 type="button"
@@ -252,7 +244,7 @@ export const SelfHostedSyncSettings: React.FC = () => {
                 disabled={!isAddServerFormValid}
                 onClick={handleConfirmAddServer}
               >
-                {localize("confirm", "Confirm")}
+                {localize("confirm")}
               </button>
             </div>
           </div>

@@ -48,7 +48,7 @@ function getRecurringSummaryItems(rule: RecurringRule | undefined, taskStartDate
   if (rule.startDate && recurringToString(rule.startDate)) {
     items.push({
       key: "startDate",
-      title: localize("desktop.task_detail.start_date", "Start Date"),
+      title: localize("desktop.task_detail.start_date"),
       value: getNextOccurrence(rule.startDate, taskStartDate, taskDueDate),
     })
   }
@@ -56,7 +56,7 @@ function getRecurringSummaryItems(rule: RecurringRule | undefined, taskStartDate
   if (rule.dueDate && recurringToString(rule.dueDate)) {
     items.push({
       key: "dueDate",
-      title: localize("desktop.task_detail.due_date", "Due Date"),
+      title: localize("desktop.task_detail.due_date"),
       value: getNextOccurrence(rule.dueDate, taskStartDate, taskDueDate),
     })
   }
@@ -87,18 +87,16 @@ export const RecurringRuleField: React.FC<RecurringRuleFieldProps> = ({
   return (
     <TaskDetailAttributeRow
       icon={<Repeat2Icon className={desktopStyles.TaskDetailAttributeIcon} />}
-      label={localize("tasks.recurring", "Repeat")}
+      label={localize("tasks.recurring")}
       dataTestId={testId}
       onClick={handleClick}
       placeholder={summaryItems.length === 0}
       content={
         summaryItems.length === 0 ? (
-          localize("tasks.recurring_placeholder", "Not set")
+          localize("tasks.recurring_placeholder")
         ) : (
           <div className={desktopStyles.RecurringRuleContent}>
-            <div className={desktopStyles.RecurringRuleSummaryHint}>
-              {localize("tasks.recurring_next_label", "Next task")}
-            </div>
+            <div className={desktopStyles.RecurringRuleSummaryHint}>{localize("tasks.recurring_next_label")}</div>
             {summaryItems.map((item) => (
               <div key={item.key} className={desktopStyles.RecurringRuleSummaryItem}>
                 <span className={desktopStyles.RecurringRuleSummaryTitle}>{item.title}</span>

@@ -43,11 +43,11 @@ function formatRecurringRule(rule?: RecurringRule): string[] {
   const parts: string[] = []
 
   if (rule.startDate) {
-    parts.push(localize("tasks.recurring_start_date", "StartDate: {0}", recurringToString(rule.startDate)))
+    parts.push(localize("tasks.recurring_start_date", { 0: recurringToString(rule.startDate) }))
   }
 
   if (rule.dueDate) {
-    parts.push(localize("tasks.recurring_due_date", "DueDate: {0}", recurringToString(rule.dueDate)))
+    parts.push(localize("tasks.recurring_due_date", { 0: recurringToString(rule.dueDate) }))
   }
 
   return parts
@@ -67,9 +67,9 @@ export const useEditTaskHooks = (taskInfo: TaskInfo) => {
 
   const handleDeleteTask = () => {
     dialog({
-      title: localize("task.delete_task", "Delete Task"),
-      description: localize("task.delete_task_description", "Are you sure you want to delete this task?"),
-      confirmText: localize("task.delete", "Delete"),
+      title: localize("task.delete_task"),
+      description: localize("task.delete_task_description"),
+      confirmText: localize("task.delete"),
       onConfirm: () => {
         todoService.deleteItem(taskInfo.id)
         todoService.endEditingContent()
@@ -87,7 +87,7 @@ export const useEditTaskHooks = (taskInfo: TaskInfo) => {
           items: [
             {
               icon: <RepeatIcon />,
-              name: localize("task.recurring_settings", "Recurring Settings"),
+              name: localize("task.recurring_settings"),
               onClick: () => {
                 openRecurringTaskSettings(taskInfo.recurringRule || {}, (settings) => {
                   todoService.updateTask(taskInfo.id, {
@@ -98,17 +98,17 @@ export const useEditTaskHooks = (taskInfo: TaskInfo) => {
             },
             {
               icon: <DeleteIcon />,
-              name: localize("task.delete_task", "Delete Task"),
+              name: localize("task.delete_task"),
               onClick: handleDeleteTask,
             },
             {
               icon: <ProjectStatusBox status={"created"} progress={0.6} />,
-              name: localize("task.convert_to_project", "Convert to Project"),
+              name: localize("task.convert_to_project"),
               onClick: handleConvertToProject,
             },
             {
               icon: <MoveIcon />,
-              name: localize("task.move", "Move Task"),
+              name: localize("task.move"),
               onClick: () => {
                 projectAreaSelector({
                   currentItemId: taskInfo.id,
@@ -132,12 +132,9 @@ export const useEditTaskHooks = (taskInfo: TaskInfo) => {
 
   const handleConvertToProject = () => {
     dialog({
-      title: localize("task.convert_to_project", "Convert to Project"),
-      description: localize(
-        "task.convert_to_project_description",
-        "Are you sure you want to convert this task to a project?",
-      ),
-      confirmText: localize("task.convert", "Convert"),
+      title: localize("task.convert_to_project"),
+      description: localize("task.convert_to_project_description"),
+      confirmText: localize("task.convert"),
       onConfirm: () => {
         todoService.endEditingContent()
         todoService.covertToProject(taskInfo.id)

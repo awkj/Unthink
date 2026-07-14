@@ -23,7 +23,7 @@ export function formatDate(dueDate?: number, currentDate?: number) {
     return ""
   }
   if (isSomeday(dueDate)) {
-    return localize("date.someday", "Someday")
+    return localize("date.pending")
   }
   if (!currentDate) {
     currentDate = getTodayTimestampInUtc()

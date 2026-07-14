@@ -54,7 +54,7 @@ export const HomeProjectItem: React.FC<ProjectItemProps> = ({ projectInfo, hideS
       title={projectInfo.title}
       isCanceled={projectInfo.status === "canceled"}
       isCompleted={projectInfo.status === "completed"}
-      emptyText={localize("project.untitled", "New Project")}
+      emptyText={localize("project.untitled")}
     />
   )
 

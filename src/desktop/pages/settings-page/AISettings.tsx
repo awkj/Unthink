@@ -8,7 +8,7 @@ import {
   aiApiTokenConfigKey,
   aiApiUrlConfigKey,
   aiModelNameConfigKey,
-  hideAIEntryConfigKey,
+  showAIEntryConfigKey,
 } from "@/services/config/config"
 import React from "react"
 
@@ -16,31 +16,28 @@ export const AISettings: React.FC = () => {
   const { value: apiUrl, setValue: setApiUrl } = useConfig(aiApiUrlConfigKey())
   const { value: apiToken, setValue: setApiToken } = useConfig(aiApiTokenConfigKey())
   const { value: modelName, setValue: setModelName } = useConfig(aiModelNameConfigKey())
-  const { value: hideAIEntry, setValue: setHideAIEntry } = useConfig(hideAIEntryConfigKey())
+  const { value: showAIEntry, setValue: setShowAIEntry } = useConfig(showAIEntryConfigKey())
 
   return (
-    <SettingsContent title={localize("settings.ai", "AI Assistant")}>
-      <SettingsSection title={localize("settings.ai.display", "Display")}>
+    <SettingsContent title={localize("settings.ai")}>
+      <SettingsSection title={localize("settings.ai.display")}>
         <ItemGroup>
           <SettingsItem
-            title={localize("settings.ai.show_entry", "Show AI Chat in Sidebar")}
-            description={localize(
-              "settings.ai.show_entry.description",
-              "Control whether the AI Chat entry is shown in the sidebar.",
-            )}
+            title={localize("settings.ai.show_entry")}
+            description={localize("settings.ai.show_entry.description")}
             action={{
               type: "switch",
-              currentValue: !hideAIEntry,
-              onChange: (showAIEntry) => setHideAIEntry(!showAIEntry),
+              currentValue: showAIEntry,
+              onChange: setShowAIEntry,
             }}
           />
         </ItemGroup>
       </SettingsSection>
-      <SettingsSection title={localize("settings.ai.api", "API")}>
+      <SettingsSection title={localize("settings.ai.api")}>
         <ItemGroup>
           <SettingsItem
-            title={localize("settings.ai.api_url", "API URL")}
-            description={localize("settings.ai.api_url.description", "OpenAI compatible API endpoint URL")}
+            title={localize("settings.ai.api_url")}
+            description={localize("settings.ai.api_url.description")}
             action={{
               type: "input",
               inputType: "url",
@@ -50,23 +47,20 @@ export const AISettings: React.FC = () => {
             }}
           />
           <SettingsItem
-            title={localize("settings.ai.api_token", "API Token")}
-            description={localize("settings.ai.api_token.description", "Your API authentication token")}
+            title={localize("settings.ai.api_token")}
+            description={localize("settings.ai.api_token.description")}
             action={{
               type: "input",
               inputType: "password",
               revealable: true,
-              placeholder: localize("settings.ai.api_token.placeholder", "Enter your API token"),
+              placeholder: localize("settings.ai.api_token.placeholder"),
               currentValue: apiToken,
               onChange: setApiToken,
             }}
           />
           <SettingsItem
-            title={localize("settings.ai.model_name", "Model Name")}
-            description={localize(
-              "settings.ai.model_name.description",
-              "The AI model to use (e.g., deepseek-v4-pro, gpt-4, gpt-4o)",
-            )}
+            title={localize("settings.ai.model_name")}
+            description={localize("settings.ai.model_name.description")}
             action={{
               type: "input",
               inputType: "text",

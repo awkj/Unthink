@@ -22,6 +22,9 @@ import { Navigate, useRoutes, useLocation, useNavigate } from "react-router"
 
 const AreaPage = lazy(() => import("@/desktop/pages/area").then((module) => ({ default: module.AreaPage })))
 const Completed = lazy(() => import("@/desktop/pages/completed").then((module) => ({ default: module.Completed })))
+const Pending = lazy(() => import("@/desktop/pages/builtInViews").then((module) => ({ default: module.Pending })))
+const Deleted = lazy(() => import("@/desktop/pages/deleted").then((module) => ({ default: module.Deleted })))
+const Guide = lazy(() => import("@/desktop/pages/guide").then((module) => ({ default: module.Guide })))
 const FutureProjects = lazy(() =>
   import("@/desktop/pages/futureProjects").then((module) => ({ default: module.FutureProjects })),
 )
@@ -122,8 +125,20 @@ export const App = () => {
               element: <Schedule />,
             },
             {
+              path: "pending",
+              element: <Pending />,
+            },
+            {
               path: "completed",
               element: <Completed />,
+            },
+            {
+              path: "deleted",
+              element: <Deleted />,
+            },
+            {
+              path: "guide",
+              element: <Guide />,
             },
             {
               path: "future_projects",

@@ -35,7 +35,7 @@ export const requestReplyToolConfig: ToolConfig = {
   name: "requestReply",
   definition: REQUEST_REPLY_TOOL,
   type: "auto",
-  displayName: localize("ai_chat.tool_requestReply", "Request Reply"),
+  displayName: localize("ai_chat.tool_requestReply"),
   formatArguments: formatRequestReplyArguments,
   execute: async () => {
     return {

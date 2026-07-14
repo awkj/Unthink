@@ -1,12 +1,21 @@
 FROM node:24-alpine AS web
+ARG NPM_CONFIG_REGISTRY=https://registry.npmmirror.com
+ARG PNPM_VERSION=11.11.0
+ENV NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY} \
+    PNPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY} \
+    COREPACK_NPM_REGISTRY=${NPM_CONFIG_REGISTRY}
 WORKDIR /src
-RUN corepack enable
+RUN corepack enable \
+    && corepack install --global "pnpm@${PNPM_VERSION}" \
+    && pnpm config set registry "${NPM_CONFIG_REGISTRY}"
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm web:build
 
 FROM golang:1.26-alpine AS api
+ARG GOPROXY=https://goproxy.cn,direct
+ENV GOPROXY=${GOPROXY}
 WORKDIR /src
 COPY server/go.mod server/go.sum ./
 RUN go mod download

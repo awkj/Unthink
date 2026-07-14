@@ -121,7 +121,7 @@ export const InboxPage = () => {
       header={{
         showBack: true,
         id: "inbox",
-        title: localize("inbox", "Inbox"),
+        title: localize("inbox"),
         renderIcon: (className: string) => <InboxIcon className={className} />,
         actions: [tagFilter.headerAction, { icon: <TaskDisplaySettingsIcon />, onClick: openTaskDisplaySettings }],
       }}

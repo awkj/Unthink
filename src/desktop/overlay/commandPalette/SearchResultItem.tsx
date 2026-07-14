@@ -44,7 +44,7 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({ item, isSele
     if (item.type === "task") {
       return {
         icon: <InboxIcon className={desktopStyles.CommandPaletteResultItemParentIconSvg} />,
-        title: localize("inbox.title", "Inbox"),
+        title: localize("inbox.title"),
       }
     }
     return null
@@ -71,11 +71,11 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = ({ item, isSele
     }
     switch (item.type) {
       case "area":
-        return localize("area.untitled", "New Area")
+        return localize("area.untitled")
       case "project":
-        return localize("project.untitled", "New Project")
+        return localize("project.untitled")
       case "task":
-        return localize("task.untitled", "New Task")
+        return localize("task.untitled")
       default:
         return ""
     }

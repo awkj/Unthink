@@ -249,7 +249,7 @@ export const TaskListItem: React.FC<TaskListItemProps> = ({
               taskItemActions.updateTaskTitle(value)
             }}
             className={titleClassName}
-            placeholder={localize("tasks.untitled", "New Task")}
+            placeholder={localize("tasks.untitled")}
           />
           {task.notes && <TextAlignStart className={desktopStyles.TaskListItemIcon} />}
           {task.children && task.children.length > 0 && <SubtaskIcon className={desktopStyles.TaskListItemIcon} />}

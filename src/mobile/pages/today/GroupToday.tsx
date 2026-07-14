@@ -291,7 +291,7 @@ export const GroupToday = () => {
       header={{
         showBack: true,
         id: "today",
-        title: `${localize("today", "Today")} (${formatTodayTitle()})`,
+        title: `${localize("today")} (${formatTodayTitle()})`,
         renderIcon: (className: string) => <TodayIcon className={className} />,
         actions: [
           tagFilter.headerAction,

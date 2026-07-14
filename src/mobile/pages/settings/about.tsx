@@ -10,14 +10,14 @@ export const AboutPage = () => {
 
   const items: ListItemOption[] = [
     {
-      title: localize("settings.about.commit", "Commit"),
+      title: localize("settings.about.commit"),
       mode: {
         type: "label",
         label: PROJECT_COMMIT_HASH.slice(0, 16),
       },
     },
     {
-      title: localize("settings.feedback", "Customer Feedback"),
+      title: localize("settings.feedback"),
       onClick: () => navigate("/settings/feedback"),
       mode: {
         type: "navigation",
@@ -30,7 +30,7 @@ export const AboutPage = () => {
       header={{
         showBack: true,
         id: "about",
-        title: localize("settings.about", "About"),
+        title: localize("settings.about"),
         renderIcon: (className: string) => <SettingsIcon className={className} />,
       }}
     >

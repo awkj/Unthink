@@ -57,7 +57,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
             {
               condition: taskInfo.status !== "created",
               icon: <TaskCheckbox status={"created"} />,
-              name: localize("tasks.mark_as_created", "Mark as Created"),
+              name: localize("tasks.mark_as_created"),
               onClick: () => {
                 todoService.updateTask(taskInfo.id, { status: "created" })
               },
@@ -65,7 +65,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
             {
               condition: taskInfo.status !== "completed",
               icon: <TaskCheckbox status={"completed"} />,
-              name: localize("tasks.mark_as_completed", "Mark as Completed"),
+              name: localize("tasks.mark_as_completed"),
               onClick: () => {
                 todoService.updateTask(taskInfo.id, { status: "completed" })
               },
@@ -73,7 +73,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
             {
               condition: taskInfo.status !== "canceled",
               icon: <TaskCheckbox status={"canceled"} />,
-              name: localize("tasks.mark_as_canceled", "Mark as Canceled"),
+              name: localize("tasks.mark_as_canceled"),
               onClick: () => {
                 todoService.updateTask(taskInfo.id, { status: "canceled" })
               },
@@ -140,7 +140,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
             title={taskInfo.title}
             isCanceled={isCanceled}
             isCompleted={isCompleted}
-            emptyText={localize("tasks.untitled", "New Task")}
+            emptyText={localize("tasks.untitled")}
           />
           <div className={styles.homeProjectItemMetaIcons}>
             <TaskItemIcons tags={taskInfo.tags} notes={taskInfo.notes} subtasks={taskInfo.children} navIcon={false} />

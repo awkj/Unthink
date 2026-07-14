@@ -20,7 +20,7 @@ interface NotesFieldProps {
 export const NotesField: React.FC<NotesFieldProps> = ({
   value,
   onSave,
-  placeholder = localize("notes_placeholder", "Add notes..."),
+  placeholder = localize("notes_placeholder"),
   className,
 }) => {
   const [isEditing, setIsEditing] = useState(false)

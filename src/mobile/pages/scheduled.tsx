@@ -45,7 +45,7 @@ export const ScheduledPage = () => {
       header={{
         showBack: true,
         id: "scheduled",
-        title: localize("scheduled.title", "Scheduled"),
+        title: localize("scheduled.title"),
         renderIcon: (className: string) => <ScheduledIcon className={className} />,
         actions: [tagFilter.headerAction],
       }}

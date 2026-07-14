@@ -90,9 +90,9 @@ const useProject = (project: ProjectInfoState | null) => {
   function handleDeleteProject() {
     if (!project) return
     dialog({
-      title: localize("project.delete_project", "Delete Project"),
-      description: localize("project.delete_project_description", "Are you sure you want to delete this project?"),
-      confirmText: localize("project.delete", "Delete"),
+      title: localize("project.delete_project"),
+      description: localize("project.delete_project_description"),
+      confirmText: localize("project.delete"),
       onConfirm: () => {
         todoService.deleteItem(project.id)
         back()
@@ -131,17 +131,17 @@ const useProject = (project: ProjectInfoState | null) => {
           items: [
             {
               icon: <ScheduledIcon />,
-              name: localize("project.edit_start_date", "Edit Start Date"),
+              name: localize("project.edit_start_date"),
               onClick: handleEditStartDate,
             },
             {
               icon: <TargetIcon />,
-              name: localize("project.edit_due_date", "Edit Due Date"),
+              name: localize("project.edit_due_date"),
               onClick: handleEditDueDate,
             },
             {
               icon: <TagsIcon />,
-              name: localize("project.edit_tags", "Edit Tags"),
+              name: localize("project.edit_tags"),
               onClick: handleEditTag,
             },
           ] as PopupActionItem[],
@@ -150,12 +150,12 @@ const useProject = (project: ProjectInfoState | null) => {
           items: [
             {
               icon: <Type />,
-              name: localize("project.add_heading", "Add Heading"),
+              name: localize("project.add_heading"),
               onClick: handleAddHeading,
             },
             {
               icon: <MoveIcon />,
-              name: localize("project.move_project", "Move Project"),
+              name: localize("project.move_project"),
               onClick: handleMoveProject,
             },
           ] as PopupActionItem[],
@@ -164,7 +164,7 @@ const useProject = (project: ProjectInfoState | null) => {
           items: [
             {
               icon: <DeleteIcon />,
-              name: localize("project.delete_project", "Delete Project"),
+              name: localize("project.delete_project"),
               danger: true,
               onClick: handleDeleteProject,
             },
@@ -183,17 +183,13 @@ const useProject = (project: ProjectInfoState | null) => {
     }
     popupAction({
       // 还有 leftProject 个任务未完成，你要如何操作
-      description: localize(
-        "project.toggle_status_description",
-        "There are {0} tasks left, what do you want to do?",
-        leftProject,
-      ),
+      description: localize("project.toggle_status_description", { 0: leftProject }),
       groups: [
         {
           items: [
             {
               icon: <TaskCheckbox status={"completed"} />,
-              name: localize("tasks.mark_as_completed", "Mark as Completed"),
+              name: localize("tasks.mark_as_completed"),
               onClick: () => {
                 todoService.transitionProjectState({
                   projectId: project.id,
@@ -204,7 +200,7 @@ const useProject = (project: ProjectInfoState | null) => {
             },
             {
               icon: <TaskCheckbox status={"canceled"} />,
-              name: localize("tasks.mark_as_canceled", "Mark as Canceled"),
+              name: localize("tasks.mark_as_canceled"),
               onClick: () => {
                 todoService.transitionProjectState({
                   projectId: project.id,
@@ -246,7 +242,7 @@ const useProject = (project: ProjectInfoState | null) => {
             {
               condition: project.status !== "created",
               icon: <MobileProjectCheckbox status={"created"} progress={project.progress * 100} />,
-              name: localize("project.mark_as_created", "Mark as Created"),
+              name: localize("project.mark_as_created"),
               onClick: () => {
                 todoService.transitionProjectState({ projectId: project.id, projectStatus: "created" })
               },
@@ -254,7 +250,7 @@ const useProject = (project: ProjectInfoState | null) => {
             {
               condition: project.status !== "completed",
               icon: <MobileProjectCheckbox status={"completed"} progress={project.progress * 100} />,
-              name: localize("project.mark_as_completed", "Mark as Completed"),
+              name: localize("project.mark_as_completed"),
               onClick: () => {
                 updateTaskStatus("completed")
               },
@@ -262,7 +258,7 @@ const useProject = (project: ProjectInfoState | null) => {
             {
               condition: project.status !== "canceled",
               icon: <MobileProjectCheckbox status={"canceled"} progress={project.progress * 100} />,
-              name: localize("project.mark_as_canceled", "Mark as Canceled"),
+              name: localize("project.mark_as_canceled"),
               onClick: () => {
                 updateTaskStatus("canceled")
               },

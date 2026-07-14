@@ -48,12 +48,12 @@ export const Completed = () => {
       <div className={desktopStyles.SchedulePageLayout}>
         <EntityHeader
           renderIcon={() => <CheckIcon className="text-module-completed" strokeWidth={1.5} />}
-          title={localize("completed_tasks.title", "Completed")}
+          title={localize("completed_tasks.title")}
           extraActions={[
             {
               icon: <Funnel strokeWidth={1.5} />,
               handleClick: tagFilter.clickFilter,
-              title: localize("tasks.filterByTag", "Filter by Tag"),
+              title: localize("tasks.filterByTag"),
               testId: TestIds.EntityHeader.FilterToggleButton,
               isActive: tagFilter.isFilterOpen || tagFilter.currentTag.type !== "all",
             },
@@ -97,9 +97,7 @@ export const Completed = () => {
 
             {completedTaskGroups.groups.length === 0 && (
               <div className={desktopStyles.SchedulePageEmptyState}>
-                <p className={desktopStyles.SchedulePageEmptyText}>
-                  {localize("completed_tasks.noCompletedTasks", "No completed tasks or projects yet")}
-                </p>
+                <p className={desktopStyles.SchedulePageEmptyText}>{localize("completed_tasks.noCompletedTasks")}</p>
               </div>
             )}
           </div>

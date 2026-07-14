@@ -28,8 +28,8 @@ const DesktopDialogContent: React.FC<{ controller: DesktopDialogController }> = 
       onCancel={() => controller.handleCancel()}
       onConfirm={handleConfirm}
       hideFooter={controller.hideFooter}
-      cancelText={controller.cancelText || localize("cancel", "Cancel")}
-      confirmText={controller.confirmText || localize("confirm", "Confirm")}
+      cancelText={controller.cancelText || localize("cancel")}
+      confirmText={controller.confirmText || localize("confirm")}
       zIndex={controller.zIndex}
     >
       {controller.description && (

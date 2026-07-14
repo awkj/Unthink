@@ -34,9 +34,9 @@ export const TagFilterBar: React.FC<TagFilterBarProps> = ({ tags, selected, onSe
       <span className={desktopStyles.tagFilterBarIcon}>
         <TagIcon className={desktopStyles.tagFilterBarIconSvg} strokeWidth={1.5} />
       </span>
-      {renderChip(localize("project.tagFilter.all", "All"), TAG_FILTER_ALL, "__all__")}
+      {renderChip(localize("project.tagFilter.all"), TAG_FILTER_ALL, "__all__")}
       {tags.map((tag) => renderChip(tag, { type: "tag", value: tag }, `tag:${tag}`))}
-      {renderChip(localize("project.tagFilter.untagged", "No Tags"), TAG_FILTER_UNTAGGED, "__untagged__")}
+      {renderChip(localize("project.tagFilter.untagged"), TAG_FILTER_UNTAGGED, "__untagged__")}
     </div>
   )
 }

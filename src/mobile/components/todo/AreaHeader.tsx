@@ -92,7 +92,7 @@ export const AreaHeader: React.FC<AreaHeaderProps> = ({ areaInfo, className }) =
                 areaInfo.title ? styles.homeProjectItemTitleNormal : styles.homeProjectItemTitlePlaceholder,
               )}
             >
-              {areaInfo.title || localize("area.untitled", "New Area")}
+              {areaInfo.title || localize("area.untitled")}
             </span>
           )}
         </div>

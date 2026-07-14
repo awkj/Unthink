@@ -50,7 +50,7 @@ const AreaDetailPanelContent: React.FC<IAreaDetailPanelContentProps> = ({ areaId
     {
       icon: <EllipsisVertical strokeWidth={ICON_STROKE_WIDTH} />,
       handleClick: handleMenuClick,
-      title: localize("common.more", "More"),
+      title: localize("common.more"),
     },
   ]
 
@@ -62,7 +62,7 @@ const AreaDetailPanelContent: React.FC<IAreaDetailPanelContentProps> = ({ areaId
         inputKey={areaTitleInputKey(areaId)}
         renderIcon={() => <AreaIcon className={desktopStyles.DetailViewHeaderStatusBox} />}
         title={area.title}
-        placeholder={localize("area.untitled", "New Area")}
+        placeholder={localize("area.untitled")}
         onSave={handleTitleSave}
         extraActions={headerActions}
       />

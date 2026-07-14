@@ -116,7 +116,7 @@ const ProjectDetailPanelContent: React.FC<IProjectDetailPanelContentProps> = ({ 
     {
       icon: <EllipsisVertical />,
       handleClick: handleMenuClick,
-      title: localize("common.more", "More"),
+      title: localize("common.more"),
       testId: TestIds.ProjectDetailPanel.MenuButton,
     },
   ]
@@ -129,7 +129,7 @@ const ProjectDetailPanelContent: React.FC<IProjectDetailPanelContentProps> = ({ 
         inputKey={projectTitleInputKey(projectId)}
         renderIcon={() => <ProjectIcon progress={project.progress} status={project.status} size="md" />}
         title={project.title}
-        placeholder={localize("project.untitled", "New Project")}
+        placeholder={localize("project.untitled")}
         onSave={handleTitleSave}
         extraActions={headerActions}
       />
@@ -142,28 +142,26 @@ const ProjectDetailPanelContent: React.FC<IProjectDetailPanelContentProps> = ({ 
             className={desktopStyles.DetailViewNotesTextarea}
           />
           <div className={desktopStyles.DetailViewDivider} />
-          <TaskLocationField itemId={projectId} label={localize("project.area", "Area")} emptyIcon={<AreaIcon />} />
+          <TaskLocationField itemId={projectId} label={localize("project.area")} emptyIcon={<AreaIcon />} />
           <TaskDateField
-            label={localize("project.start_date", "Start Date")}
+            label={localize("project.start_date")}
             icon={<ScheduledIcon />}
             date={project.startDate}
             onDateClick={handleStartDateClick}
-            placeholder={localize("project.start_date_placeholder", "Select start date")}
+            placeholder={localize("project.start_date_placeholder")}
           />
 
           <TaskDateField
-            label={localize("project.due_date", "Due Date")}
+            label={localize("project.due_date")}
             icon={<FlagIcon />}
             date={project.dueDate}
             onDateClick={handleDueDateClick}
-            placeholder={localize("project.due_date_placeholder", "Select due date")}
+            placeholder={localize("project.due_date_placeholder")}
             isDue={true}
           />
           <TagsField itemId={projectId} />
           <div className={desktopStyles.DetailViewSubtaskHeader}>
-            <span className={desktopStyles.DetailViewSubtaskHeaderTitle}>
-              {localize("project.task_progress", "Task Progress")}
-            </span>
+            <span className={desktopStyles.DetailViewSubtaskHeaderTitle}>{localize("project.task_progress")}</span>
             <span
               className={desktopStyles.DetailViewSubtaskHeaderCount}
             >{`${completedTaskCount} / ${visibleTasks.length}`}</span>
@@ -171,9 +169,7 @@ const ProjectDetailPanelContent: React.FC<IProjectDetailPanelContentProps> = ({ 
           <div className={desktopStyles.DetailViewSubtaskProgressBar}>
             <div className={desktopStyles.DetailViewSubtaskProgressFill} style={{ width: `${taskProgress}%` }} />
           </div>
-          <p className={desktopStyles.DetailViewHint}>
-            {localize("project.task_progress_hint", "Select a task from the middle column to view its details")}
-          </p>
+          <p className={desktopStyles.DetailViewHint}>{localize("project.task_progress_hint")}</p>
           <AttachmentSection parentUid={project.uid} />
         </div>
       </div>

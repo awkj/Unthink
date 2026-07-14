@@ -155,7 +155,7 @@ export const getProjectDataToolConfig: ToolConfig = {
   name: "getProjectData",
   definition: GET_PROJECT_DATA_TOOL,
   type: "auto",
-  displayName: localize("ai_chat.tool_getProjectData", "Get Project Data"),
+  displayName: localize("ai_chat.tool_getProjectData"),
   formatArguments: formatGetProjectDataArguments,
   execute: async (instantiationService, args: GetProjectDataToolParams) => {
     const result = executeGetProjectData(instantiationService, args)

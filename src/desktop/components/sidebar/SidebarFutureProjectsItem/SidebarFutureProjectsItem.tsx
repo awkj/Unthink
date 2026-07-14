@@ -41,7 +41,7 @@ export const SidebarFutureProjectsItem: React.FC<SidebarFutureProjectsItemProps>
       <div className={desktopStyles.SidebarMenuItemIcon}>
         <ThingsLaterIcon className={desktopStyles.SidebarMenuItemIconSvg} />
       </div>
-      <span className={desktopStyles.SidebarMenuItemLabel}>{localize("home.futureProjects", "Future Projects")}</span>
+      <span className={desktopStyles.SidebarMenuItemLabel}>{localize("home.futureProjects")}</span>
       {<span className={desktopStyles.SidebarMenuItemBadgeSecondary}>{count}</span>}
     </Link>
   )

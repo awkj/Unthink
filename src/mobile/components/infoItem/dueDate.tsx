@@ -19,7 +19,7 @@ export const DueDateInfoItem: React.FC<DueDateInfoItemProps> = ({ dueDate }) => 
           "text-accent-danger": isPastOrToday(dueDate),
         })}
       >
-        {localize("create_task_page.due_date", "Due Date")}: {formatDate(dueDate)}
+        {localize("create_task_page.due_date")}: {formatDate(dueDate)}
       </span>
       <span className={styles.formHintText}> {formatRemainingDays(dueDate)}</span>
     </p>

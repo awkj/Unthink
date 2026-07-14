@@ -77,7 +77,7 @@ export const AIChat: React.FC = () => {
             </button>
           </div>
           <div className={desktopStyles.AIChatPageHeaderTitleGroup}>
-            <h1 className={desktopStyles.AIChatPageHeaderTitle}>{localize("ai_chat", "AI Chat")}</h1>
+            <h1 className={desktopStyles.AIChatPageHeaderTitle}>{localize("ai_chat")}</h1>
           </div>
         </div>
         <div className={desktopStyles.AIChatPageHeaderActions}>
@@ -85,9 +85,7 @@ export const AIChat: React.FC = () => {
             <span className={desktopStyles.AIChatPageHeaderActionIconContainer}>
               <RotateCcwIcon className={desktopStyles.AIChatPageHeaderActionIcon} strokeWidth={1.5} />
             </span>
-            <span className={desktopStyles.AIChatPageHeaderActionLabel}>
-              {localize("ai_chat.new_chat", "New Chat")}
-            </span>
+            <span className={desktopStyles.AIChatPageHeaderActionLabel}>{localize("ai_chat.new_chat")}</span>
           </button>
         </div>
       </div>

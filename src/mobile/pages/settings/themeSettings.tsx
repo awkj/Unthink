@@ -18,14 +18,14 @@ export const ThemeSettings = () => {
       header={{
         showBack: true,
         id: "theme",
-        title: localize("settings.theme", "Theme"),
+        title: localize("settings.theme"),
         renderIcon: (className: string) => <SettingsIcon className={className} />,
       }}
     >
       <ListItemGroup
         items={[
           {
-            title: localize("settings.theme.light", "Light"),
+            title: localize("settings.theme.light"),
             mode: {
               type: "check",
               checked: currentTheme === "light",
@@ -33,7 +33,7 @@ export const ThemeSettings = () => {
             onClick: () => changeTheme("light"),
           },
           {
-            title: localize("settings.theme.dark", "Dark"),
+            title: localize("settings.theme.dark"),
             mode: {
               type: "check",
               checked: currentTheme === "dark",
@@ -41,7 +41,7 @@ export const ThemeSettings = () => {
             onClick: () => changeTheme("dark"),
           },
           {
-            title: localize("settings.theme.auto", "Auto (System)"),
+            title: localize("settings.theme.auto"),
             mode: {
               type: "check",
               checked: currentTheme === "auto",

@@ -1,4 +1,4 @@
-import { Archive, BookCheck, Bookmark, CalendarDays, Inbox, Layers, Sparkles, Star } from "lucide-react"
+import { Archive, BookCheck, Bookmark, CalendarDays, Inbox, Layers, Sparkles, Star, Trash2 } from "lucide-react"
 import React from "react"
 
 type ThingsIconProps = Omit<React.ComponentProps<typeof Inbox>, "color" | "strokeWidth" | "absoluteStrokeWidth">
@@ -18,8 +18,20 @@ export const ThingsScheduleIcon: React.FC<ThingsIconProps> = (props) => (
   <CalendarDays {...props} color="#FF4F72" strokeWidth={STROKE_WIDTH} absoluteStrokeWidth />
 )
 
+export const ThingsAnytimeIcon: React.FC<ThingsIconProps> = (props) => (
+  <Layers {...props} color="#36B8AD" strokeWidth={STROKE_WIDTH} absoluteStrokeWidth />
+)
+
+export const ThingsSomedayIcon: React.FC<ThingsIconProps> = (props) => (
+  <Archive {...props} color="#C9B968" strokeWidth={STROKE_WIDTH} absoluteStrokeWidth />
+)
+
 export const ThingsLogbookIcon: React.FC<ThingsIconProps> = (props) => (
   <BookCheck {...props} color="#46C667" strokeWidth={STROKE_WIDTH} absoluteStrokeWidth />
+)
+
+export const ThingsDeletedIcon: React.FC<ThingsIconProps> = (props) => (
+  <Trash2 {...props} color="#AEB4BC" fill="#D5D9DE" strokeWidth={2.2} absoluteStrokeWidth />
 )
 
 export const ThingsAIIcon: React.FC<ThingsIconProps> = (props) => (

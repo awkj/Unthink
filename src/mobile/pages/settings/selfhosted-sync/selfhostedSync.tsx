@@ -72,16 +72,12 @@ export const SelfhostedSync = () => {
           },
         },
         {
-          title: localize("sync.status", "Sync Status"),
+          title: localize("sync.status"),
           description:
             selfhostedSyncService.lastError ??
             (selfhostedSyncService.lastSyncedAt
-              ? localize(
-                  "sync.lastSyncedAt",
-                  "Last synced: {0}",
-                  new Date(selfhostedSyncService.lastSyncedAt).toLocaleString(),
-                )
-              : localize("sync.notSyncedYet", "Not synced yet")),
+              ? localize("sync.lastSyncedAt", { 0: new Date(selfhostedSyncService.lastSyncedAt).toLocaleString() })
+              : localize("sync.notSyncedYet")),
           mode: {
             type: "label",
             label: "",
