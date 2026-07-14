@@ -99,7 +99,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
     if (!inputKey) {
       return
     }
-    editService.setInputValue(inputKey, title)
+    editService.syncInputValue(inputKey, title)
   }, [editService, inputKey, title])
 
   const handleTitleFocus = () => {

@@ -1,7 +1,6 @@
 import { useService } from "@/ui/hooks/use-service"
-import { useWatchEvent } from "@/ui/hooks/use-watch-event"
 import { IEditService } from "@/services/edit/editService"
-import React, { forwardRef, useCallback, useEffect } from "react"
+import React, { forwardRef, useCallback, useEffect, useState } from "react"
 
 interface EditableInputProps {
   inputKey: string
@@ -17,14 +16,18 @@ interface EditableInputProps {
 export const EditableInput = forwardRef<HTMLInputElement, EditableInputProps>(
   ({ inputKey, defaultValue, onChange, onBlur, onSelect, placeholder, onSave, className }, ref) => {
     const editService = useService(IEditService)
-    useWatchEvent(editService.onInputChange, (e) => {
-      return e.inputKey === inputKey
-    })
-    useEffect(() => {
-      editService.setInputValue(inputKey, defaultValue)
-    }, [defaultValue, editService, inputKey])
+    const [inputValue, setLocalInputValue] = useState(() => editService.getInputValue(inputKey, defaultValue))
 
-    const inputValue = editService.getInputValue(inputKey, defaultValue)
+    useEffect(() => {
+      editService.syncInputValue(inputKey, defaultValue)
+      setLocalInputValue(editService.getInputValue(inputKey, defaultValue))
+      const disposable = editService.onInputChange((event) => {
+        if (event.inputKey === inputKey && event.value !== undefined) {
+          setLocalInputValue(event.value)
+        }
+      })
+      return () => disposable.dispose()
+    }, [defaultValue, editService, inputKey])
 
     const handleInputBlur = useCallback(() => {
       onSave(inputValue)
@@ -33,6 +36,7 @@ export const EditableInput = forwardRef<HTMLInputElement, EditableInputProps>(
 
     const handleInputChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLocalInputValue(e.target.value)
         editService.setInputValue(inputKey, e.target.value)
         onChange?.(e)
       },

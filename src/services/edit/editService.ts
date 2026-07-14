@@ -12,6 +12,7 @@ export interface IFocusInputEvent {
 
 export interface IEditService {
   getInputValue(inputKey: string, defaultValue: string): string
+  syncInputValue(inputKey: string, defaultValue: string): void
   setInputValue(inputKey: string, value: string): void
   onInputChange: Event<IEditEvent>
   onFocusInput: Event<IFocusInputEvent>
@@ -26,6 +27,7 @@ export class EditService implements IEditService {
   public readonly onFocusInput = this._onFocusInput.event
 
   private _inputValueMap = new Map<string, string>()
+  private _inputDefaultValueMap = new Map<string, string>()
 
   constructor() {}
 
@@ -34,6 +36,15 @@ export class EditService implements IEditService {
       return this._inputValueMap.get(inputKey) ?? ""
     }
     return defaultValue
+  }
+
+  syncInputValue(inputKey: string, defaultValue: string): void {
+    const previousDefaultValue = this._inputDefaultValueMap.get(inputKey)
+    const currentValue = this._inputValueMap.get(inputKey)
+    this._inputDefaultValueMap.set(inputKey, defaultValue)
+    if (currentValue === undefined || currentValue === previousDefaultValue) {
+      this.setInputValue(inputKey, defaultValue)
+    }
   }
 
   setInputValue(inputKey: string, value: string): void {
