@@ -55,8 +55,6 @@ services:
   rustfs:
     image: rustfs/rustfs:latest
     restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
     environment:
       RUSTFS_VOLUMES: /data
       RUSTFS_ADDRESS: 0.0.0.0:9000
